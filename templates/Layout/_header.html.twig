@@ -57,9 +57,9 @@
                     <label for="selectMark" class="d-none"></label>
                     <select id="selectMark" class="form-control">
                         <option value="0">Marques</option>
-{#                        {% for group in childrens %}#}
-{#                            <option value="{{ group.id }}">{{ group.categoryText.name }}</option>#}
-{#                        {% endfor %}#}
+                        {% for mark in marks %}
+                            <option value="{{ mark.id }}">{{ mark.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="selectModel">
@@ -68,10 +68,10 @@
                         <option value="0">Modêles</option>
                     </select>
                 </div>
-                <div class="selectProduct">
-                    <label for="selectProduct" class="d-none"></label>
-                    <select id="selectProduct" class="form-control">
-                        <option value="0">Produits</option>
+                <div class="selectVersion">
+                    <label for="selectVersion" class="d-none"></label>
+                    <select id="selectVersion" class="form-control">
+                        <option value="0">Versions</option>
                     </select>
                 </div>
                 <button class="mr-3 btn btn-danger btn-sm"><i class="fa fa-search"></i></button>
@@ -129,51 +129,52 @@
         <div class="filter"></div>
     </div>
 </header>
-{#<script>#}
-{#    $("#selectMark").on("change", () => {#}
-{#        $.ajax({#}
-{#            method: "POST",#}
-{#            url: "{{ path('getCategoryByParent') }}",#}
-{#            data: {#}
-{#                group: $("#selectMark option:selected").val()#}
-{#            },#}
-{#            success: function (data) {#}
-{#                $.each(data, function (i, value) {#}
-{#                    let selectFinal = $("#selectModel")#}
-{#                    selectFinal.append(new Option(value, i));#}
-{#                })#}
-{#                $("#selectMark").attr("disabled", "disabled")#}
-{#                $(".reinit-btn").show(500)#}
-{#            }#}
-{#        })#}
-{#    })#}
+<script>
+    /** Search model with mark*/
+    $("#selectMark").on("change", () => {
+        $.ajax({
+            method: "POST",
+            url: "{{ path('getModels') }}",
+            data: {
+                mark: $("#selectMark option:selected").val()
+            },
+            success: function (data) {
+                $.each(data, function (i, value) {
+                    let selectFinal = $("#selectModel")
+                    selectFinal.append(new Option(value, i));
+                })
+                $("#selectMark").attr("disabled", "disabled")
+                $(".reinit-btn").show(500)
+            }
+        })
+    })
+    /** Search version with model*/
+    $("#selectModel").on("change", () => {
+        $.ajax({
+            method: "POST",
+            url: "{{ path('getVersions') }}",
+            data: {
+                model: $("#selectModel option:selected").val()
+            },
+            success: function (data) {
+                $.each(data, function (i, value) {
+                    let selectVersion = $("#selectVersion")
+                    selectVersion.append(new Option(value, i));
+                })
+                $("#selectModel").attr("disabled", "disabled")
+            }
+        })
+    })
 
-{#    $("#selectModel").on("change", () => {#}
-{#        $.ajax({#}
-{#            method: "POST",#}
-{#            url: "{{ path('getCategoryByParent') }}",#}
-{#            data: {#}
-{#                group: $("#selectModel option:selected").val()#}
-{#            },#}
-{#            success: function (data) {#}
-{#                $.each(data, function (i, value) {#}
-{#                    let selectProduct = $("#selectProduct")#}
-{#                    selectProduct.append(new Option(value, i));#}
-{#                })#}
-{#                $("#selectModel").attr("disabled", "disabled")#}
-{#            }#}
-{#        })#}
-{#    })#}
-
-{#    $(".reinit-btn").on("click", () => {#}
-{#        let selectModel = $("#selectModel")#}
-{#        let selectMark = $("#selectMark")#}
-{#        let selectProduct = $("#selectProduct")#}
-{#        $("#selectModel option").remove()#}
-{#        $("#selectProduct option").remove()#}
-{#        selectModel.removeAttr("disabled")#}
-{#        selectMark.removeAttr("disabled")#}
-{#        selectModel.append(new Option("Modeles", 0));#}
-{#        selectProduct.append(new Option("Produits", 0));#}
-{#    })#}
-{#</script>#}
+    $(".reinit-btn").on("click", () => {
+        let selectModel = $("#selectModel")
+        let selectMark = $("#selectMark")
+        let selectProduct = $("#selectProduct")
+        $("#selectModel option").remove()
+        $("#selectProduct option").remove()
+        selectModel.removeAttr("disabled")
+        selectMark.removeAttr("disabled")
+        selectModel.append(new Option("Modeles", 0));
+        selectProduct.append(new Option("Produits", 0));
+    })
+</script>
