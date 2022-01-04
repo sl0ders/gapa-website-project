@@ -63,6 +63,9 @@ class OrderInvoice
     #[ORM\OneToMany(mappedBy: 'orderInvoice', targetEntity: OrderInvoicePayment::class)]
     private $orderInvoicePayments;
 
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'invoices')]
+    private $customer;
+
     public function __construct()
     {
         $this->orderInvoicePayments = new ArrayCollection();
@@ -279,6 +282,18 @@ class OrderInvoice
                 $orderInvoicePayment->setOrderInvoice(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): self
+    {
+        $this->customer = $customer;
 
         return $this;
     }

@@ -70,10 +70,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
     private $orders;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Customer::class)]
+    private $customers;
+
     public function __construct()
     {
         $this->orderHistories = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->customers = new ArrayCollection();
     }
 
 
@@ -289,6 +293,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($order->getUser() === $this) {
                 $order->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Customer[]
+     */
+    public function getCustomers(): Collection
+    {
+        return $this->customers;
+    }
+
+    public function addCustomer(Customer $customer): self
+    {
+        if (!$this->customers->contains($customer)) {
+            $this->customers[] = $customer;
+            $customer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomer(Customer $customer): self
+    {
+        if ($this->customers->removeElement($customer)) {
+            // set the owning side to null (unless already changed)
+            if ($customer->getUser() === $this) {
+                $customer->setUser(null);
             }
         }
 

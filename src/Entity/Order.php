@@ -66,6 +66,15 @@ class Order
     #[ORM\OneToMany(mappedBy: 'ordered', targetEntity: OrderInvoicePayment::class)]
     private $orderInvoicePayments;
 
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'orders')]
+    private $customer;
+
+    #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'orders')]
+    private $delivery;
+
+    #[ORM\ManyToOne(targetEntity: Cart::class, inversedBy: 'orders')]
+    private $cart;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -357,6 +366,42 @@ class Order
                 $orderInvoicePayment->setOrdered(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): self
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getDelivery(): ?Delivery
+    {
+        return $this->delivery;
+    }
+
+    public function setDelivery(?Delivery $delivery): self
+    {
+        $this->delivery = $delivery;
+
+        return $this;
+    }
+
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    public function setCart(?Cart $cart): self
+    {
+        $this->cart = $cart;
 
         return $this;
     }
