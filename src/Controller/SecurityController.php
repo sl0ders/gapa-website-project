@@ -58,7 +58,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[route("/{id}", name: "app_edit_profile")]
+    #[route("/edit/{id}", name: "app_edit_profile")]
     public function editProfile(User $user, Request $request)
     {
         $form = $this->createForm(UserType::class, $user);
