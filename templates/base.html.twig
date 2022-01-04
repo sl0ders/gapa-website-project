@@ -13,7 +13,8 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
+    <body class="public">
+    {{ render(controller('App\\Controller\\LayoutBundleController::publicLayoutHeader')) }}
     {% for type, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert alert-{{ type }} text-center">{{ message }}</div>

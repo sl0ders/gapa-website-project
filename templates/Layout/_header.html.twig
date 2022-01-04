@@ -1,0 +1,179 @@
+<header id="header">
+    <div class="Slideshow">
+        <div id="texts">
+            <div class="text text-catalogue">
+                <h1>Découvrez notre catalogue</h1>
+                <button class="btn btn-warning btn-xl">En savoir plus</button>
+            </div>
+            <div class="text text-entretient">
+                <h1>Entretient de votre vehicule</h1>
+                <button class="btn btn-warning btn-xl">En savoir plus</button>
+            </div>
+            <div class="text text-pleasure">
+                <h1>Le plaisir a porté de main</h1>
+                <button class="btn btn-warning btn-xl">En savoir plus</button>
+            </div>
+        </div>
+        <div class="Slideshow-Content">
+            <img src="{{ asset('images/template/header-3.jpg') }}" alt=""/>
+            <img src="{{ asset('images/template/header.jpg') }}" alt=""/>
+            <img src="{{ asset('images/template/header-2.jpg') }}" alt=""/>
+        </div>
+        <div class="navbar">
+            <div class="menu-nav">
+                <div class="menu-top">
+                    <ul>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                        <li><a href="">blablabla</a></li>
+                    </ul>
+                </div>
+            </div>
+            <i class="fa fa-caret-down"></i>
+            <div class="logo">
+                <img src="{{ asset('images/template/logo-gapa.png') }}" alt="" height="40">
+            </div>
+            <div class="d-flex justify-content-around align-items-center search w-25">
+                <div class="selectMark">
+                    <label for="selectMark" class="d-none"></label>
+                    <select id="selectMark" class="form-control">
+                        <option value="0">Marques</option>
+{#                        {% for group in childrens %}#}
+{#                            <option value="{{ group.id }}">{{ group.categoryText.name }}</option>#}
+{#                        {% endfor %}#}
+                    </select>
+                </div>
+                <div class="selectModel">
+                    <label for="selectModel" class="d-none"></label>
+                    <select id="selectModel" class="form-control">
+                        <option value="0">Modêles</option>
+                    </select>
+                </div>
+                <div class="selectProduct">
+                    <label for="selectProduct" class="d-none"></label>
+                    <select id="selectProduct" class="form-control">
+                        <option value="0">Produits</option>
+                    </select>
+                </div>
+                <button class="mr-3 btn btn-danger btn-sm"><i class="fa fa-search"></i></button>
+                <button type="button" class="reinit-btn btn btn-danger btn-sm text-white"><i
+                            class="fa fa-refresh"></i></button>
+            </div>
+
+            <div class="float-end text-white nav-together">
+                <div class="notification">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                </div>
+                <div class="pipe">|</div>
+                <div class="search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <input type="text" placeholder=" Rechercher..." class="bg-black text-white border-dark">
+                </div>
+                <div class="pipe">|</div>
+                <div class="phone">
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    <span> 0764667524</span>
+                </div>
+                <div class="pipe">|</div>
+                <div class="login">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    <span> Connexion</span>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="">Accueil</a>
+                <span class="text-white">-</span>
+                <a href="">Contact</a>
+                <span class="text-white">-</span>
+                <a href="">News</a>
+                <span class="text-white">-</span>
+                <div class="dropdown">
+                    <a href="" class="dropdown-toggle" type="button" id="menuGapaProduct" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Les produits Gapa4x4
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="menuGapaProduct">
+{#                        {% for group in childrens %}#}
+{#                            <a class="dropdown-item text-dark" href="#">{{ group.categoryText.name }} <i#}
+{#                                        class="float-right fa fa-arrow-circle-right mt-1"></i></a>#}
+{#                        {% endfor %}#}
+                    </div>
+                </div>
+                <span class="text-white">-</span>
+                <a href="">Les produits Front-Runner</a>
+                <span class="text-white">-</span>
+                <a href="">Les produits ARB</a>
+            </div>
+        </div>
+        <div class="filter"></div>
+    </div>
+</header>
+{#<script>#}
+{#    $("#selectMark").on("change", () => {#}
+{#        $.ajax({#}
+{#            method: "POST",#}
+{#            url: "{{ path('getCategoryByParent') }}",#}
+{#            data: {#}
+{#                group: $("#selectMark option:selected").val()#}
+{#            },#}
+{#            success: function (data) {#}
+{#                $.each(data, function (i, value) {#}
+{#                    let selectFinal = $("#selectModel")#}
+{#                    selectFinal.append(new Option(value, i));#}
+{#                })#}
+{#                $("#selectMark").attr("disabled", "disabled")#}
+{#                $(".reinit-btn").show(500)#}
+{#            }#}
+{#        })#}
+{#    })#}
+
+{#    $("#selectModel").on("change", () => {#}
+{#        $.ajax({#}
+{#            method: "POST",#}
+{#            url: "{{ path('getCategoryByParent') }}",#}
+{#            data: {#}
+{#                group: $("#selectModel option:selected").val()#}
+{#            },#}
+{#            success: function (data) {#}
+{#                $.each(data, function (i, value) {#}
+{#                    let selectProduct = $("#selectProduct")#}
+{#                    selectProduct.append(new Option(value, i));#}
+{#                })#}
+{#                $("#selectModel").attr("disabled", "disabled")#}
+{#            }#}
+{#        })#}
+{#    })#}
+
+{#    $(".reinit-btn").on("click", () => {#}
+{#        let selectModel = $("#selectModel")#}
+{#        let selectMark = $("#selectMark")#}
+{#        let selectProduct = $("#selectProduct")#}
+{#        $("#selectModel option").remove()#}
+{#        $("#selectProduct option").remove()#}
+{#        selectModel.removeAttr("disabled")#}
+{#        selectMark.removeAttr("disabled")#}
+{#        selectModel.append(new Option("Modeles", 0));#}
+{#        selectProduct.append(new Option("Produits", 0));#}
+{#    })#}
+{#</script>#}
