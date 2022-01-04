@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 offset-3 border rounded p-3 mt-5">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.firstname) }}
+                    {{ form_row(form.lastname) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.title) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.address) }}
+                </div>
+            </div>
+            {{ form_row(form.password) }}
+            {{ form_row(form.confirmPassword) }}
+
+            {{ form_row(form.submit) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
