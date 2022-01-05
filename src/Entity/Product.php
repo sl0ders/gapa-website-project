@@ -6,8 +6,10 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[UniqueEntity("reference")]
 class Product
 {
     #[ORM\Id]
@@ -73,9 +75,6 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: File::class)]
     private $files;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Picture::class, orphanRemoval: true)]
-    private $pictures;
-
     #[ORM\ManyToOne(targetEntity: Provider::class, inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private $provider;
@@ -95,6 +94,36 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class)]
     private $cartProducts;
 
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $depth;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $depth_in;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $weight;
+
+    #[ORM\Column(type: 'bigint', nullable: true)]
+    private $upc;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $countryOfOrigin;
+
+    #[ORM\Column(type: 'string', length: 4, nullable: true)]
+    private $currency;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private $retail_price;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $tariffcode;
+
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'product')]
+    private $categories;
+
+    #[ORM\ManyToMany(targetEntity: Picture::class)]
+    private $pictures;
+
     public function __construct()
     {
         $this->files = new ArrayCollection();
@@ -102,6 +131,7 @@ class Product
         $this->orders = new ArrayCollection();
         $this->orderDetails = new ArrayCollection();
         $this->cartProducts = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -355,36 +385,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|Picture[]
-     */
-    public function getPictures(): Collection
-    {
-        return $this->pictures;
-    }
-
-    public function addPicture(Picture $picture): self
-    {
-        if (!$this->pictures->contains($picture)) {
-            $this->pictures[] = $picture;
-            $picture->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removePicture(Picture $picture): self
-    {
-        if ($this->pictures->removeElement($picture)) {
-            // set the owning side to null (unless already changed)
-            if ($picture->getProduct() === $this) {
-                $picture->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getProvider(): ?Provider
     {
         return $this->provider;
@@ -504,6 +504,153 @@ class Product
                 $cartProduct->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDepth(): ?float
+    {
+        return $this->depth;
+    }
+
+    public function setDepth(?float $depth): self
+    {
+        $this->depth = $depth;
+
+        return $this;
+    }
+
+    public function getDepthIn(): ?float
+    {
+        return $this->depth_in;
+    }
+
+    public function setDepthIn(?float $depth_in): self
+    {
+        $this->depth_in = $depth_in;
+
+        return $this;
+    }
+
+    public function getWeight(): ?float
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(?float $weight): self
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    public function getUpc(): ?string
+    {
+        return $this->upc;
+    }
+
+    public function setUpc(?string $upc): self
+    {
+        $this->upc = $upc;
+
+        return $this;
+    }
+
+    public function getCountryOfOrigin(): ?string
+    {
+        return $this->countryOfOrigin;
+    }
+
+    public function setCountryOfOrigin(?string $countryOfOrigin): self
+    {
+        $this->countryOfOrigin = $countryOfOrigin;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): self
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    public function getRetailPrice(): ?float
+    {
+        return $this->retail_price;
+    }
+
+    public function setRetailPrice(?float $retail_price): self
+    {
+        $this->retail_price = $retail_price;
+
+        return $this;
+    }
+
+    public function getTariffcode(): ?string
+    {
+        return $this->tariffcode;
+    }
+
+    public function setTariffcode(?string $tariffcode): self
+    {
+        $this->tariffcode = $tariffcode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        $this->pictures->removeElement($picture);
 
         return $this;
     }
