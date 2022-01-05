@@ -37,33 +37,33 @@ $(function () {
         }
     });
 });
-tinymce.init({
-    selector: 'textarea',
-    plugins: 'image code',
-    toolbar: 'undo redo | link image | code',
-    image_title: true,
-    automatic_uploads: true,
-    file_picker_types: 'image',
-    file_picker_callback: function (cb, value, meta) {
-        var input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.onchange = function () {
-            var file = this.files[0];
-            var reader = new FileReader();
-            reader.onload = function () {
-                var id = 'blobid' + (new Date()).getTime();
-                var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                var base64 = reader.result.split(',')[1];
-                var blobInfo = blobCache.create(id, file, base64);
-                blobCache.add(blobInfo);
-                cb(blobInfo.blobUri(), {title: file.name});
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
-    }
-});
+// tinymce.init({
+//     selector: 'textarea',
+//     plugins: 'image code',
+//     toolbar: 'undo redo | link image | code',
+//     image_title: true,
+//     automatic_uploads: true,
+//     file_picker_types: 'image',
+//     file_picker_callback: function (cb, value, meta) {
+//         var input = document.createElement('input');
+//         input.setAttribute('type', 'file');
+//         input.setAttribute('accept', 'image/*');
+//         input.onchange = function () {
+//             var file = this.files[0];
+//             var reader = new FileReader();
+//             reader.onload = function () {
+//                 var id = 'blobid' + (new Date()).getTime();
+//                 var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+//                 var base64 = reader.result.split(',')[1];
+//                 var blobInfo = blobCache.create(id, file, base64);
+//                 blobCache.add(blobInfo);
+//                 cb(blobInfo.blobUri(), {title: file.name});
+//             };
+//             reader.readAsDataURL(file);
+//         };
+//         input.click();
+//     }
+// });
 
 $(document).ready(() => {
     let nomination = $(".section-text")
@@ -148,7 +148,9 @@ const showTestimonial = index => {
 
 showTestimonial(0); // id of the first element you want to show.
 
-$(".fa-caret-down").click(() => {
-    $(".menu-nav").toggle(500)
-    $(".fa-caret-down").toggleClass("rotate")
+$(".btn-hidden").hover(() => {
+    $(".menu-nav").toggleClass("visible")
+})
+$(".menu-nav").hover(() => {
+    $(".menu-nav").toggleClass("visible")
 })

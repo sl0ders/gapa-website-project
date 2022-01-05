@@ -20,40 +20,33 @@
             <img src="{{ asset('images/template/header-2.jpg') }}" alt=""/>
         </div>
         <div class="navbar">
+            <div class="btn-hidden">
+                <div class="text-center">Nos partenaires</div>
+            </div>
             <div class="menu-nav">
-                <div class="menu-top">
-                    <ul>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                    </ul>
-                    <ul>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                    </ul>
-                    <ul>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                        <li><a href="">blablabla</a></li>
-                    </ul>
+                <div class="japocat-product sub-menu">
+                    <h2>Nos produits japocat</h2>
+                    <img class="sub-menu-logo" src="{{ asset('images/template/japocat-logo.jpg') }}" alt="">
+                </div>
+                <div class="arb-product sub-menu">
+                    <h2>Nos produits ARB</h2>
+                    <img src="{{ asset('images/template/logo-arb.png') }}" alt="">
+                </div>
+                <div class="james-baroud-product sub-menu">
+                    <h2>Nos produits james-baroud</h2>
+                    <img src="{{ asset('images/template/james-baroud-logo.png') }}" alt="">
+                </div>
+                <div class="front-runner-product sub-menu">
+                    <h2>Nos produits front-runner</h2>
+                    <img src="{{ asset('images/template/logo-fr.png') }}" alt="">
                 </div>
             </div>
-            <i class="fa fa-caret-down"></i>
+
             <div class="logo">
                 <img src="{{ asset('images/template/logo-gapa.png') }}" alt="" height="40">
             </div>
             <div class="d-flex justify-content-around align-items-center search w-25">
-                <div class="selectMark">
+                <div class="selectMark select">
                     <label for="selectMark" class="d-none"></label>
                     <select id="selectMark" class="form-control">
                         <option value="0">Marques</option>
@@ -62,13 +55,13 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="selectModel">
+                <div class="selectModel select">
                     <label for="selectModel" class="d-none"></label>
                     <select id="selectModel" class="form-control">
                         <option value="0">Modêles</option>
                     </select>
                 </div>
-                <div class="selectVersion">
+                <div class="selectVersion select">
                     <label for="selectVersion" class="d-none"></label>
                     <select id="selectVersion" class="form-control">
                         <option value="0">Versions</option>
@@ -80,12 +73,6 @@
             </div>
 
             <div class="float-end text-white nav-together">
-                <div class="notification">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                </div>
-                <div class="pipe">|</div>
                 <div class="search">
                     <i class="fa fa-search" aria-hidden="true"></i>
                     <input type="text" placeholder=" Rechercher..." class="bg-black text-white border-dark">
@@ -93,42 +80,33 @@
                 <div class="pipe">|</div>
                 <div class="phone">
                     <i class="fa fa-phone" aria-hidden="true"></i>
-                    <span> 0764667524</span>
+                    <span> 04.68.54.44.96</span>
                 </div>
-                <div class="pipe">|</div>
-                <div class="login">
-                    <i class="fa fa-sign-in" aria-hidden="true"></i>
-                    <span> Connexion</span>
-                </div>
-            </div>
-            <div class="nav-menu">
-                <a href="">Accueil</a>
-                <span class="text-white">-</span>
-                <a href="">Contact</a>
-                <span class="text-white">-</span>
-                <a href="">News</a>
-                <span class="text-white">-</span>
-                <div class="dropdown">
-                    <a href="" class="dropdown-toggle" type="button" id="menuGapaProduct" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Les produits Gapa4x4
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="menuGapaProduct">
-{#                        {% for group in childrens %}#}
-{#                            <a class="dropdown-item text-dark" href="#">{{ group.categoryText.name }} <i#}
-{#                                        class="float-right fa fa-arrow-circle-right mt-1"></i></a>#}
-{#                        {% endfor %}#}
+                {% if app.user %}
+                    <div class="pipe">|</div>
+                    <div class="notification">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
                     </div>
-                </div>
-                <span class="text-white">-</span>
-                <a href="">Les produits Front-Runner</a>
-                <span class="text-white">-</span>
-                <a href="">Les produits ARB</a>
+                {% else %}
+                    <div class="pipe">|</div>
+                    <a href="{{ path('app_login') }}" class="login">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i>
+                        <span>Connexion</span>
+                    </a>
+                    <div class="pipe">|</div>
+                    <a href="{{ path('app_signup') }}" class="signup">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i>
+                        <span>Inscription</span>
+                    </a>
+                {% endif %}
             </div>
         </div>
         <div class="filter"></div>
     </div>
 </header>
+<script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
 <script>
     /** Search model with mark*/
     $("#selectMark").on("change", () => {
