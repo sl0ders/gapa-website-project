@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Entity\Address;
 use App\Entity\Category;
+use App\Entity\File;
 use App\Entity\Picture;
 use App\Entity\Product;
 use App\Entity\ProductType;
 use App\Entity\Provider;
+use App\Kernel;
 use App\Repository\CategoryRepository;
 use App\Repository\PictureRepository;
 use App\Repository\ProductRepository;
@@ -17,6 +19,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Error;
 use JsonException;
+use Monolog\Handler\IFTTTHandler;
 
 class ProductServices
 {
@@ -26,8 +29,9 @@ class ProductServices
     private ProductTypeRepository $productTypeRepository;
     private PictureRepository $pictureRepository;
     private ProductRepository $productRepository;
+    private string $targetDirectory;
 
-    public function __construct(ProductRepository $productRepository, PictureRepository $pictureRepository, ProviderRepository $providerRepository, CategoryRepository $categoryRepository, ProductTypeRepository $productTypeRepository, EntityManagerInterface $entityManager)
+    public function __construct(string $targetDirectory, ProductRepository $productRepository, PictureRepository $pictureRepository, ProviderRepository $providerRepository, CategoryRepository $categoryRepository, ProductTypeRepository $productTypeRepository, EntityManagerInterface $entityManager)
     {
         $this->providerRepository = $providerRepository;
         $this->entityManager = $entityManager;
@@ -35,6 +39,7 @@ class ProductServices
         $this->productTypeRepository = $productTypeRepository;
         $this->pictureRepository = $pictureRepository;
         $this->productRepository = $productRepository;
+        $this->targetDirectory = $targetDirectory;
     }
 
     /**
@@ -42,17 +47,27 @@ class ProductServices
      */
     public function addFrontRunner()
     {
-        $prods = [];
-        $json = file_get_contents("https://api.frontrunner.co.za/customer/Pricelist/file/EUR/?account=DGAP801&ApiKey=95f48a4024e54b5194c1c70c4660755e&format=json&language=FR&nonStandardColumns=Dimensions&nonStandardColumns=Categories&nonStandardColumns=Bom&nonStandardColumns=Narrative&nonStandardColumns=Images&nonStandardColumns=FittingInstructions");
-        $parsed_json = json_decode($json, false, 512, JSON_THROW_ON_ERROR);
+        ini_set('max_execution_time', 0);
+        /**
+         * @var ProductType $productType
+         * I test if the productType with name "Pièce detaché" exist
+         */
         $productType = $this->productTypeRepository->findOneBy(["name" => "Pièces détachés"]);
+        /** if not exist i create a ProductType for Front Runner product */
         if (!isset($productType)) {
             $productType = new ProductType();
             $productType->setName("Pièces détachés");
             $this->entityManager->persist($productType);
             $this->entityManager->flush();
         }
+
+        /**
+         * @var Provider $provider
+         * Test if an provider with name "front runner" exist
+         */
         $provider = $this->providerRepository->findOneBy(["name" => "Front runner"]);
+
+        /** If not exist i create this Provider */
         if (!$provider instanceof Provider) {
             $fr_address = new Address();
             $fr_address->setAddress1("Zu den Mergelbrüchen 430559 HannoverGermany")
@@ -70,13 +85,23 @@ class ProductServices
             $this->entityManager->persist($provider);
             $this->entityManager->flush();
         }
+
+        /**
+         * @var string $json
+         *  this variable result of api file of front runner
+         */
+        $apiFrontRunnerJson = file_get_contents($this->targetDirectory . "/fr-part9.json");
+        $parsed_json = json_decode($apiFrontRunnerJson, false, 512, JSON_THROW_ON_ERROR);
+
+        /** @var product $article */
         foreach ($parsed_json as $article) {
+            /** Each product of this json list have many category spacing by "|", i'm explode this line for retreave each category */
             $chaine = $article->{"Categories"};
             $categoriesJson = explode("|", $chaine);
             $position = 0;
-
             $product = $this->productRepository->findOneBy(["reference" => $article->{"Code"}]);
             if (!isset($product)) {
+                /** if not exist i create a new produit for this while */
                 $product = new Product();
                 $product
                     ->setAddAt(new DateTime())
@@ -102,6 +127,26 @@ class ProductServices
                     ->setIsEnabled(true)
                     ->setType($productType)
                     ->setPosition($position);
+                if (isset($article->{"FittingInstruction_1"})) {
+                    $file = $this->getFiles($article->{"FittingInstruction_1"});
+                    $product->addFile($file);
+                }
+                if (isset($article->{"FittingInstruction_2"})) {
+                    $file = $this->getFiles($article->{"FittingInstruction_2"});
+                    $product->addFile($file);
+                }
+                if (isset($article->{"FittingInstruction_3"})) {
+                    $file = $this->getFiles($article->{"FittingInstruction_3"});
+                    $product->addFile($file);
+                }
+                if (isset($article->{"FittingInstruction_4"})) {
+                    $file = $this->getFiles($article->{"FittingInstruction_4"});
+                    $product->addFile($file);
+                }
+                if (isset($article->{"FittingInstruction_5"})) {
+                    $file = $this->getFiles($article->{"FittingInstruction_5"});
+                    $product->addFile($file);
+                }
                 if (isset($article->{"Image_1"})) {
                     $picture = $this->getPictures($article->{"Image_1"});
                     $product->addPicture($picture);
@@ -146,27 +191,61 @@ class ProductServices
                     }
                     $position++;
                 }
+                $this->entityManager->persist($product);
+                $this->entityManager->flush();
             }
-            $prods[] = $product;
         }
-        return $prods;
     }
 
-    public function getPictures($pictureName)
+    private function getPictures($pictureName): Picture
     {
         $picture = new Picture();
         $picture->setName($pictureName);
         $pictureWidth = getimagesize($pictureName)[0];
-        $pictureHeight = getimagesize($pictureName)[2];
+        $pictureHeight = getimagesize($pictureName)[1];
         $pictureMimeType = getimagesize($pictureName)["mime"];
-        $pictureSize = getimagesize($pictureName)["bits"];
-
         $picture->setWidth($pictureWidth);
         $picture->setHeight($pictureHeight);
         $picture->setFormat($pictureMimeType);
-        $picture->setSize($pictureSize);
         $this->entityManager->persist($picture);
         $this->entityManager->flush();
         return $picture;
+    }
+
+    /**
+     * @return void
+     * This function retrieve en associate the api price of front runner for each product
+     * @throws JsonException
+     */
+    public function updatePrice()
+    {
+        $apiFrontRunnerJson = file_get_contents($this->targetDirectory . "/priceList.json");
+
+        /** @var string $apiFrontRunnerJson */
+        $priceProducts = json_decode($apiFrontRunnerJson, false, 512, JSON_THROW_ON_ERROR);
+
+        foreach ($priceProducts as $priceProduct) {
+            /** @var Product $product */
+            $product = $this->productRepository->findOneBy(["reference" => $priceProduct->{"lineCode"}]);
+            if (isset($product)) {
+                $product->setPrice($priceProduct->{"coreCost"});
+                $product->setPriceTtc($priceProduct->{"coreCost"} * 1.2);
+                $product->setIsInStock($priceProduct->{"totalOnHand"});
+                $this->entityManager->persist($product);
+                $this->entityManager->flush();
+            } else {
+                continue;
+            }
+        }
+    }
+
+    private function getFiles($param): File
+    {
+        $file = new File();
+        $file->setName($param)
+            ->setFormat("pdf");
+        $this->entityManager->persist($file);
+        $this->entityManager->flush();
+        return $file;
     }
 }

@@ -16,16 +16,13 @@ class Picture
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'float')]
-    private $size;
-
     #[ORM\Column(type: 'integer')]
     private $width;
 
     #[ORM\Column(type: 'integer')]
     private $height;
 
-    #[ORM\Column(type: 'string', length: 4)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $format;
 
     public function getId(): ?int
@@ -41,18 +38,6 @@ class Picture
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSize(): ?float
-    {
-        return $this->size;
-    }
-
-    public function setSize(float $size): self
-    {
-        $this->size = $size;
 
         return $this;
     }

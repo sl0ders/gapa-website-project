@@ -27,12 +27,12 @@ class Address
     #[Assert\NotBlank(message: "Champ non remplie")]
     private $post_code;
 
-    #[ORM\Column(type: 'bigint', nullable: true)]
-    #[Assert\Length(min: 11, max: 11, minMessage: "Numero de telephone trop court, min 11 numeros", maxMessage: "Numero de telephone trop long, max 11 numeros")]
+    #[ORM\Column(type: 'string', length: 155, nullable: true)]
+    #[Assert\Length(min: 30, max: 30, minMessage: "Numero de telephone trop court, min 11 numeros", maxMessage: "Numero de telephone trop long, max 11 numeros")]
     private $phone;
 
-    #[ORM\Column(type: 'bigint', nullable: true)]
-    #[Assert\Length(min: 11, max: 11, minMessage: "Numero de telephone trop court, min 11 numeros", maxMessage: "Numero de telephone trop long, max 11 numeros")]
+    #[ORM\Column(type: 'string', length: 155, nullable: true)]
+    #[Assert\Length(min: 30, max: 30, minMessage: "Numero de telephone trop court, min 11 numeros", maxMessage: "Numero de telephone trop long, max 11 numeros")]
     private $phone_mobile;
 
     #[ORM\Column(type: 'boolean')]

@@ -21,7 +21,7 @@ class Provider
     #[ORM\Column(type: 'string', length: 255)]
     private $email;
 
-    #[ORM\Column(type: 'string', length: 13)]
+    #[ORM\Column(type: 'string', length: 155)]
     private $phone;
 
     #[ORM\ManyToOne(targetEntity: Address::class)]

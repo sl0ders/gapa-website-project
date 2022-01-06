@@ -72,9 +72,6 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private $type;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: File::class)]
-    private $files;
-
     #[ORM\ManyToOne(targetEntity: Provider::class, inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private $provider;
@@ -124,14 +121,20 @@ class Product
     #[ORM\ManyToMany(targetEntity: Picture::class)]
     private $pictures;
 
+    #[ORM\ManyToMany(targetEntity: File::class)]
+    private $files;
+
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    private $is_in_stock;
+
     public function __construct()
     {
-        $this->files = new ArrayCollection();
         $this->pictures = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->orderDetails = new ArrayCollection();
         $this->cartProducts = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -351,36 +354,6 @@ class Product
     public function setType(?ProductType $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|File[]
-     */
-    public function getFiles(): Collection
-    {
-        return $this->files;
-    }
-
-    public function addFile(File $file): self
-    {
-        if (!$this->files->contains($file)) {
-            $this->files[] = $file;
-            $file->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFile(File $file): self
-    {
-        if ($this->files->removeElement($file)) {
-            // set the owning side to null (unless already changed)
-            if ($file->getProduct() === $this) {
-                $file->setProduct(null);
-            }
-        }
 
         return $this;
     }
@@ -651,6 +624,41 @@ class Product
     public function removePicture(Picture $picture): self
     {
         $this->pictures->removeElement($picture);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|File[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(File $file): self
+    {
+        if (!$this->files->contains($file)) {
+            $this->files[] = $file;
+        }
+
+        return $this;
+    }
+
+    public function removeFile(File $file): self
+    {
+        $this->files->removeElement($file);
+        return $this;
+    }
+
+    public function getIsInStock(): ?int
+    {
+        return $this->is_in_stock;
+    }
+
+    public function setIsInStock(?int $is_in_stock): self
+    {
+        $this->is_in_stock = $is_in_stock;
 
         return $this;
     }

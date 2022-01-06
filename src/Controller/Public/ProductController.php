@@ -2,7 +2,6 @@
 
 namespace App\Controller\Public;
 
-use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Services\ProductServices;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +17,6 @@ class ProductController extends AbstractController
     public function index(ProductRepository $productRepository): Response
     {
         return $this->render("public/product/index.html.twig", [
-            "products" => $productRepository->findAll()
         ]);
     }
 
@@ -26,13 +24,17 @@ class ProductController extends AbstractController
      * @throws JsonException
      */
     #[Route('/sync', name: 'public_product_sync')]
-    public function sync(ProductServices $productServices, EntityManagerInterface $entityManager, ProductRepository $productRepository): Response
+    public function sync(ProductServices $productServices): Response
     {
-        $products = $productServices->addFrontRunner();
-        foreach ($products as $product) {
-            $entityManager->persist($product);
-        }
-        $entityManager->flush();
+        $productServices->addFrontRunner();
+        return $this->redirectToRoute("public_product_index");
+    }
+
+
+    #[Route('/sync-price', name: 'public_product_sync_price')]
+    public function syncPrice(ProductServices $productServices): Response
+    {
+        $productServices->updatePrice();
         return $this->redirectToRoute("public_product_index");
     }
 }

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220105223941 extends AbstractMigration
+final class Version20220106150551 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20220105223941 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE address (id INT AUTO_INCREMENT NOT NULL, address1 LONGTEXT NOT NULL, address2 LONGTEXT DEFAULT NULL, post_code BIGINT NOT NULL, phone BIGINT DEFAULT NULL, phone_mobile BIGINT DEFAULT NULL, is_enabled TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE address (id INT AUTO_INCREMENT NOT NULL, address1 LONGTEXT NOT NULL, address2 LONGTEXT DEFAULT NULL, post_code BIGINT NOT NULL, phone VARCHAR(155) DEFAULT NULL, phone_mobile VARCHAR(155) DEFAULT NULL, is_enabled TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE carrier (id INT AUTO_INCREMENT NOT NULL, delivery_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, position INT NOT NULL, url VARCHAR(255) DEFAULT NULL, is_free TINYINT(1) NOT NULL, is_enabled TINYINT(1) NOT NULL, INDEX IDX_4739F11C12136921 (delivery_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE cart (id INT AUTO_INCREMENT NOT NULL, carrier_id INT NOT NULL, customer_id INT NOT NULL, delivery_option LONGTEXT DEFAULT NULL, delivery_address LONGTEXT NOT NULL, invoice_address LONGTEXT NOT NULL, secure_key VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, validate_at DATETIME DEFAULT NULL, updated_at DATETIME DEFAULT NULL, INDEX IDX_BA388B721DFC797 (carrier_id), INDEX IDX_BA388B79395C3F3 (customer_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE cart_product (id INT AUTO_INCREMENT NOT NULL, cart_id INT NOT NULL, product_id INT NOT NULL, delivery_address LONGTEXT NOT NULL, quantity INT NOT NULL, created_at DATETIME NOT NULL, INDEX IDX_2890CCAA1AD5CDBF (cart_id), INDEX IDX_2890CCAA4584665A (product_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -29,7 +29,7 @@ final class Version20220105223941 extends AbstractMigration
         $this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, iso_code VARCHAR(255) NOT NULL, call_prefix VARCHAR(255) DEFAULT NULL, is_enabled TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE customer (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, is_add_newsletter TINYINT(1) NOT NULL, newsletter_sub_at DATETIME DEFAULT NULL, last_visit DATETIME DEFAULT NULL, note LONGTEXT DEFAULT NULL, birthday DATETIME DEFAULT NULL, INDEX IDX_81398E09A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE delivery (id INT AUTO_INCREMENT NOT NULL, price DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE file (id INT AUTO_INCREMENT NOT NULL, product_id INT NOT NULL, name VARCHAR(255) NOT NULL, size VARCHAR(255) NOT NULL, format VARCHAR(255) NOT NULL, INDEX IDX_8C9F36104584665A (product_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE file (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, format VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE message (id INT AUTO_INCREMENT NOT NULL, content LONGTEXT NOT NULL, is_private TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, read_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE model_version (id INT AUTO_INCREMENT NOT NULL, model_id INT NOT NULL, name VARCHAR(255) NOT NULL, begin_at DATETIME NOT NULL, end_at DATETIME NOT NULL, INDEX IDX_DF8FBA327975B7E7 (model_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE notification (id INT AUTO_INCREMENT NOT NULL, content LONGTEXT NOT NULL, path VARCHAR(255) DEFAULT NULL, id_path INT DEFAULT NULL, created_at DATETIME NOT NULL, read_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -45,11 +45,12 @@ final class Version20220105223941 extends AbstractMigration
         $this->addSql('CREATE TABLE order_slip (id INT AUTO_INCREMENT NOT NULL, ordered_id INT NOT NULL, total_products_tax_excl DOUBLE PRECISION NOT NULL, total_products_tax_incl DOUBLE PRECISION NOT NULL, total_shipping_tax_excl DOUBLE PRECISION NOT NULL, total_shipping_tax_incl DOUBLE PRECISION NOT NULL, shipping_cost_amount DOUBLE PRECISION NOT NULL, amount DOUBLE PRECISION NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, INDEX IDX_B0C879EFAA60395A (ordered_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE order_slip_detail (id INT AUTO_INCREMENT NOT NULL, order_slip_id INT NOT NULL, order_detail_id INT NOT NULL, quantity_product INT NOT NULL, INDEX IDX_CAE7FF67AFBDDA20 (order_slip_id), INDEX IDX_CAE7FF6764577843 (order_detail_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE order_state (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, is_sent_email TINYINT(1) NOT NULL, color VARCHAR(255) NOT NULL, is_paid TINYINT(1) NOT NULL, is_pdf_invoice TINYINT(1) NOT NULL, is_shipped TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE picture (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, size DOUBLE PRECISION NOT NULL, width INT NOT NULL, height INT NOT NULL, format VARCHAR(4) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE picture (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, width INT NOT NULL, height INT NOT NULL, format VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE product (id INT AUTO_INCREMENT NOT NULL, type_id INT NOT NULL, provider_id INT NOT NULL, version_motorisation_id INT DEFAULT NULL, version_frame_id INT DEFAULT NULL, original_reference VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, reference VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, lenght DOUBLE PRECISION DEFAULT NULL, width DOUBLE PRECISION DEFAULT NULL, height DOUBLE PRECISION DEFAULT NULL, price DOUBLE PRECISION NOT NULL, price_ttc DOUBLE PRECISION NOT NULL, specificity LONGTEXT DEFAULT NULL, meta_description LONGTEXT DEFAULT NULL, meta_title LONGTEXT DEFAULT NULL, meta_keyword LONGTEXT DEFAULT NULL, position INT NOT NULL, is_enabled TINYINT(1) NOT NULL, add_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, depth DOUBLE PRECISION DEFAULT NULL, depth_in DOUBLE PRECISION DEFAULT NULL, weight DOUBLE PRECISION DEFAULT NULL, upc BIGINT DEFAULT NULL, country_of_origin VARCHAR(255) DEFAULT NULL, currency VARCHAR(4) DEFAULT NULL, retail_price DOUBLE PRECISION DEFAULT NULL, tariffcode VARCHAR(255) DEFAULT NULL, INDEX IDX_D34A04ADC54C8C93 (type_id), INDEX IDX_D34A04ADA53A8AA (provider_id), INDEX IDX_D34A04AD98622189 (version_motorisation_id), INDEX IDX_D34A04AD53599F4F (version_frame_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE product_picture (product_id INT NOT NULL, picture_id INT NOT NULL, INDEX IDX_C70254394584665A (product_id), INDEX IDX_C7025439EE45BDBF (picture_id), PRIMARY KEY(product_id, picture_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE product_file (product_id INT NOT NULL, file_id INT NOT NULL, INDEX IDX_17714B14584665A (product_id), INDEX IDX_17714B193CB796C (file_id), PRIMARY KEY(product_id, file_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE product_type (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE provider (id INT AUTO_INCREMENT NOT NULL, address_id INT NOT NULL, picture_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, phone VARCHAR(13) NOT NULL, INDEX IDX_92C4739CF5B7AF75 (address_id), UNIQUE INDEX UNIQ_92C4739CEE45BDBF (picture_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE provider (id INT AUTO_INCREMENT NOT NULL, address_id INT NOT NULL, picture_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, phone VARCHAR(155) NOT NULL, INDEX IDX_92C4739CF5B7AF75 (address_id), UNIQUE INDEX UNIQ_92C4739CEE45BDBF (picture_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE `user` (id INT AUTO_INCREMENT NOT NULL, address_id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, title VARCHAR(3) NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), UNIQUE INDEX UNIQ_8D93D649F5B7AF75 (address_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE vehicle_mark (id INT AUTO_INCREMENT NOT NULL, picture_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_14E9C12DEE45BDBF (picture_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE vehicle_mark_provider (vehicle_mark_id INT NOT NULL, provider_id INT NOT NULL, INDEX IDX_77C9B7E85DE3AC44 (vehicle_mark_id), INDEX IDX_77C9B7E8A53A8AA (provider_id), PRIMARY KEY(vehicle_mark_id, provider_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -64,7 +65,6 @@ final class Version20220105223941 extends AbstractMigration
         $this->addSql('ALTER TABLE category_product ADD CONSTRAINT FK_149244D312469DE2 FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE category_product ADD CONSTRAINT FK_149244D34584665A FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE customer ADD CONSTRAINT FK_81398E09A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
-        $this->addSql('ALTER TABLE file ADD CONSTRAINT FK_8C9F36104584665A FOREIGN KEY (product_id) REFERENCES product (id)');
         $this->addSql('ALTER TABLE model_version ADD CONSTRAINT FK_DF8FBA327975B7E7 FOREIGN KEY (model_id) REFERENCES vehicle_model (id)');
         $this->addSql('ALTER TABLE `order` ADD CONSTRAINT FK_F5299398A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
         $this->addSql('ALTER TABLE `order` ADD CONSTRAINT FK_F5299398E420DE70 FOREIGN KEY (order_state_id) REFERENCES order_state (id)');
@@ -95,6 +95,8 @@ final class Version20220105223941 extends AbstractMigration
         $this->addSql('ALTER TABLE product ADD CONSTRAINT FK_D34A04AD53599F4F FOREIGN KEY (version_frame_id) REFERENCES version_frame (id)');
         $this->addSql('ALTER TABLE product_picture ADD CONSTRAINT FK_C70254394584665A FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE product_picture ADD CONSTRAINT FK_C7025439EE45BDBF FOREIGN KEY (picture_id) REFERENCES picture (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE product_file ADD CONSTRAINT FK_17714B14584665A FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE product_file ADD CONSTRAINT FK_17714B193CB796C FOREIGN KEY (file_id) REFERENCES file (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE provider ADD CONSTRAINT FK_92C4739CF5B7AF75 FOREIGN KEY (address_id) REFERENCES address (id)');
         $this->addSql('ALTER TABLE provider ADD CONSTRAINT FK_92C4739CEE45BDBF FOREIGN KEY (picture_id) REFERENCES picture (id)');
         $this->addSql('ALTER TABLE `user` ADD CONSTRAINT FK_8D93D649F5B7AF75 FOREIGN KEY (address_id) REFERENCES address (id)');
@@ -120,6 +122,7 @@ final class Version20220105223941 extends AbstractMigration
         $this->addSql('ALTER TABLE order_invoice DROP FOREIGN KEY FK_661FBE0F9395C3F3');
         $this->addSql('ALTER TABLE carrier DROP FOREIGN KEY FK_4739F11C12136921');
         $this->addSql('ALTER TABLE `order` DROP FOREIGN KEY FK_F529939812136921');
+        $this->addSql('ALTER TABLE product_file DROP FOREIGN KEY FK_17714B193CB796C');
         $this->addSql('ALTER TABLE version_frame DROP FOREIGN KEY FK_B224E8C822832C92');
         $this->addSql('ALTER TABLE version_motorisation DROP FOREIGN KEY FK_4AB23B8522832C92');
         $this->addSql('ALTER TABLE order_product DROP FOREIGN KEY FK_2530ADE68D9F6D38');
@@ -142,10 +145,10 @@ final class Version20220105223941 extends AbstractMigration
         $this->addSql('ALTER TABLE vehicle_mark DROP FOREIGN KEY FK_14E9C12DEE45BDBF');
         $this->addSql('ALTER TABLE cart_product DROP FOREIGN KEY FK_2890CCAA4584665A');
         $this->addSql('ALTER TABLE category_product DROP FOREIGN KEY FK_149244D34584665A');
-        $this->addSql('ALTER TABLE file DROP FOREIGN KEY FK_8C9F36104584665A');
         $this->addSql('ALTER TABLE order_product DROP FOREIGN KEY FK_2530ADE64584665A');
         $this->addSql('ALTER TABLE order_detail DROP FOREIGN KEY FK_ED896F464584665A');
         $this->addSql('ALTER TABLE product_picture DROP FOREIGN KEY FK_C70254394584665A');
+        $this->addSql('ALTER TABLE product_file DROP FOREIGN KEY FK_17714B14584665A');
         $this->addSql('ALTER TABLE product DROP FOREIGN KEY FK_D34A04ADC54C8C93');
         $this->addSql('ALTER TABLE product DROP FOREIGN KEY FK_D34A04ADA53A8AA');
         $this->addSql('ALTER TABLE vehicle_mark_provider DROP FOREIGN KEY FK_77C9B7E8A53A8AA');
@@ -185,6 +188,7 @@ final class Version20220105223941 extends AbstractMigration
         $this->addSql('DROP TABLE picture');
         $this->addSql('DROP TABLE product');
         $this->addSql('DROP TABLE product_picture');
+        $this->addSql('DROP TABLE product_file');
         $this->addSql('DROP TABLE product_type');
         $this->addSql('DROP TABLE provider');
         $this->addSql('DROP TABLE `user`');
