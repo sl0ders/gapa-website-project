@@ -1,7 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProductController!{% endblock %}
+{% block title %}Tout les produits{% endblock %}
 
 {% block body %}
-
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-3">
+                {% include 'public/product/_filter.html.twig' with {form: form, min : min, max : max} only %}
+            </div>
+            <div class="col-md-9">
+                <div class="grid">
+                    {% for product in products %}
+                        {% include 'public/product/_card.html.twig' with {product: product} only %}
+                    {% endfor %}
+                </div>
+                <div class="mt-3">
+                    {{ knp_pagination_render(products) }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

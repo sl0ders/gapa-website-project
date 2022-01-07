@@ -6,6 +6,7 @@ use App\Repository\ProviderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: ProviderRepository::class)]
 class Provider
@@ -37,10 +38,23 @@ class Provider
     #[ORM\ManyToMany(targetEntity: VehicleMark::class, mappedBy: 'provider')]
     private $vehicleMarks;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $url;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     */
+    private $slug;
+
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'providers')]
+    private $categories;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->vehicleMarks = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -161,6 +175,54 @@ class Provider
         if ($this->vehicleMarks->removeElement($vehicleMark)) {
             $vehicleMark->removeProvider($this);
         }
+
+        return $this;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        $this->categories->removeElement($category);
 
         return $this;
     }

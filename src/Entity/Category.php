@@ -21,12 +21,16 @@ class Category
     #[ORM\Column(type: 'integer')]
     private $position;
 
-    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'categories', cascade: ['persist'])]
-    private $product;
+    #[ORM\ManyToMany(targetEntity: Provider::class, mappedBy: 'categories')]
+    private $providers;
+
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories', cascade: ["persist"])]
+    private $products;
 
     public function __construct()
     {
-        $this->product = new ArrayCollection();
+        $this->providers = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,17 +63,45 @@ class Category
     }
 
     /**
+     * @return Collection|Provider[]
+     */
+    public function getProviders(): Collection
+    {
+        return $this->providers;
+    }
+
+    public function addProvider(Provider $provider): self
+    {
+        if (!$this->providers->contains($provider)) {
+            $this->providers[] = $provider;
+            $provider->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProvider(Provider $provider): self
+    {
+        if ($this->providers->removeElement($provider)) {
+            $provider->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection|Product[]
      */
-    public function getProduct(): Collection
+    public function getProducts(): Collection
     {
-        return $this->product;
+        return $this->products;
     }
 
     public function addProduct(Product $product): self
     {
-        if (!$this->product->contains($product)) {
-            $this->product[] = $product;
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addCategory($this);
         }
 
         return $this;
@@ -77,8 +109,15 @@ class Category
 
     public function removeProduct(Product $product): self
     {
-        $this->product->removeElement($product);
+        if ($this->products->removeElement($product)) {
+            $product->removeCategory($this);
+        }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProviderController!{% endblock %}
+
+{% block body %}
+    <ul>
+        {% for category in provider.categories %}
+            <li>
+                {{ category.name }}
+                ({{ category.products | length }})
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

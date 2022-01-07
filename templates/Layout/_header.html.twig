@@ -24,22 +24,12 @@
                 <div class="text-center">Nos partenaires</div>
             </div>
             <div class="menu-nav">
-                <div class="japocat-product sub-menu">
-                    <h2>Nos produits japocat</h2>
-                    <img class="sub-menu-logo" src="{{ asset('images/template/japocat-logo.jpg') }}" alt="">
-                </div>
-                <div class="arb-product sub-menu">
-                    <h2>Nos produits ARB</h2>
-                    <img src="{{ asset('images/template/logo-arb.png') }}" alt="">
-                </div>
-                <div class="james-baroud-product sub-menu">
-                    <h2>Nos produits james-baroud</h2>
-                    <img src="{{ asset('images/template/james-baroud-logo.png') }}" alt="">
-                </div>
-                <div class="front-runner-product sub-menu">
-                    <h2>Nos produits front-runner</h2>
-                    <img src="{{ asset('images/template/logo-fr.png') }}" alt="">
-                </div>
+                {% for provider in providers %}
+                    <a class="{{ provider.name }}-product sub-menu text-decoration-none" href="{{ path('public_provider_show', {'slug': provider.slug}) }}">
+                        <h2>Nos produits {{ provider.name }}</h2>
+                        <img class='sub-menu-logo' src='{{ provider.picture.name }}' alt=''>
+                    </a>
+                {% endfor %}
             </div>
 
             <div class="logo">

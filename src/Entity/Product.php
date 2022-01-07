@@ -115,9 +115,6 @@ class Product
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $tariffcode;
 
-    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'product')]
-    private $categories;
-
     #[ORM\ManyToMany(targetEntity: Picture::class)]
     private $pictures;
 
@@ -127,14 +124,20 @@ class Product
     #[ORM\Column(type: 'smallint', nullable: true)]
     private $is_in_stock;
 
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products', cascade: ["persist"])]
+    private $categories;
+
+    #[ORM\Column(type: 'boolean')]
+    private $is_on_sale;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->orderDetails = new ArrayCollection();
         $this->cartProducts = new ArrayCollection();
-        $this->categories = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -578,33 +581,6 @@ class Product
     }
 
     /**
-     * @return Collection|Category[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        if ($this->categories->removeElement($category)) {
-            $category->removeProduct($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Picture[]
      */
     public function getPictures(): Collection
@@ -659,6 +635,42 @@ class Product
     public function setIsInStock(?int $is_in_stock): self
     {
         $this->is_in_stock = $is_in_stock;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getIsOnSale(): ?bool
+    {
+        return $this->is_on_sale;
+    }
+
+    public function setIsOnSale(bool $is_on_sale): self
+    {
+        $this->is_on_sale = $is_on_sale;
 
         return $this;
     }

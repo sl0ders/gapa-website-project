@@ -383,4 +383,24 @@ body.public {
   .rotate {
     transform: rotate(180deg);
   }
+
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+
+    .card-title {
+      &.price {
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .filter {
+    display: block;
+    position: sticky;
+    top: 50px;
+  }
 }

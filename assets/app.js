@@ -15,7 +15,8 @@ require('jquery-ui/ui/widgets/droppable');
 require('jquery-ui/ui/widgets/sortable');
 require('jquery-ui/ui/widgets/selectable');
 import $ from "jquery"
-
+import noUiSlider from "nouislider";
+import "nouislider/dist/nouislider.css"
 $("#datatable").DataTable({
     language: {
         url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/French.json'
@@ -154,3 +155,29 @@ $(".btn-hidden").hover(() => {
 $(".menu-nav").hover(() => {
     $(".menu-nav").toggleClass("visible")
 })
+
+const slider = document.getElementById('priceslider');
+
+
+if (slider) {
+    const min = document.getElementById("min")
+    const max = document.getElementById("max")
+    const range = noUiSlider.create(slider, {
+        start: [min.value || 0, max.value || 10000],
+        connect: true,
+        step: 10,
+        range: {
+            'min': parseInt(slider.dataset.min, 10),
+            'max':  parseInt(slider.dataset.max, 10)
+        }
+    });
+    range.on("slide", function (values, handle) {
+        if (handle === 0) {
+            min.value = Math.round(values[0])
+        }
+        if (handle === 1) {
+            max.value = Math.round(values[1])
+        }
+        console.log(values, handle)
+    })
+}

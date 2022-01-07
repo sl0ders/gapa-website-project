@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Repository\AttributeGroupRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\ProviderRepository;
 use App\Repository\VehicleMarkRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -28,10 +29,12 @@ class LayoutBundleController extends AbstractController
         ]);
     }
 
-    public function publicLayoutHeader(VehicleMarkRepository $markRepository): Response
+    public function publicLayoutHeader(VehicleMarkRepository $markRepository , ProviderRepository $providerRepository): Response
     {
+       $providers = $providerRepository->findAll();
         return $this->render("layout/_header.html.twig", [
-            "marks" => $markRepository->findBy([], ["name" => "DESC"])
+            "marks" => $markRepository->findBy([], ["name" => "DESC"]),
+            "providers" => $providers
         ]);
     }
 }

@@ -81,6 +81,7 @@ class ProductServices
             $provider->setName("Front runner");
             $provider->setPhone("+49 (0) 511 47 40 46-400");
             $provider->setEmail("FrontRunner@gmail.com");
+            $provider->setUrl("https://www.frontrunneroutfitters.com/fr/be/");
             $provider->setAddress($fr_address);
             $this->entityManager->persist($provider);
             $this->entityManager->flush();
@@ -185,10 +186,12 @@ class ProductServices
                         $category = new Category();
                         $category->setName($catName);
                         $category->setPosition($position);
+                        $provider->addCategory($category);
                         $this->entityManager->persist($category);
+                        $this->entityManager->persist($provider);
                         $this->entityManager->flush();
-                        $product->addCategory($category);
                     }
+                    $category->addProduct($product);
                     $position++;
                 }
                 $this->entityManager->persist($product);
