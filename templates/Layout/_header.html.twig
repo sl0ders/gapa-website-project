@@ -26,8 +26,7 @@
             <div class="menu-nav">
                 {% for provider in providers %}
                     <a class="{{ provider.name }}-product sub-menu text-decoration-none" href="{{ path('public_provider_show', {'slug': provider.slug}) }}">
-                        <h2>Nos produits {{ provider.name }}</h2>
-                        <img class='sub-menu-logo' src='{{ provider.picture.name }}' alt=''>
+                        <img class='sub-menu-logo' src='{{ asset(provider.picture.name) }}' alt='logo-{{ provider.name }}'>
                     </a>
                 {% endfor %}
             </div>

@@ -156,28 +156,8 @@ $(".menu-nav").hover(() => {
     $(".menu-nav").toggleClass("visible")
 })
 
-const slider = document.getElementById('priceslider');
+let button = document.querySelector('.signup')
 
-
-if (slider) {
-    const min = document.getElementById("min")
-    const max = document.getElementById("max")
-    const range = noUiSlider.create(slider, {
-        start: [min.value || 0, max.value || 10000],
-        connect: true,
-        step: 10,
-        range: {
-            'min': parseInt(slider.dataset.min, 10),
-            'max':  parseInt(slider.dataset.max, 10)
-        }
-    });
-    range.on("slide", function (values, handle) {
-        if (handle === 0) {
-            min.value = Math.round(values[0])
-        }
-        if (handle === 1) {
-            max.value = Math.round(values[1])
-        }
-        console.log(values, handle)
-    })
-}
+button.onclick = function () {
+    document.getElementById('container').scrollTop += 20;
+};

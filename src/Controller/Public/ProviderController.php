@@ -22,13 +22,8 @@ class ProviderController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'public_provider_show', methods: ["GET"])]
-    public function show(Provider $provider, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager): Response
+    public function show(Provider $provider): Response
     {
-        foreach ($categoryRepository->findAll() as $category){
-            $category->addProvider($provider);
-            $entityManager->persist($category);
-        }
-        $entityManager->flush();
         return $this->render('public/provider/index.html.twig', [
             'provider' => $provider,
         ]);

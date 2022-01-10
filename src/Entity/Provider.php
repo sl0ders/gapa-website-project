@@ -47,7 +47,7 @@ class Provider
      */
     private $slug;
 
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'providers')]
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: "provider")]
     private $categories;
 
     public function __construct()

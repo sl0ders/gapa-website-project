@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-5 offset-3 border rounded p-3 mt-5">
+        <div class="col-md-6 offset-3 border rounded p-3 mt-5">
             {{ form_start(form) }}
             <div class="row">
                 <div class="col-md-6">
@@ -13,9 +13,10 @@
                     {{ form_row(form.address) }}
                 </div>
             </div>
-            {{ form_row(form.password) }}
-            {{ form_row(form.confirmPassword) }}
-
+            <div class="col-md-4 offset-4">
+                {{ form_row(form.password) }}
+                {{ form_row(form.confirmPassword) }}
+            </div>
             {{ form_row(form.submit) }}
             {{ form_end(form) }}
         </div>

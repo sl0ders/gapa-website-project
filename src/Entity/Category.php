@@ -21,15 +21,14 @@ class Category
     #[ORM\Column(type: 'integer')]
     private $position;
 
-    #[ORM\ManyToMany(targetEntity: Provider::class, mappedBy: 'categories')]
-    private $providers;
+    #[ORM\ManyToOne(targetEntity: Provider::class, inversedBy: "categories")]
+    private $provider;
 
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories', cascade: ["persist"])]
     private $products;
 
     public function __construct()
     {
-        $this->providers = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
 
@@ -58,33 +57,6 @@ class Category
     public function setPosition(int $position): self
     {
         $this->position = $position;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Provider[]
-     */
-    public function getProviders(): Collection
-    {
-        return $this->providers;
-    }
-
-    public function addProvider(Provider $provider): self
-    {
-        if (!$this->providers->contains($provider)) {
-            $this->providers[] = $provider;
-            $provider->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProvider(Provider $provider): self
-    {
-        if ($this->providers->removeElement($provider)) {
-            $provider->removeCategory($this);
-        }
 
         return $this;
     }
@@ -119,5 +91,21 @@ class Category
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
+
+    /**
+     * @param mixed $provider
+     */
+    public function setProvider($provider): void
+    {
+        $this->provider = $provider;
     }
 }
