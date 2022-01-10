@@ -1,4 +1,13 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    {{ include("security/_form.html.twig") }}
+    <div id="signup">
+        <div class="container d-flex align-items-center justify-content-center" id="login">
+            <div class="row">
+                {{ include("security/_form.html.twig") }}
+            </div>
+        </div>
+    </div>
+    <script>
+        window.location.hash = '#signup';
+    </script>
 {% endblock %}

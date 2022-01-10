@@ -3,7 +3,7 @@
 {% block title %}Tout les produits{% endblock %}
 
 {% block body %}
-    <div class="container-fluid" id="products">
+    <div class="container-fluid" id="page">
         <div class="row mt-5">
             <div class="col-md-3">
                 {% include 'public/product/_filter.html.twig' with {form: form} only %}
@@ -19,7 +19,7 @@
     </div>
 
     <script>
-        window.location.hash = '#products';
+        window.location.hash = '#page';
     </script>
 {% endblock %}
 
