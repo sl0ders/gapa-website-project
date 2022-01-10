@@ -20,20 +20,28 @@
             <img src="{{ asset('images/template/header-2.jpg') }}" alt=""/>
         </div>
         <div class="navbar">
-            <div class="btn-hidden">
-                <div class="text-center">Nos partenaires</div>
+            <div class="content-navbar">
+                <div class="dropdown menu-nav">
+                    {% for provider in providers %}
+                        <a class="{{ provider.name }}-product sub-menu dropdown-toggle text-decoration-none"
+                           id="dropdownMenuButton{{ provider.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class='sub-menu-logo' src='{{ asset(provider.picture.name) }}'
+                                 alt='logo-{{ provider.name }}'>
+                            <i class="fa fa-sort-down"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ provider.id }}">
+                                {% for category in provider.categories %}
+                                    <a class="text-decoration-none text-dark" href="{{ path('public_category_show', {'id': category.id}) }}">
+                                        <div class="dropdown-item d-flex justify-content-between" href="#">{{ category.name }} <span class="fa fa-arrow-right"></span></div>
+                                    </a>
+                                {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="menu-nav">
-                {% for provider in providers %}
-                    <a class="{{ provider.name }}-product sub-menu text-decoration-none" href="{{ path('public_provider_show', {'slug': provider.slug}) }}">
-                        <img class='sub-menu-logo' src='{{ asset(provider.picture.name) }}' alt='logo-{{ provider.name }}'>
-                    </a>
-                {% endfor %}
-            </div>
-
-            <div class="logo">
+            <a class="logo" href="{{ path('home') }}">
                 <img src="{{ asset('images/template/logo-gapa.png') }}" alt="" height="40">
-            </div>
+            </a>
             <div class="d-flex justify-content-around align-items-center search w-25">
                 <div class="selectMark select">
                     <label for="selectMark" class="d-none"></label>

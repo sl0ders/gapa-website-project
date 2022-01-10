@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -91,21 +92,5 @@ class Category
     public function __toString(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProvider()
-    {
-        return $this->provider;
-    }
-
-    /**
-     * @param mixed $provider
-     */
-    public function setProvider($provider): void
-    {
-        $this->provider = $provider;
     }
 }

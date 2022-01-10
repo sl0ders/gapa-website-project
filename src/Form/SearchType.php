@@ -8,7 +8,6 @@ use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -44,20 +43,6 @@ class SearchType extends AbstractType
                 'query_builder' => function(CategoryRepository $repository) {
                     return $repository->getFiveFirstCategory();
                 }
-            ])
-            ->add("min", NumberType::class, [
-                "label" => false,
-                "required" => false,
-                "attr" => [
-                    "placeholder" => "Prix min"
-                ]
-            ])
-            ->add("max", NumberType::class, [
-                "label" => false,
-                "required" => false,
-                "attr" => [
-                    "placeholder" => "Prix max"
-                ]
             ])
             ->add("promo", CheckboxType::class, [
                 "label" => "En promotion",

@@ -13,6 +13,7 @@ use App\Repository\AttributeRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ModelVersionRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ProviderRepository;
 use App\Repository\VehicleModelRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,6 +84,9 @@ class ApiController extends AbstractController
         return $response;
     }
 
+    /**
+     * @throws \JsonException
+     */
     #[Route("/getModels", name: "getModels")]
     public function getModels(Request $request, VehicleModelRepository $modelRepository): Response
     {
@@ -100,7 +104,32 @@ class ApiController extends AbstractController
     /**
      * @throws \JsonException
      */
-    #[Route("/getVersions", name: "getVersions")]
+    #[Route("/getCategories", name: "getCategories")]
+    public function getCategories(Request $request, ProviderRepository $providerRepository)
+    {
+        $data = [];
+        $providerId = $request->get("provider");
+        $provider = $providerRepository->find($providerId);
+        $categories = $provider->getCategories();
+        if (count($categories) > 0) {
+            foreach ($categories as $category) {
+                $data[$category->getId()] = $category->getName();
+            }
+        } else {
+            $data = [];
+        }
+
+        $response = new Response(json_encode($data, JSON_THROW_ON_ERROR));
+        $response->headers->set("Content-Type", "application/json");
+        return $response;
+    }
+
+
+    /**
+     * @throws \JsonException
+     */
+    #[
+        Route("/getVersions", name: "getVersions")]
     public function getVersions(Request $request, ModelVersionRepository $versionRepository): Response
     {
         $versionsArray = [];

@@ -17,6 +17,7 @@ require('jquery-ui/ui/widgets/selectable');
 import $ from "jquery"
 import noUiSlider from "nouislider";
 import "nouislider/dist/nouislider.css"
+
 $("#datatable").DataTable({
     language: {
         url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/French.json'
@@ -161,3 +162,16 @@ let button = document.querySelector('.signup')
 button.onclick = function () {
     document.getElementById('container').scrollTop += 20;
 };
+
+let subMenu = $(".sub-menu")
+subMenu.on("click", () => {
+    $('#texts').toggle()
+})
+
+var scrolled = 0;
+$("a").on("click", function () {
+    scrolled = scrolled - 300;
+    $("a").stop().animate({
+        scrollTop: scrolled
+    });
+});
