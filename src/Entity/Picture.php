@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: PictureRepository::class)]
-
 class Picture
 {
     #[ORM\Id]
@@ -16,20 +15,36 @@ class Picture
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private ?string $name;
 
-    #[ORM\Column(type: 'integer')]
-    private $width;
+    #[ORM\Column(type: 'float')]
+    private ?int $width;
 
-    #[ORM\Column(type: 'integer')]
-    private $height;
+    #[ORM\Column(type: 'float')]
+    private ?int $height;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $format;
+    private ?string $format;
+
+    /**
+     * @Vich\UploadableField(mapping="product_images", fileNameProperty="name")
+     * @var File
+     */
+    private File $imageFile;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+    }
+
+    public function getImageFile(): File
+    {
+        return $this->imageFile;
     }
 
     public function getName(): ?string

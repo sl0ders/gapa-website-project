@@ -1,0 +1,54 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Address{% endblock %}
+
+{% block body %}
+    <h1>Address    </h1>
+    <div class="container-fluid">
+    <table class="table" id="datatable">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ address.id }}</td>
+            </tr>
+            <tr>
+                <th>Address1</th>
+                <td>{{ address.address1 }}</td>
+            </tr>
+            <tr>
+                <th>Address2</th>
+                <td>{{ address.address2 }}</td>
+            </tr>
+            <tr>
+                <th>Post_code</th>
+                <td>{{ address.postCode }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ address.phone }}</td>
+            </tr>
+            <tr>
+                <th>Phone_mobile</th>
+                <td>{{ address.phoneMobile }}</td>
+            </tr>
+            <tr>
+                <th>IsEnabled</th>
+                <td>{{ address.isEnabled ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ address.createdAt ? address.createdAt|date('d/m/Y H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ address.updatedAt ? address.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <a href="{{ path('admin_address_index') }}" class="btn btn-warning text-white"><i class="fa fa-arrow-left"></i></a>
+
+    <a href="{{ path('admin_address_edit', {'id': address.id}) }}" class="btn btn-warning text-white"><i class="fa fa-edit"></i></a>
+
+    {{ include('admin/address/_delete_form.html.twig') }}
+{% endblock %}

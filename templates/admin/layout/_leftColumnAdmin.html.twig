@@ -11,33 +11,11 @@
         {{ path('admin_category_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
     </a>
     <div class="dropdown">
-        <a {{ path('admin_attribute_index') == uri or path('admin_declination_index') == uri ? 'class="blue-hover' }}
-                class="dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-            Gestion des Déclinaison
-            {% if path('admin_attribute_index') == uri or path('admin_declination_index') == uri %}
-                <em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>
-            {% endif %}
-        </a>
-        <div class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton2">
-            <a class="dropdown-item bg-dark" href="{{ path('admin_attribute_index') }}">Attribute
-                {{ path('admin_attribute_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
-            </a>
-            <a class="dropdown-item bg-dark" href="{{ path('admin_declination_index') }}">Déclinaison
-                {{ path('admin_declination_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
-            </a>
-        </div>
-    </div>
-    <a {{ path('admin_company_index') == uri ? 'class="blue-hover"' }} href="{{ path('admin_company_index') }}">Gestion
-        des Entreprise
-        {{ path('admin_company_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
-    </a>
-    <div class="dropdown">
-        <a {{ path('admin_country_index') == uri or path('admin_address_index') == uri or path('admin_state_index') == uri or path('admin_zone_index') == uri ? 'class="blue-hover' }}
+        <a {{ path('admin_country_index') == uri or path('admin_address_index') == uri ? 'class="blue-hover' }}
                 class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
             Gestion des localisations
-            {% if path('admin_country_index') == uri or path('admin_address_index') == uri or path('admin_state_index') == uri or path('admin_zone_index') == uri %}
+            {% if path('admin_country_index') == uri or path('admin_address_index') == uri %}
                 <em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>
             {% endif %}
         </a>
@@ -48,12 +26,6 @@
             <a class="dropdown-item  bg-dark" href="{{ path('admin_address_index') }}">Adresses
                 {{ path('admin_address_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
             </a>
-            <a class="dropdown-item bg-dark" href="{{ path('admin_state_index') }}">états
-                {{ path('admin_state_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
-            </a>
-            <a class="dropdown-item bg-dark" href="{{ path('admin_zone_index') }}">Zones
-                {{ path('admin_zone_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
-            </a>
         </div>
     </div>
     <a href="{{ path('admin_customer_index') }}">
@@ -62,11 +34,5 @@
     </a>
     <a href="{{ path('admin_order_index') }}">Gestion des commandes
         {{ path('admin_order_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
-    </a>
-    <a href="{{ path('admin_stock_index') }}">Gestion des stocks
-        {{ path('admin_stock_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
-    </a>
-    <a href="{{ path('admin_tax_index') }}">Gestion des tax
-        {{ path('admin_tax_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
     </a>
 </div>

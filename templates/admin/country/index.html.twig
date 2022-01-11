@@ -1,0 +1,41 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Country index{% endblock %}
+
+{% block body %}
+    <h1>Country index    </h1>
+    <a href="{{ path('admin_product_new') }}" class="btn btn-success float-right"><i class="fa fa-plus"></i></a>     <div class="container-fluid">
+    <table class="table" id="datatable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Iso_code</th>
+                <th>Call_prefix</th>
+                <th>Is_enabled</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for country in countries %}
+            <tr>
+                <td>{{ country.id }}</td>
+                <td>{{ country.name }}</td>
+                <td>{{ country.isoCode }}</td>
+                <td>{{ country.callPrefix }}</td>
+                <td>{{ country.isEnabled ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
+                <td>
+                    <a href="{{ path('admin_country_show', {'id': country.id}) }}" class="btn btn-primary text-white"><i class="fa fa-eye"></i></a>
+                    <a href="{{ path('admin_country_edit', {'id': country.id}) }}" class="btn btn-warning text-white"><i class="fa fa-edit"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucun resultat</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <a href="{{ path('admin_country_new') }}" class="btn btn-success"><i class="fa fa-plus"></i></a>
+{% endblock %}

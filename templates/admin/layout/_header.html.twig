@@ -1,28 +1,38 @@
-<div id="header">
-    <div class="navbar">
-        <div class="logo">
-            <img src="{{ asset('images/Logo site 2021.jpg') }}" alt="" height="40">
-        </div>
-        <div class="notification">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            <i class="fa fa-user" aria-hidden="true"></i>
-            <i class="fa fa-envelope-o" aria-hidden="true"></i>
-        </div>
-
-        <div class="float-end text-white nav-together">
-            <div class="search">
-                <i class="fa fa-search" aria-hidden="true"></i>
-                <input type="text" placeholder=" Rechercher..." class="bg-black text-white border-dark">
+<div id="header" class="bg-black">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <a class="logo" href="">
+                    <img src="{{ asset('images/template/logo-gapa.png') }}" alt="" height="40">
+                </a>
             </div>
-            |
-            <div class="phone">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-                <span> 0764667524</span>
-            </div>
-            |
-            <div class="login">
-                <i class="fa fa-sign-in" aria-hidden="true"></i>
-                <span> Connexion</span>
+            <div class="col-md-4 mt-1">
+                <div class="row text-white">
+                    <div class="col-md-5">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                        <input type="text" placeholder=" Rechercher..." class="bg-black-50 text-white border-dark">
+                    </div>
+                    |
+                    <div class="col-md-3">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <span> 0764667524</span>
+                    </div>
+                    |
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <div class="col-md-3">
+                            <div class="text-white">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-3">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                            <span> Connexion</span>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

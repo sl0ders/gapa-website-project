@@ -1,0 +1,11 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New Order{% endblock %}
+
+{% block body %}
+    <h1 class="btn btn-success"><i class="fa fa-plus"></i> Order</h1>
+
+    {{ include('admin/order/_form.html.twig') }}
+
+    <a href="{{ path('admin_order_index') }}" class="btn btn-warning text-white"><i class="fa fa-arrow-left"></i></a>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Liste des Adresse{% endblock %}
+
+{% block body %}
+    <h1>Liste des Adresse</h1>
+    <a href="{{ path('admin_product_new') }}" class="btn btn-success float-right"><i class="fa fa-plus"></i></a>
+    <div class="container-fluid">
+        <table class="table" id="datatable">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Address1</th>
+                <th>Address2</th>
+                <th>Post_code</th>
+                <th>Phone</th>
+                <th>Phone_mobile</th>
+                <th>IsEnabled</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for address in addresses %}
+                <tr>
+                    <td>{{ address.id }}</td>
+                    <td>{{ address.address1 }}</td>
+                    <td>{{ address.address2 }}</td>
+                    <td>{{ address.postCode }}</td>
+                    <td>{{ address.phone }}</td>
+                    <td>{{ address.phoneMobile }}</td>
+                    <td>{{ address.isEnabled ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
+                    <td>{{ address.createdAt ? address.createdAt|date('d/m/Y H:i:s') : '' }}</td>
+                    <td>{{ address.updatedAt ? address.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('admin_address_show', {'id': address.id}) }}" class="btn btn-primary text-white"><i class="fa fa-eye"></i></a>
+                        <a href="{{ path('admin_address_edit', {'id': address.id}) }}" class="btn btn-warning text-white"><i class="fa fa-edit"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                        <td colspan="10">Aucun resultat</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ path('admin_address_new') }}" class="btn btn-success"><i class="fa fa-plus"></i></a>
+{% endblock %}

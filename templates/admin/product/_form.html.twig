@@ -1,0 +1,286 @@
+{{ form_start(form) }}
+<div class="product-section col-md-10 offset-1 border p-3 section-text">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Nommination du produit</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                {{ form_label(form.type) }}
+                {{ form_widget(form.type) }}
+                {{ form_errors(form.type) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.OriginalReference) }}
+                {{ form_widget(form.OriginalReference) }}
+                {{ form_errors(form.OriginalReference) }}
+            </div>
+            <div class="col-md-6 form-group">
+                {{ form_label(form.reference) }}
+                {{ form_widget(form.reference) }}
+                {{ form_errors(form.reference) }}
+            </div>
+            <div class="col-md-6 mt-2 form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+            </div>
+            <div class="col-md-6 mt-2 form-group">
+                {{ form_label(form.upc) }}
+                {{ form_widget(form.upc) }}
+                {{ form_errors(form.upc) }}
+            </div>
+        </div>
+        <div class="col-md-12 mt-3 form-group">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+        <div class="col-md-12 mt-3 form-group">
+            {{ form_label(form.specificity) }}
+            {{ form_widget(form.specificity) }}
+            {{ form_errors(form.specificity) }}
+        </div>
+        <div class="col-md-12 mt-3 form-group">
+            {{ form_label(form.countryOfOrigin) }}
+            {{ form_widget(form.countryOfOrigin) }}
+            {{ form_errors(form.countryOfOrigin) }}
+        </div>
+        <div class="col-md-12 mt-3 form-group">
+            {{ form_row(form.categories) }}
+        </div>
+    </div>
+</div>
+<div class="product-section col-md-10 offset-1 border p-2 section-price">
+    <h5 class="mb-2">Affectation des prix</h5>
+    <div class="form-group">
+        {{ form_label(form.price) }}
+        <div class="input-group mb-3">
+            {{ form_widget(form.price) }}
+            {{ form_errors(form.price) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.price_ttc) }}
+        <div class="input-group mb-3">
+            {{ form_widget(form.price_ttc) }}
+            {{ form_errors(form.price_ttc) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.retail_price) }}
+        <div class="input-group mb-3">
+            {{ form_widget(form.retail_price) }}
+            {{ form_errors(form.retail_price) }}
+        </div>
+    </div>
+</div>
+<div class="product-section col-md-10 offset-1 border p-2 product-productFormat">
+    <h5 class="mb-2">Format du produit</h5>
+    <div class="form-group">
+        {{ form_label(form.lenght) }}
+        <div class="input-group mb-3">
+            {{ form_widget(form.lenght) }}
+            {{ form_errors(form.lenght) }}
+            <span class="input-group-text">mm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.width) }}
+        <div class="input-group mb-3">
+            {{ form_widget(form.width) }}
+            {{ form_errors(form.width) }}
+            <span class="input-group-text">mm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.height) }}
+        <div class="input-group mb-3">
+            {{ form_widget(form.height) }}
+            {{ form_errors(form.height) }}
+            <span class="input-group-text">mm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.depth) }}
+        <div class="input-group mb-3">
+            {{ form_widget(form.depth) }}
+            {{ form_errors(form.depth) }}
+            <span class="input-group-text">mm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.depth_in) }}
+        <div class="input-group mb-3">
+            {{ form_widget(form.depth_in) }}
+            {{ form_errors(form.depth_in) }}
+            <span class="input-group-text">mm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.weight) }}
+        <div class="input-group mb-3">
+            {{ form_widget(form.weight) }}
+            {{ form_errors(form.weight) }}
+            <span class="input-group-text">g</span>
+        </div>
+    </div>
+</div>
+<div class="product-section col-md-10 offset-1 border p-2 section-options">
+    <h5>Options</h5>
+    <div class="ml-5">
+        <div class="custom-control custom-switch my-2 form-group">
+            {{ form_widget(form.is_on_sale) }}
+            {{ form_label(form.is_on_sale) }}
+            {{ form_errors(form.is_on_sale) }}
+        </div>
+        <div class="custom-control custom-switch my-2 form-group">
+            {{ form_widget(form.is_in_stock) }}
+            {{ form_label(form.is_in_stock) }}
+            {{ form_errors(form.is_in_stock) }}
+        </div>
+        <div class="custom-control custom-switch form-group">
+            {{ form_widget(form.is_enabled) }}
+            {{ form_label(form.is_enabled) }}
+            {{ form_errors(form.is_enabled) }}
+        </div>
+    </div>
+</div>
+<div class="product-section col-md-10 offset-1 border p-2 section-meta">
+    <h5>Référencement</h5>
+    <div class="mt-3 form-group">
+        {{ form_widget(form.meta_title) }}
+        {{ form_label(form.meta_title) }}
+        {{ form_errors(form.meta_title) }}
+    </div>
+    <div class="mt-3 form-group">
+        {{ form_widget(form.meta_keyword) }}
+        {{ form_label(form.meta_keyword) }}
+        {{ form_errors(form.meta_keyword) }}
+    </div>
+    <div class="m-3 form-group">
+        {{ form_widget(form.meta_description) }}
+        {{ form_label(form.meta_description) }}
+        {{ form_errors(form.meta_description) }}
+    </div>
+</div>
+<div class="product-section col-md-10 offset-1 border p-2 section-download">
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Fichier explicatif</h5>
+            <div class="m-2 form-group" id="attachments"
+                 data-prototype="{{ form_row(form.attachment.vars.prototype)|e("html_attr") }}">
+                {{ form_widget(form.attachment) }}
+                {{ form_label(form.attachment) }}
+                {{ form_errors(form.attachment) }}
+                <span></span>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <h5>Image du produit</h5>
+            <div class="input-group mb-3">
+                <div id="products" data-prototype="{{ form_row(form.pictures.vars.prototype)|e("html_attr") }}"
+                     class="form-group">
+                    {{ form_label(form.pictures) }}
+                    {{ form_widget(form.pictures) }}
+                    {{ form_errors(form.pictures) }}
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="product-section col-md-10 offset-1 border p-2 section-inge">
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Fournisseur</h5>
+            <div class="m-2 form-group">
+                {{ form_label(form.provider) }}
+                {{ form_widget(form.provider) }}
+                {{ form_errors(form.provider) }}
+            </div>
+        </div>
+        <div class="col-md-5">
+            <h5>Moteur et chassis concerné</h5>
+            <div class="input-group mb-3 col-md-6">
+                <div class="row">
+                    <div class="form-group">
+                        {{ form_label(form.versionMotorisation) }}
+                        {{ form_widget(form.versionMotorisation) }}
+                        {{ form_errors(form.versionMotorisation) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.versionFrame) }}
+                        {{ form_widget(form.versionFrame) }}
+                        {{ form_errors(form.versionFrame) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+<script>
+    function addElment(collection) {
+        let buttonAjout, span;
+        span = collection.querySelector("span");
+        buttonAjout = document.createElement("button")
+        buttonAjout.className = "ajout-attachment btn btn-secondary m-2";
+        buttonAjout.type = "button"
+        buttonAjout.innerText = "Ajouter un fichier"
+
+        let newButton = span.append(buttonAjout)
+
+        collection.dataset.index = collection.querySelectorAll("input").length;
+        buttonAjout.addEventListener("click", () => {
+            addButton(collection, span);
+        })
+    }
+
+    function addButton(collection, span) {
+        let prototype = collection.dataset.prototype;
+        let index = collection.dataset.index;
+
+        prototype = prototype.replace(/__name__/g, index)
+        let content = document.createElement("html");
+        content.innerHTML = prototype;
+        let newForm = content.querySelector("div");
+
+        let buttonSuppr = document.createElement("button");
+        buttonSuppr.type = "button";
+        buttonSuppr.className = "btn btn-danger m-2";
+        buttonSuppr.id = "delete-attachment-" + index;
+        buttonSuppr.innerText = "supprimer ce fichier";
+
+        newForm.append(buttonSuppr)
+
+        collection.dataset.index++;
+        let buttonAjout = collection.querySelector(".ajout-attachment")
+
+        span.insertBefore(newForm, buttonAjout);
+
+        buttonSuppr.addEventListener("click", function () {
+            this.previousElementSibling.parentElement.remove()
+        })
+    }
+</script>
+<script>
+    addElment(document.querySelector("#attachments"))
+    addElment(document.querySelector("#products"))
+</script>
+<script>
+    function handleChange(index) {
+        let input = $("#" + index.id).val()
+        let container = $("." + index.id)
+        container.html(input)
+    }
+</script>
+<script>
+    $("#product_price").change(() => {
+        let valWithTax = $("#product_price").val()*1.2
+        let  valWithTaxFormat = Math.round(valWithTax * 100) / 100
+        $("#product_price_ttc").val(valWithTaxFormat)
+    })
+</script>

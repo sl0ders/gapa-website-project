@@ -15,7 +15,6 @@ require('jquery-ui/ui/widgets/droppable');
 require('jquery-ui/ui/widgets/sortable');
 require('jquery-ui/ui/widgets/selectable');
 import $ from "jquery"
-import noUiSlider from "nouislider";
 import "nouislider/dist/nouislider.css"
 
 $("#datatable").DataTable({
@@ -75,52 +74,59 @@ $(document).ready(() => {
     let attachment = $(".section-download")
     let meta = $(".section-meta")
     let declination = $(".section-declination")
-    let productItems = $(".product-item")
     let productSections = $(".product-section")
+    let formatSections = $(".product-productFormat")
+    let inputItem = $(".input-item")
 
-    $(".item-text").click(() => {
-        productItems.removeClass("table-active")
+    $(".item-text").click((e) => {
+        inputItem.removeClass("table-active")
         productSections.hide()
         nomination.show()
-        $(".product-text").addClass('table-active')
+        e.target.classList.add('table-active')
     })
-    $(".item-price").click(() => {
-        productItems.removeClass("table-active")
+    $(".item-productFormat").click((e) => {
+        inputItem.removeClass("table-active")
+        productSections.hide()
+        formatSections.show()
+        e.target.classList.add('table-active')
+    })
+    $(".item-price").click((e) => {
+        inputItem.removeClass("table-active")
         productSections.hide()
         price.show()
-        $(".product-price").addClass('table-active')
+        e.target.classList.add('table-active')
     })
-    $(".item-inge").click(() => {
-        productItems.removeClass("table-active")
+    $(".item-inge").click((e) => {
+        inputItem.removeClass("table-active")
         productSections.hide()
         createSection.show()
-        $(".product-inge").addClass('table-active')
+        e.target.classList.add('table-active')
     })
-    $(".item-download").click(() => {
-        productItems.removeClass("table-active")
+    $(".item-download").click((e) => {
+        inputItem.removeClass("table-active")
         productSections.hide()
         attachment.show()
-        $(".product-download").addClass('table-active')
+        e.target.classList.add('table-active')
     })
-    $(".item-options").click(() => {
-        productItems.removeClass("table-active")
+    $(".item-options").click((e) => {
+        inputItem.removeClass("table-active")
         productSections.hide()
         options.show()
-        $(".product-options").addClass('table-active')
+        e.target.classList.add('table-active')
     })
 
-    $(".item-meta").click(() => {
-        productItems.removeClass("table-active")
+    $(".item-meta").click((e) => {
+        inputItem.removeClass("table-active")
         productSections.hide()
         meta.show()
-        $(".product-meta").addClass('table-active')
+        e.target.classList.add('table-active')
     })
 
-    $(".item-declination").click(() => {
-        productItems.removeClass("table-active")
+    $(".item-declination").click((e) => {
+        inputItem.removeClass("table-active")
         productSections.hide()
         declination.show()
-        $(".product-meta").addClass('table-active')
+        e.target.classList.add('table-active')
     })
 })
 

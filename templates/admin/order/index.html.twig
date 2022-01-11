@@ -1,0 +1,48 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Order index{% endblock %}
+
+{% block body %}
+    <h1>Order index </h1>
+    <a href="{{ path('admin_product_new') }}" class="btn btn-success float-right"><i class="fa fa-plus"></i></a>
+    <div class="container-fluid">
+        <table class="table" id="datatable">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Reference</th>
+                <th>Total_price_ht</th>
+                <th>Total_price_ttc</th>
+                <th>Address_delivery</th>
+                <th>Address_invoice</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.reference }}</td>
+                    <td>{{ order.totalPriceHt }}</td>
+                    <td>{{ order.totalPriceTtc }}</td>
+                    <td>{{ order.addressDelivery }}</td>
+                    <td>{{ order.addressInvoice }}</td>
+                    <td>{{ order.createdAt ? order.createdAt|date('d/m/Y H:i:s') : '' }}</td>
+                    <td>{{ order.updatedAt ? order.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('admin_order_show', {'id': order.id}) }}" class="btn btn-primary text-white"><i class="fa fa-eye"></i></a>
+                        <a href="{{ path('admin_order_edit', {'id': order.id}) }}" class="btn btn-warning text-white"><i class="fa fa-edit"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">Aucun resultat</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ path('admin_order_new') }}" class="btn btn-success"><i class="fa fa-plus"></i></a>
+{% endblock %}

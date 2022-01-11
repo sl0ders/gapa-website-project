@@ -16,6 +16,8 @@ use App\Repository\ProductRepository;
 use App\Repository\ProviderRepository;
 use App\Repository\VehicleModelRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JsonException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +41,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     #[Route('/addGroupAttValue', name: "addGroupAttValue")]
     public function addGroupAttValue(Request $request, AttributeRepository $attributeRepository, AttributeGroupRepository $attributeGroupRepository, EntityManagerInterface $entityManager): Response
@@ -85,7 +87,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     #[Route("/getModels", name: "getModels")]
     public function getModels(Request $request, VehicleModelRepository $modelRepository): Response
@@ -102,7 +104,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     #[Route("/getCategories", name: "getCategories")]
     public function getCategories(Request $request, ProviderRepository $providerRepository)
@@ -126,7 +128,7 @@ class ApiController extends AbstractController
 
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     #[
         Route("/getVersions", name: "getVersions")]
@@ -155,5 +157,11 @@ class ApiController extends AbstractController
         $response = new Response(json_encode($modelsArray, JSON_THROW_ON_ERROR));
         $response->headers->set("Content-Type", "application/json");
         return $response;
+    }
+
+    #[Route("/api/products", name: "products")]
+    public function index(Request $request, ProductRepository $productRepository): JsonResponse
+    {
+        return $this->json($productRepository->search($request->query->get("q")));
     }
 }

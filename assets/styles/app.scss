@@ -56,6 +56,8 @@ body.admin {
     }
   }
 
+  .section-associate,
+  .product-productFormat,
   .section-price,
   .section-inge,
   .section-options,
@@ -238,11 +240,11 @@ body.public {
           justify-content: space-evenly;
           color: white;
           width: 100px;
+          font-size: 1.4em;
         }
 
         .nav-together {
           display: flex;
-          width: 700px;
           justify-content: space-around;
 
           .pipe {
@@ -250,9 +252,14 @@ body.public {
             color: #b1b1b1;
           }
 
-          .login, .signup {
+          .login, .signup, .signout {
             text-decoration: none;
             color: white;
+          }
+
+          .signout {
+            color: red;
+            font-size: 1.2em;
           }
         }
 

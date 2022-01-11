@@ -1,0 +1,130 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block body %}
+    <h1>Product    </h1>
+   <div class="container">
+    <table class="table" id="datatable">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ product.id }}</td>
+            </tr>
+            <tr>
+                <th>OriginalReference</th>
+                <td>{{ product.OriginalReference }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ product.name }}</td>
+            </tr>
+            <tr>
+                <th>Reference</th>
+                <td>{{ product.reference }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ product.description }}</td>
+            </tr>
+            <tr>
+                <th>Lenght</th>
+                <td>{{ product.lenght }}</td>
+            </tr>
+            <tr>
+                <th>Width</th>
+                <td>{{ product.width }}</td>
+            </tr>
+            <tr>
+                <th>Height</th>
+                <td>{{ product.height }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ product.price }}</td>
+            </tr>
+            <tr>
+                <th>Price_ttc</th>
+                <td>{{ product.priceTtc }}</td>
+            </tr>
+            <tr>
+                <th>Specificity</th>
+                <td>{{ product.specificity }}</td>
+            </tr>
+            <tr>
+                <th>Meta_description</th>
+                <td>{{ product.metaDescription }}</td>
+            </tr>
+            <tr>
+                <th>Meta_title</th>
+                <td>{{ product.metaTitle }}</td>
+            </tr>
+            <tr>
+                <th>Meta_keyword</th>
+                <td>{{ product.metaKeyword }}</td>
+            </tr>
+            <tr>
+                <th>Position</th>
+                <td>{{ product.position }}</td>
+            </tr>
+            <tr>
+                <th>Is_enabled</th>
+                <td>{{ product.isEnabled ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
+            </tr>
+            <tr>
+                <th>Add_at</th>
+                <td>{{ product.addAt ? product.addAt|date('d/m/Y H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ product.updatedAt ? product.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Depth</th>
+                <td>{{ product.depth }}</td>
+            </tr>
+            <tr>
+                <th>Depth_in</th>
+                <td>{{ product.depthIn }}</td>
+            </tr>
+            <tr>
+                <th>Weight</th>
+                <td>{{ product.weight }}</td>
+            </tr>
+            <tr>
+                <th>Upc</th>
+                <td>{{ product.upc }}</td>
+            </tr>
+            <tr>
+                <th>CountryOfOrigin</th>
+                <td>{{ product.countryOfOrigin }}</td>
+            </tr>
+            <tr>
+                <th>Currency</th>
+                <td>{{ product.currency }}</td>
+            </tr>
+            <tr>
+                <th>Retail_price</th>
+                <td>{{ product.retailPrice }}</td>
+            </tr>
+            <tr>
+                <th>Tariffcode</th>
+                <td>{{ product.tariffcode }}</td>
+            </tr>
+            <tr>
+                <th>Is_in_stock</th>
+                <td>{{ product.isInStock }}</td>
+            </tr>
+            <tr>
+                <th>Is_on_sale</th>
+                <td>{{ product.isOnSale ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <a href="{{ path('admin_product_index') }}" class="btn btn-warning text-white"><i class="fa fa-arrow-left"></i></a>
+
+    <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-warning text-white"><i class="fa fa-edit"></i></a>
+
+    {{ include('admin/product/_delete_form.html.twig') }}
+{% endblock %}

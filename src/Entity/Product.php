@@ -6,6 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -115,11 +116,11 @@ class Product
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $tariffcode;
 
-    #[ORM\ManyToMany(targetEntity: Picture::class)]
+    #[ORM\ManyToMany(targetEntity: Picture::class, cascade: ["persist"])]
     private $pictures;
 
-    #[ORM\ManyToMany(targetEntity: File::class)]
-    private $files;
+    #[ORM\ManyToMany(targetEntity: Attachment::class, cascade: ["persist"])]
+    private $attachment;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
     private $is_in_stock;
@@ -130,13 +131,13 @@ class Product
     #[ORM\Column(type: 'boolean')]
     private $is_on_sale;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->pictures = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->orderDetails = new ArrayCollection();
         $this->cartProducts = new ArrayCollection();
-        $this->files = new ArrayCollection();
+        $this->attachment = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
 
@@ -580,10 +581,8 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|Picture[]
-     */
-    public function getPictures(): Collection
+
+    public function getPictures()
     {
         return $this->pictures;
     }
@@ -604,26 +603,23 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|File[]
-     */
-    public function getFiles(): Collection
+    public function getAttachment()
     {
-        return $this->files;
+        return $this->attachment;
     }
 
-    public function addFile(File $file): self
+    public function addAttachment(?Attachment $attachment): self
     {
-        if (!$this->files->contains($file)) {
-            $this->files[] = $file;
+        if (!$this->attachment->contains($attachment)) {
+            $this->attachment[] = $attachment;
         }
 
         return $this;
     }
 
-    public function removeFile(File $file): self
+    public function removeAttachment(?Attachment $attachment): self
     {
-        $this->files->removeElement($file);
+        $this->attachment->removeElement($attachment);
         return $this;
     }
 

@@ -30,11 +30,13 @@
                             <i class="fa fa-sort-down"></i>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ provider.id }}">
-                                {% for category in provider.categories %}
-                                    <a class="text-decoration-none text-dark" href="{{ path('public_category_show', {'id': category.id}) }}">
-                                        <div class="dropdown-item d-flex justify-content-between" href="#">{{ category.name }} <span class="fa fa-arrow-right"></span></div>
-                                    </a>
-                                {% endfor %}
+                            {% for category in provider.categories %}
+                                <a class="text-decoration-none text-dark"
+                                   href="{{ path('public_category_show', {'id': category.id}) }}">
+                                    <div class="dropdown-item d-flex justify-content-between"
+                                         href="#">{{ category.name }} <span class="fa fa-arrow-right"></span></div>
+                                </a>
+                            {% endfor %}
                         </div>
                     {% endfor %}
                 </div>
@@ -82,9 +84,18 @@
                 {% if app.user %}
                     <div class="pipe">|</div>
                     <div class="notification">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        <a href="" class="text-decoration-none text-white">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </a>
+                        <a href="" class="text-decoration-none text-white mx-2">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </a>
+                        <a href="" class="text-decoration-none text-white">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </a>
+                        <a href="{{ path('app_logout') }}" class="text-decoration-none text-danger mx-2">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                        </a>
                     </div>
                 {% else %}
                     <div class="pipe">|</div>

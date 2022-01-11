@@ -1,0 +1,11 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}New Address{% endblock %}
+
+{% block body %}
+    <h1 class="btn btn-success"><i class="fa fa-plus"></i> Address</h1>
+
+    {{ include('admin/address/_form.html.twig') }}
+
+    <a href="{{ path('admin_address_index') }}" class="btn btn-warning text-white"><i class="fa fa-arrow-left"></i></a>
+{% endblock %}
