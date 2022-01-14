@@ -3,13 +3,15 @@
 {% block title %}Hello ProviderController!{% endblock %}
 
 {% block body %}
-    <ul>
-        {% for category in provider.categories %}
-            <li>
-                {{ category.name }}
-                ({{ category.products | length }})
-            </li>
-        {% endfor %}
-    </ul>
-
+    <div class="row">
+        <div class="h-50">
+            <ul>
+                {% for category in categories %}
+                    <li>
+                        {{ category.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}

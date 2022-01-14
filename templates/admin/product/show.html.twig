@@ -3,64 +3,110 @@
 {% block title %}Product{% endblock %}
 
 {% block body %}
-    <h1>Product    </h1>
-   <div class="container">
-    <table class="table" id="datatable">
-        <tbody>
+    <h1>Produit : {{ product.name }}</h1>
+    <div class="container">
+
+        <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-warning text-white"><i
+                    class="fa fa-edit"></i></a>
+        <table class="table" id="datatable">
+            <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
+                <th>Images</th>
+                <td>
+                    <div class="slideshow-container">
+                        {% for picture in product.pictures %}
+                            <div class="mySlides">
+                                <div class="numbertext">{{ loop.index }} / {{ product.pictures| length }}</div>
+                                <img src="{{ asset(picture.name) }}" style="width:400px" alt="{{ picture.name }}">
+                                <div class="text">Photo {{ loop.index }}.</div>
+                            </div>
+                        {% endfor %}
+                        <!-- Next and previous buttons -->
+                        <a class="prev" onclick="plusSlides(-1)"><i class="fa fa-arrow-circle-left"></i></a>
+                        <a class="next" onclick="plusSlides(1)"><i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                    <br>
+                    <div style="text-align:center">
+                        {% for picture in product.pictures %}
+                            <span class="dot" onclick="currentSlide({{ loop.index }})"></span>
+                        {% endfor %}
+                    </div>
+                </td>
             </tr>
             <tr>
-                <th>OriginalReference</th>
+                <th>Categories</th>
+                <td>
+                    {% for category in product.categories %}
+                        #{{ category.name }}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Réference d'origine</th>
                 <td>{{ product.OriginalReference }}</td>
             </tr>
             <tr>
-                <th>Name</th>
-                <td>{{ product.name }}</td>
+                <th>Référence</th>
+                <td>{{ product.reference }}</td>
             </tr>
             <tr>
-                <th>Reference</th>
-                <td>{{ product.reference }}</td>
+                <th>Nom du produit</th>
+                <td>{{ product.name }}</td>
             </tr>
             <tr>
                 <th>Description</th>
                 <td>{{ product.description }}</td>
             </tr>
             <tr>
-                <th>Lenght</th>
+                <th>Longueur du produit</th>
                 <td>{{ product.lenght }}</td>
             </tr>
             <tr>
-                <th>Width</th>
+                <th>Largeur du produit</th>
                 <td>{{ product.width }}</td>
             </tr>
             <tr>
-                <th>Height</th>
+                <th>Profondeur</th>
+                <td>{{ product.depth }}</td>
+            </tr>
+            <tr>
+                <th>Profondeur interne</th>
+                <td>{{ product.depthIn }}</td>
+            </tr>
+            <tr>
+                <th>Poids</th>
+                <td>{{ product.weight }}</td>
+            </tr>
+            <tr>
+                <th>Hauteur du produit</th>
                 <td>{{ product.height }}</td>
             </tr>
             <tr>
-                <th>Price</th>
-                <td>{{ product.price }}</td>
+                <th>Prix du produit</th>
+                <td>{{ product.price| number_format(2,',', ' ') }} €</td>
             </tr>
             <tr>
-                <th>Price_ttc</th>
-                <td>{{ product.priceTtc }}</td>
+                <th>Prix du produit TTC</th>
+                <td>{{ product.priceTtc| number_format(2,',', ' ') }} €</td>
             </tr>
             <tr>
-                <th>Specificity</th>
+                <th>Prix au detail</th>
+                <td>{{ product.retailPrice| number_format(2,',', ' ') }} €</td>
+            </tr>
+            <tr>
+                <th>Specificité</th>
                 <td>{{ product.specificity }}</td>
             </tr>
             <tr>
-                <th>Meta_description</th>
+                <th>Meta description</th>
                 <td>{{ product.metaDescription }}</td>
             </tr>
             <tr>
-                <th>Meta_title</th>
+                <th>Meta titre</th>
                 <td>{{ product.metaTitle }}</td>
             </tr>
             <tr>
-                <th>Meta_keyword</th>
+                <th>Meta mot clef</th>
                 <td>{{ product.metaKeyword }}</td>
             </tr>
             <tr>
@@ -68,63 +114,89 @@
                 <td>{{ product.position }}</td>
             </tr>
             <tr>
-                <th>Is_enabled</th>
+                <th>Actif ?</th>
                 <td>{{ product.isEnabled ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
             </tr>
             <tr>
-                <th>Add_at</th>
+                <th>Date d'ajout</th>
                 <td>{{ product.addAt ? product.addAt|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Updated_at</th>
+                <th>Date de mise a jour</th>
                 <td>{{ product.updatedAt ? product.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Depth</th>
-                <td>{{ product.depth }}</td>
-            </tr>
-            <tr>
-                <th>Depth_in</th>
-                <td>{{ product.depthIn }}</td>
-            </tr>
-            <tr>
-                <th>Weight</th>
-                <td>{{ product.weight }}</td>
-            </tr>
-            <tr>
-                <th>Upc</th>
+                <th>Code universel du produit</th>
                 <td>{{ product.upc }}</td>
             </tr>
             <tr>
-                <th>CountryOfOrigin</th>
+                <th>Pays d'origine</th>
                 <td>{{ product.countryOfOrigin }}</td>
             </tr>
             <tr>
-                <th>Currency</th>
-                <td>{{ product.currency }}</td>
-            </tr>
-            <tr>
-                <th>Retail_price</th>
-                <td>{{ product.retailPrice }}</td>
-            </tr>
-            <tr>
-                <th>Tariffcode</th>
+                <th>Numéro de nomenclature douanière</th>
                 <td>{{ product.tariffcode }}</td>
             </tr>
             <tr>
-                <th>Is_in_stock</th>
+                <th>En stock</th>
                 <td>{{ product.isInStock }}</td>
             </tr>
             <tr>
-                <th>Is_on_sale</th>
+                <th>En promotion</th>
                 <td>{{ product.isOnSale ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
             </tr>
-        </tbody>
-    </table>
-</div>
-    <a href="{{ path('admin_product_index') }}" class="btn btn-warning text-white"><i class="fa fa-arrow-left"></i></a>
+            <tr>
+                <th>Fichier rattaché</th>
+                <td>
+                    {% for attachment in product.attachment %}
+                        <a class="text-decoration-none text-black" href="{{ asset(attachment.name) }}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+                    {% endfor %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex">
+        <a href="{{ path('admin_product_index') }}" class="btn btn-primary text-white"><i class="fa fa-arrow-left"></i></a>
 
-    <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-warning text-white"><i class="fa fa-edit"></i></a>
+        <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-warning text-white"><i
+                    class="fa fa-edit"></i></a>
 
-    {{ include('admin/product/_delete_form.html.twig') }}
+        {{ include('admin/product/_delete_form.html.twig') }}
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        // Next/previous controls
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            const slides = document.getElementsByClassName("mySlides");
+            const dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
 {% endblock %}

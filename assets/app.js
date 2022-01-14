@@ -16,6 +16,45 @@ require('jquery-ui/ui/widgets/sortable');
 require('jquery-ui/ui/widgets/selectable');
 import $ from "jquery"
 import "nouislider/dist/nouislider.css"
+import TomSelect from "tom-select";
+import 'tom-select/dist/css/tom-select.bootstrap5.min.css'
+
+async function jsonFetch(url) {
+    const response = await fetch(url, {
+        headers: {
+            Accept: "application/json"
+        }
+    })
+    if (response.status === 204) {
+        return null
+    }
+    if (response.ok) {
+        return await response.json()
+    }
+    throw response
+}
+
+/**
+ * @param {HTMLSelectElement} select
+ */
+function bindSelect(select) {
+    new TomSelect(select, {
+        hideSelected: true,
+        closeAfterSelect: true,
+        valueField: select.dataset.value,
+        labelField: select.dataset.label,
+        searchField: select.dataset.label,
+        plugins: {
+          remove_button: {title: "Supprimer cet élément"}
+        },
+        load: async (query, callback) => {
+            const url = `${select.dataset.remote}?q=${encodeURIComponent(query)}`
+            callback(await jsonFetch(url))
+        }
+    })
+}
+
+Array.from(document.querySelectorAll('select[multiple]')).map(bindSelect)
 
 $("#datatable").DataTable({
     language: {
@@ -143,7 +182,6 @@ const testimonials = $('#texts')
     .filter('div.text');
 
 const showTestimonial = index => {
-
     testimonials.hide();
     $(testimonials[index]).fadeIn();
 

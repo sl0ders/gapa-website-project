@@ -160,8 +160,8 @@ class ApiController extends AbstractController
     }
 
     #[Route("/api/products", name: "products")]
-    public function index(Request $request, ProductRepository $productRepository): JsonResponse
+    public function index(Request $request, CategoryRepository $categoryRepository): JsonResponse
     {
-        return $this->json($productRepository->search($request->query->get("q")));
+        return $this->json($categoryRepository->search($request->query->get("q")));
     }
 }

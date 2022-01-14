@@ -15,10 +15,9 @@ class AttachmentType extends AbstractType
     {
         $builder
             ->add('description', TextareaType::class, [
-                "label" => "Description du fichier",
-                "required" => false
+                "label" => "Description du fichier"
             ])
-            ->add('file', FileType::class, [
+            ->add('attachmentFile', FileType::class, [
                 "label" => "selection du fichier"
             ])
         ;

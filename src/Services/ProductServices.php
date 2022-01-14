@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\Address;
+use App\Entity\Attachment;
 use App\Entity\Category;
 use App\Entity\File;
 use App\Entity\Picture;
@@ -91,114 +92,118 @@ class ProductServices
          * @var string $json
          *  this variable result of api file of front runner
          */
-        $apiFrontRunnerJson = file_get_contents($this->targetDirectory . "/fr-part9.json");
+        $apiFrontRunnerJson = file_get_contents($this->targetDirectory . "/productFrontRunner.json");
         $parsed_json = json_decode($apiFrontRunnerJson, false, 512, JSON_THROW_ON_ERROR);
 
         /** @var product $article */
         foreach ($parsed_json as $article) {
-            /** Each product of this json list have many category spacing by "|", i'm explode this line for retreave each category */
-            $chaine = $article->{"Categories"};
-            $categoriesJson = explode("|", $chaine);
-            $position = 0;
+//            /** Each product of this json list have many category spacing by "|", i'm explode this line for retreave each category */
+//            $chaine = $article->{"Categories"};
+//            $categoriesJson = explode("|", $chaine);
+//            $position = 0;
             $product = $this->productRepository->findOneBy(["reference" => $article->{"Code"}]);
-            if (!isset($product)) {
-                /** if not exist i create a new produit for this while */
-                $product = new Product();
-                $product
-                    ->setAddAt(new DateTime())
-                    ->setProvider($provider)
-                    ->setName($article->{"Description"})
-                    ->setReference($article->{"Code"})
-                    ->setLenght($article->{"Length_mm"})
-                    ->setWidth($article->{"Width_mm"})
-                    ->setWeight($article->{"Weight_kg"})
-                    ->setRetailPrice($article->{"RetailPrice"})
-                    ->setTariffcode($article->{"Tariffcode"})
-                    ->setMetaDescription($article->{"Narration"})
-                    ->setMetaKeyword($article->{"Categories"})
-                    ->setMetaTitle($article->{"Description"})
-                    ->setSpecificity($article->{"Specification"})
-                    ->setDescription($article->{"Narration"})
-                    ->setCountryOfOrigin($article->{"CountryOfOrigin"})
-                    ->setUpc($article->{"UPC"})
-                    ->setPrice(0.00)
-                    ->setPriceTtc(0.00)
-                    ->setCurrency($article->{"Currency"})
-                    ->setDepthIn($article->{"Depth_in"})
-                    ->setIsEnabled(true)
-                    ->setType($productType)
-                    ->setPosition($position);
-                if (isset($article->{"FittingInstruction_1"})) {
-                    $file = $this->getFiles($article->{"FittingInstruction_1"});
-                    $product->addFile($file);
-                }
-                if (isset($article->{"FittingInstruction_2"})) {
-                    $file = $this->getFiles($article->{"FittingInstruction_2"});
-                    $product->addFile($file);
-                }
-                if (isset($article->{"FittingInstruction_3"})) {
-                    $file = $this->getFiles($article->{"FittingInstruction_3"});
-                    $product->addFile($file);
-                }
-                if (isset($article->{"FittingInstruction_4"})) {
-                    $file = $this->getFiles($article->{"FittingInstruction_4"});
-                    $product->addFile($file);
-                }
-                if (isset($article->{"FittingInstruction_5"})) {
-                    $file = $this->getFiles($article->{"FittingInstruction_5"});
-                    $product->addFile($file);
-                }
-                if (isset($article->{"Image_1"})) {
-                    $picture = $this->getPictures($article->{"Image_1"});
-                    $product->addPicture($picture);
-                }
-                if (isset($article->{"Image_2"})) {
-                    $picture = $this->getPictures($article->{"Image_2"});
-                    $product->addPicture($picture);
-                }
-                if (isset($article->{"Image_3"})) {
-                    $picture = $this->getPictures($article->{"Image_3"});
-                    $product->addPicture($picture);
-                }
-                if (isset($article->{"Image_4"})) {
-                    $picture = $this->getPictures($article->{"Image_4"});
-                    $product->addPicture($picture);
-                }
-                if (isset($article->{"Image_5"})) {
-                    $picture = $this->getPictures($article->{"Image_5"});
-                    $product->addPicture($picture);
-                }
-                if (isset($article->{"Image_6"})) {
-                    $picture = $this->getPictures($article->{"Image_6"});
-                    $product->addPicture($picture);
-                }
-                if (isset($article->{"Image_7"})) {
-                    $picture = $this->getPictures($article->{"Image_7"});
-                    $product->addPicture($picture);
-                }
-                if (isset($article->{"Image_8"})) {
-                    $picture = $this->getPictures($article->{"Image_8"});
-                    $product->addPicture($picture);
-                }
-                foreach ($categoriesJson as $catName) {
-                    $category = $this->categoryRepository->findOneBy(["name" => $catName]);
-                    if (!isset($category)) {
-                        $category = new Category();
-                        $category->setName($catName);
-                        $category->setPosition($position);
-                        $provider->addCategory($category);
-                        $this->entityManager->persist($category);
-                        $this->entityManager->persist($provider);
-                        $this->entityManager->flush();
-                    }
-                    $category->addProduct($product);
-                    $position++;
-                }
-                $this->entityManager->persist($product);
-                $this->entityManager->flush();
+//            if (!isset($product)) {
+//                /** if not exist i create a new produit for this while */
+//                $product = new Product();
+//                $product
+//                    ->setAddAt(new DateTime())
+//                    ->setProvider($provider)
+//                    ->setName($article->{"Description"})
+//                    ->setReference($article->{"Code"})
+//                    ->setLenght($article->{"Length_mm"})
+//                    ->setWidth($article->{"Width_mm"})
+//                    ->setWeight($article->{"Weight_kg"})
+//                    ->setRetailPrice($article->{"RetailPrice"})
+//                    ->setTariffcode($article->{"Tariffcode"})
+//                    ->setMetaDescription($article->{"Narration"})
+//                    ->setMetaKeyword($article->{"Categories"})
+//                    ->setMetaTitle($article->{"Description"})
+//                    ->setSpecificity($article->{"Specification"})
+//                    ->setDescription($article->{"Narration"})
+//                    ->setCountryOfOrigin($article->{"CountryOfOrigin"})
+//                    ->setUpc($article->{"UPC"})
+//                    ->setPrice(0.00)
+//                    ->setPriceTtc(0.00)
+//                    ->setCurrency($article->{"Currency"})
+//                    ->setDepthIn($article->{"Depth_in"})
+//                    ->setIsEnabled(true)
+//                    ->setType($productType)
+//                    ->setPosition($position);
+            if (isset($article->{"FittingInstruction_1"})) {
+                $file = $this->getFiles($article->{"FittingInstruction_1"});
+                $product->addAttachment($file);
             }
+            if (isset($article->{"FittingInstruction_2"})) {
+                $file = $this->getFiles($article->{"FittingInstruction_2"});
+                $product->addAttachment($file);
+            }
+            if (isset($article->{"FittingInstruction_3"})) {
+                $file = $this->getFiles($article->{"FittingInstruction_3"});
+                $product->addAttachment($file);
+            }
+            if (isset($article->{"FittingInstruction_4"})) {
+                $file = $this->getFiles($article->{"FittingInstruction_4"});
+                $product->addAttachment($file);
+            }
+            if (isset($article->{"FittingInstruction_5"})) {
+                $file = $this->getFiles($article->{"FittingInstruction_5"});
+                $product->addAttachment($file);
+            }
+            $this->entityManager->persist($product);
+            $this->entityManager->flush();
         }
     }
+//                if (isset($article->{"Image_1"})) {
+//                    $picture = $this->getPictures($article->{"Image_1"});
+//                    $product->addPicture($picture);
+//                }
+//                if (isset($article->{"Image_2"})) {
+//                    $picture = $this->getPictures($article->{"Image_2"});
+//                    $product->addPicture($picture);
+//                }
+//                if (isset($article->{"Image_3"})) {
+//                    $picture = $this->getPictures($article->{"Image_3"});
+//                    $product->addPicture($picture);
+//                }
+//                if (isset($article->{"Image_4"})) {
+//                    $picture = $this->getPictures($article->{"Image_4"});
+//                    $product->addPicture($picture);
+//                }
+//                if (isset($article->{"Image_5"})) {
+//                    $picture = $this->getPictures($article->{"Image_5"});
+//                    $product->addPicture($picture);
+//                }
+//                if (isset($article->{"Image_6"})) {
+//                    $picture = $this->getPictures($article->{"Image_6"});
+//                    $product->addPicture($picture);
+//                }
+//                if (isset($article->{"Image_7"})) {
+//                    $picture = $this->getPictures($article->{"Image_7"});
+//                    $product->addPicture($picture);
+//                }
+//                if (isset($article->{"Image_8"})) {
+//                    $picture = $this->getPictures($article->{"Image_8"});
+//                    $product->addPicture($picture);
+//                }
+//                foreach ($categoriesJson as $catName) {
+//                    $category = $this->categoryRepository->findOneBy(["name" => $catName]);
+//                    if (!isset($category)) {
+//                        $category = new Category();
+//                        $category->setName($catName);
+//                        $category->setPosition($position);
+//                        $provider->addCategory($category);
+//                        $this->entityManager->persist($category);
+//                        $this->entityManager->persist($provider);
+//                        $this->entityManager->flush();
+//                    }
+//                    $category->addProduct($product);
+//                    $position++;
+//                }
+//                $this->entityManager->persist($product);
+//                $this->entityManager->flush();
+//            }
+//        }
+//    }
 
     private function getPictures($pictureName): Picture
     {
@@ -242,9 +247,9 @@ class ProductServices
         }
     }
 
-    private function getFiles($param): File
+    private function getFiles($param): Attachment
     {
-        $file = new File();
+        $file = new Attachment();
         $file->setName($param)
             ->setFormat("pdf");
         $this->entityManager->persist($file);

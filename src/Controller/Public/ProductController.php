@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/public/product')]
+#[Route('/product')]
 class ProductController extends AbstractController
 {
     #[Route("/", name: "public_product_index")]

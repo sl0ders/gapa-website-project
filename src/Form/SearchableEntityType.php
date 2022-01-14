@@ -22,15 +22,25 @@ class SearchableEntityType extends AbstractType
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('class');
         $resolver->setDefaults([
             'compound' => false,
-            "multiple" => true
+            "multiple" => true,
+            "search" => '/search',
+            "value_property" => "id",
+            "label_property" => "name"
         ]);
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addModelTransformer(new CallbackTransformer(
@@ -58,6 +68,9 @@ class SearchableEntityType extends AbstractType
         $view->vars["choices"] = $this->choices($form->getData());
         $view->vars["choice_translation_domain"] = false;
         $view->vars["full_name"] .= "[]";
+        $view->vars["attr"]["data-remote"] = $options["search"];
+        $view->vars["attr"]["data-value"] = $options["value_property"];
+        $view->vars["attr"]["data-label"] = $options["label_property"];
     }
 
     public function getBlockPrefix(): string

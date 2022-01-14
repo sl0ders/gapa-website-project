@@ -15,7 +15,7 @@ class Picture
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name;
+    private $name;
 
     #[ORM\Column(type: 'float')]
     private ?int $width;
@@ -28,31 +28,30 @@ class Picture
 
     /**
      * @Vich\UploadableField(mapping="product_images", fileNameProperty="name")
-     * @var File
      */
-    private File $imageFile;
+    private $imageFile;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setImageFile(File $image = null)
+    public function setImageFile($image = null)
     {
         $this->imageFile = $image;
     }
 
-    public function getImageFile(): File
+    public function getImageFile()
     {
         return $this->imageFile;
     }
 
-    public function getName(): ?string
+    public function getName()
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName($name): self
     {
         $this->name = $name;
 
