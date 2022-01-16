@@ -20,10 +20,8 @@ class ProductController extends AbstractController
      * @throws \JsonException
      */
     #[Route('/', name: 'admin_product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository, ProductServices $productServices): Response
+    public function index(ProductRepository $productRepository): Response
     {
-        $productServices->addFrontRunner();
-
         return $this->render('admin/product/index.html.twig', [
             'products' => $productRepository->findAll(),
         ]);

@@ -27,10 +27,14 @@ class VehicleMark
     #[ORM\ManyToMany(targetEntity: Provider::class, inversedBy: 'vehicleMarks')]
     private $provider;
 
+    #[ORM\OneToMany(mappedBy: 'mark', targetEntity: VehicleDeclination::class)]
+    private $vehicleDeclinations;
+
     public function __construct()
     {
         $this->vehicleModels = new ArrayCollection();
         $this->provider = new ArrayCollection();
+        $this->vehicleDeclinations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,5 +118,40 @@ class VehicleMark
         $this->provider->removeElement($provider);
 
         return $this;
+    }
+
+    /**
+     * @return Collection|VehicleDeclination[]
+     */
+    public function getVehicleDeclinations(): Collection
+    {
+        return $this->vehicleDeclinations;
+    }
+
+    public function addVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        if (!$this->vehicleDeclinations->contains($vehicleDeclination)) {
+            $this->vehicleDeclinations[] = $vehicleDeclination;
+            $vehicleDeclination->setMark($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        if ($this->vehicleDeclinations->removeElement($vehicleDeclination)) {
+            // set the owning side to null (unless already changed)
+            if ($vehicleDeclination->getMark() === $this) {
+                $vehicleDeclination->setMark(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+      return $this->name;
     }
 }

@@ -3,9 +3,6 @@
 {% block title %}New Category{% endblock %}
 
 {% block body %}
-    <h1 class="btn btn-success"><i class="fa fa-plus"></i> Category</h1>
-
     {{ include('admin/category/_form.html.twig') }}
-
     <a href="{{ path('admin_category_index') }}" class="btn btn-primary text-white"><i class="fa fa-arrow-left"></i></a>
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ModelVersionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ModelVersionRepository::class)]
@@ -31,6 +33,14 @@ class ModelVersion
     #[ORM\ManyToOne(targetEntity: VehicleModel::class, inversedBy: 'modelVersions')]
     #[ORM\JoinColumn(nullable: false)]
     private $model;
+
+    #[ORM\OneToMany(mappedBy: 'modelVersion', targetEntity: VehicleDeclination::class)]
+    private $vehicleDeclinations;
+
+    public function __construct()
+    {
+        $this->vehicleDeclinations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,5 +132,40 @@ class ModelVersion
         $this->model = $model;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|VehicleDeclination[]
+     */
+    public function getVehicleDeclinations(): Collection
+    {
+        return $this->vehicleDeclinations;
+    }
+
+    public function addVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        if (!$this->vehicleDeclinations->contains($vehicleDeclination)) {
+            $this->vehicleDeclinations[] = $vehicleDeclination;
+            $vehicleDeclination->setModelVersion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        if ($this->vehicleDeclinations->removeElement($vehicleDeclination)) {
+            // set the owning side to null (unless already changed)
+            if ($vehicleDeclination->getModelVersion() === $this) {
+                $vehicleDeclination->setModelVersion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

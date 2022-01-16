@@ -24,9 +24,13 @@ class VersionMotorisation
     #[ORM\OneToMany(mappedBy: 'versionMotorisation', targetEntity: Product::class)]
     private $products;
 
+    #[ORM\OneToMany(mappedBy: 'motorisation', targetEntity: VehicleDeclination::class)]
+    private $vehicleDeclinations;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->vehicleDeclinations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,5 +90,40 @@ class VersionMotorisation
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|VehicleDeclination[]
+     */
+    public function getVehicleDeclinations(): Collection
+    {
+        return $this->vehicleDeclinations;
+    }
+
+    public function addVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        if (!$this->vehicleDeclinations->contains($vehicleDeclination)) {
+            $this->vehicleDeclinations[] = $vehicleDeclination;
+            $vehicleDeclination->setMotorisation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        if ($this->vehicleDeclinations->removeElement($vehicleDeclination)) {
+            // set the owning side to null (unless already changed)
+            if ($vehicleDeclination->getMotorisation() === $this) {
+                $vehicleDeclination->setMotorisation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

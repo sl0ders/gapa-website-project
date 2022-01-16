@@ -28,9 +28,13 @@ class VersionFrame
     #[ORM\OneToMany(mappedBy: 'versionFrame', targetEntity: Product::class)]
     private $products;
 
+    #[ORM\OneToMany(mappedBy: 'frame', targetEntity: VehicleDeclination::class)]
+    private $vehicleDeclinations;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->vehicleDeclinations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,5 +106,40 @@ class VersionFrame
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|VehicleDeclination[]
+     */
+    public function getVehicleDeclinations(): Collection
+    {
+        return $this->vehicleDeclinations;
+    }
+
+    public function addVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        if (!$this->vehicleDeclinations->contains($vehicleDeclination)) {
+            $this->vehicleDeclinations[] = $vehicleDeclination;
+            $vehicleDeclination->setFrame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        if ($this->vehicleDeclinations->removeElement($vehicleDeclination)) {
+            // set the owning side to null (unless already changed)
+            if ($vehicleDeclination->getFrame() === $this) {
+                $vehicleDeclination->setFrame(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }
