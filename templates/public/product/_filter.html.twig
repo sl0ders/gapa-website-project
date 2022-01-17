@@ -1,13 +1,18 @@
+{{ form_start(form, {attr: {class : 'filter  js-filter-form'}}) }}
 
-{{ form_start(form, {attr: {class : 'filter'}}) }}
-{{ form_row(form.q) }}
-
-<h4>Categories</h4>
-{{ form_row(form.categories) }}
-
+<div class="spinner-border js-loading" role="status" aria-hidden="true" style="display: none">
+    <span class="sr-only">Loading...</span>
+</div>
+<div class="search">
+    {{ form_row(form.q, {attr: {class: "bg-black text-white border-dark", placeholder: "Rechercher"}}) }}
+    <i type="submit" class="fa fa-search mt-1" aria-hidden="true"></i>
+</div>
+{% if category is not defined %}
+    {{ form_row(form.categories,{attr: {class : 'd-none'}}) }}
+{% else %}
+    {{ form_row(form.categories,{attr: {class : 'd-none'}}) }}
+{% endif %}
 <h4>Promotion</h4>
 {{ form_row(form.promo) }}
-
-<button type="submit" class="btn btn-primary w-100">Filtrer</button>
 {{ form_end(form) }}
 

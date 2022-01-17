@@ -18,6 +18,10 @@ import $ from "jquery"
 import "nouislider/dist/nouislider.css"
 import TomSelect from "tom-select";
 import 'tom-select/dist/css/tom-select.bootstrap5.min.css'
+import Filter from './modules/Filter'
+
+
+new Filter(document.querySelector('.js-filter'))
 
 async function jsonFetch(url) {
     const response = await fetch(url, {
@@ -45,7 +49,7 @@ function bindSelect(select) {
         labelField: select.dataset.label,
         searchField: select.dataset.label,
         plugins: {
-          remove_button: {title: "Supprimer cet élément"}
+            remove_button: {title: "Supprimer cet élément"}
         },
         load: async (query, callback) => {
             const url = `${select.dataset.remote}?q=${encodeURIComponent(query)}`
@@ -200,22 +204,3 @@ $(".btn-hidden").hover(() => {
 $(".menu-nav").hover(() => {
     $(".menu-nav").toggleClass("visible")
 })
-
-let button = document.querySelector('.signup')
-
-button.onclick = function () {
-    document.getElementById('container').scrollTop += 20;
-};
-
-let subMenu = $(".sub-menu")
-subMenu.on("click", () => {
-    $('#texts').toggle()
-})
-
-var scrolled = 0;
-$("a").on("click", function () {
-    scrolled = scrolled - 300;
-    $("a").stop().animate({
-        scrollTop: scrolled
-    });
-});

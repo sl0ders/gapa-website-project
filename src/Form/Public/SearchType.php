@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Public;
 
 use App\Data\SearchData;
 use App\Entity\Category;
@@ -14,15 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            "data_class" => SearchData::class,
-            "method" => "GET",
-            "csrf_protection" => false
-        ]);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -48,6 +39,15 @@ class SearchType extends AbstractType
                 "label" => "En promotion",
                 "required" => false
             ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            "data_class" => SearchData::class,
+            "method" => "GET",
+            "csrf_protection" => false
+        ]);
     }
 
     public function getBlockPrefix(): string

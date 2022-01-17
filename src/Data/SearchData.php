@@ -18,16 +18,6 @@ class SearchData
     public array $categories = [];
 
     /**
-     * @var null|integer
-     */
-    public ?int $min;
-
-    /**
-     * @var null|integer
-     */
-    public ?int $max;
-
-    /**
      * @var Boolean
      */
     public $promo = false;

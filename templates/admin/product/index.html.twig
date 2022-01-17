@@ -11,14 +11,13 @@
                 <th>Position</th>
                 <th>Nom</th>
                 <th>Référence</th>
-                <th>Description</th>
                 <th>Prix HT</th>
                 <th>Prix TTC</th>
                 <th>Ajouter le</th>
                 <th>MAJ</th>
-                <th>En stock</th>
-                <th>État</th>
-                <th>En promotion</th>
+                <th>Stock</th>
+                <th>Actif</th>
+                <th>Promotion</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -28,7 +27,6 @@
                     <td>{{ product.position }}</td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.reference }}</td>
-                    <td>{{ product.description }}</td>
                     <td>{{ product.price }}</td>
                     <td>{{ product.priceTtc }}</td>
                     <td>{{ product.addAt ? product.addAt|date('d/m/Y H:i:s') : '' }}</td>
@@ -36,7 +34,7 @@
                     <td>{{ product.isInStock }}</td>
                     <td>{{ product.isEnabled ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
                     <td>{{ product.isOnSale ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
-                    <td>
+                    <td class="d-flex justify-content-center">
                         <a href="{{ path('admin_product_show', {'id': product.id}) }}" class="btn btn-primary text-white"><i class="fa fa-eye"></i></a>
                         <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-warning text-white"><i class="fa fa-edit"></i></a>
                         {{ include('admin/product/_delete_form.html.twig') }}

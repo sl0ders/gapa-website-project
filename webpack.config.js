@@ -59,7 +59,7 @@ Encore
     .enableSassLoader()
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    // .enableTypeScriptLoader()
 
     // uncomment if you use React
     //.enableReactPreset()
@@ -71,5 +71,5 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     .autoProvidejQuery()
 ;
-
+// Encore.enableTypeScriptLoader()
 module.exports = Encore.getWebpackConfig();

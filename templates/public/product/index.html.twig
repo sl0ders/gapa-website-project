@@ -1,18 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tout les produits{% endblock %}
+{% block title %}Tous les produits{% endblock %}
 
 {% block body %}
-    <div class="container-fluid" id="page">
+    <div class="container-fluid js-filter" id="page">
         <div class="row mt-5">
             <div class="col-md-3">
-                {% include 'public/product/_filter.html.twig' with {form: form} only %}
+                {% include 'public/product/_filter.html.twig' %}
             </div>
             <div class="col-md-9">
-                <div class="grid">
-                    {% for product in products %}
-                        {% include 'public/product/_card.html.twig' with {product: product} only %}
-                    {% endfor %}
+                <div class="d-flex justify-content-end mb-2 js-filter-sorting">
+                    {% include 'public/product/_sorting.html.twig' %}
+                </div>
+                <div class="grid js-filter-content">
+                    {% include 'public/product/_products.html.twig' %}
+                </div>
+                <div class="mt-4 js-filter-pagination">
+                    {% include 'public/product/_pagination.html.twig' %}
                 </div>
             </div>
         </div>

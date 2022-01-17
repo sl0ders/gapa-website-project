@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Data\SearchData;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -31,6 +32,16 @@ class ProductRepository extends ServiceEntityRepository
      * @return PaginationInterface
      */
     public function findSearch(SearchData $search): PaginationInterface
+    {
+        $query =$this->getSearchQuery($search)->getQuery();
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            8
+        );
+    }
+
+    private function getSearchQuery(SearchData $search): QueryBuilder
     {
         $query = $this
             ->createQueryBuilder("p")
@@ -65,21 +76,7 @@ class ProductRepository extends ServiceEntityRepository
                 ->andWhere("c.id IN (:categories)")
                 ->setParameter("categories", $search->categories);
         }
-        $query = $query->getQuery();
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            15
-        );
-    }
 
-    /**
-     * Recupere le prix minimum et maximum correspondant a une recherche
-     * @param SearchData $search
-     * @return int[]
-     */
-    public function findMinMax(SearchData $search)
-    {
-        return [0, 10000];
+        return $query;
     }
 }
