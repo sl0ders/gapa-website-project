@@ -14,6 +14,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ModelVersionRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProviderRepository;
+use App\Repository\VehicleDeclinationRepository;
 use App\Repository\VehicleModelRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
@@ -163,5 +164,11 @@ class ApiController extends AbstractController
     public function index(Request $request, CategoryRepository $categoryRepository): JsonResponse
     {
         return $this->json($categoryRepository->search($request->query->get("q")));
+    }
+
+    #[Route("/api/declinations", name: "declinations")]
+    public function getDeclination(Request $request, VehicleDeclinationRepository $declinationRepository): JsonResponse
+    {
+        return $this->json($declinationRepository->search($request->query->get("q")));
     }
 }

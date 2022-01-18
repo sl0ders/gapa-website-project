@@ -25,13 +25,22 @@ class VehicleModel
     #[ORM\JoinColumn(nullable: false)]
     private $vehicleMark;
 
-    #[ORM\OneToMany(mappedBy: 'model', targetEntity: VehicleDeclination::class)]
-    private $vehicleDeclinations;
+    #[ORM\ManyToOne(targetEntity: VehicleRange::class, inversedBy: 'vehicleModels')]
+    private $vehicle_range;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $range_name;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $mark_name;
+
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'VehicleModel')]
+    private $products;
 
     public function __construct()
     {
         $this->modelVersions = new ArrayCollection();
-        $this->vehicleDeclinations = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,38 +102,71 @@ class VehicleModel
         return $this;
     }
 
-    /**
-     * @return Collection|VehicleDeclination[]
-     */
-    public function getVehicleDeclinations(): Collection
-    {
-        return $this->vehicleDeclinations;
-    }
-
-    public function addVehicleDeclination(VehicleDeclination $vehicleDeclination): self
-    {
-        if (!$this->vehicleDeclinations->contains($vehicleDeclination)) {
-            $this->vehicleDeclinations[] = $vehicleDeclination;
-            $vehicleDeclination->setModel($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVehicleDeclination(VehicleDeclination $vehicleDeclination): self
-    {
-        if ($this->vehicleDeclinations->removeElement($vehicleDeclination)) {
-            // set the owning side to null (unless already changed)
-            if ($vehicleDeclination->getModel() === $this) {
-                $vehicleDeclination->setModel(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getVehicleRange(): ?VehicleRange
+    {
+        return $this->vehicle_range;
+    }
+
+    public function setVehicleRange(?VehicleRange $vehicle_range): self
+    {
+        $this->vehicle_range = $vehicle_range;
+
+        return $this;
+    }
+
+    public function getRangeName(): ?string
+    {
+        return $this->range_name;
+    }
+
+    public function setRangeName(?string $range_name): self
+    {
+        $this->range_name = $range_name;
+
+        return $this;
+    }
+
+    public function getMarkName(): ?string
+    {
+        return $this->mark_name;
+    }
+
+    public function setMarkName(string $mark_name): self
+    {
+        $this->mark_name = $mark_name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addVehicleModel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            $product->removeVehicleModel($this);
+        }
+
+        return $this;
     }
 }

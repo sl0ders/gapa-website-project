@@ -27,19 +27,40 @@ class VehicleMark
     #[ORM\ManyToMany(targetEntity: Provider::class, inversedBy: 'vehicleMarks')]
     private $provider;
 
-    #[ORM\OneToMany(mappedBy: 'mark', targetEntity: VehicleDeclination::class)]
-    private $vehicleDeclinations;
+
+    #[ORM\Column(type: 'boolean', options: ["default" => 1])]
+    private $enabled = 1;
+
+    #[ORM\OneToMany(mappedBy: 'vehicle_mark', targetEntity: VehicleRange::class, orphanRemoval: true)]
+    private $vehicleRanges;
+
+    #[ORM\OneToMany(mappedBy: 'vehicle_mark', targetEntity: ModelVersion::class)]
+    private $modelVersions;
+
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'mark')]
+    private $products;
+
 
     public function __construct()
     {
         $this->vehicleModels = new ArrayCollection();
         $this->provider = new ArrayCollection();
-        $this->vehicleDeclinations = new ArrayCollection();
+        $this->vehicleRanges = new ArrayCollection();
+        $this->modelVersions = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getName(): ?string
@@ -120,38 +141,107 @@ class VehicleMark
         return $this;
     }
 
-    /**
-     * @return Collection|VehicleDeclination[]
-     */
-    public function getVehicleDeclinations(): Collection
+    public function __toString(): string
     {
-        return $this->vehicleDeclinations;
+      return $this->name;
     }
 
-    public function addVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    public function getEnabled(): ?bool
     {
-        if (!$this->vehicleDeclinations->contains($vehicleDeclination)) {
-            $this->vehicleDeclinations[] = $vehicleDeclination;
-            $vehicleDeclination->setMark($this);
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VehicleRange[]
+     */
+    public function getVehicleRanges(): Collection
+    {
+        return $this->vehicleRanges;
+    }
+
+    public function addVehicleRange(VehicleRange $vehicleRange): self
+    {
+        if (!$this->vehicleRanges->contains($vehicleRange)) {
+            $this->vehicleRanges[] = $vehicleRange;
+            $vehicleRange->setVehicleMark($this);
         }
 
         return $this;
     }
 
-    public function removeVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    public function removeVehicleRange(VehicleRange $vehicleRange): self
     {
-        if ($this->vehicleDeclinations->removeElement($vehicleDeclination)) {
+        if ($this->vehicleRanges->removeElement($vehicleRange)) {
             // set the owning side to null (unless already changed)
-            if ($vehicleDeclination->getMark() === $this) {
-                $vehicleDeclination->setMark(null);
+            if ($vehicleRange->getVehicleMark() === $this) {
+                $vehicleRange->setVehicleMark(null);
             }
         }
 
         return $this;
     }
 
-    public function __toString(): string
+    /**
+     * @return Collection|ModelVersion[]
+     */
+    public function getModelVersions(): Collection
     {
-      return $this->name;
+        return $this->modelVersions;
+    }
+
+    public function addModelVersion(ModelVersion $modelVersion): self
+    {
+        if (!$this->modelVersions->contains($modelVersion)) {
+            $this->modelVersions[] = $modelVersion;
+            $modelVersion->setVehicleMark($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModelVersion(ModelVersion $modelVersion): self
+    {
+        if ($this->modelVersions->removeElement($modelVersion)) {
+            // set the owning side to null (unless already changed)
+            if ($modelVersion->getVehicleMark() === $this) {
+                $modelVersion->setVehicleMark(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addMark($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            $product->removeMark($this);
+        }
+
+        return $this;
     }
 }

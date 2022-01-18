@@ -2,10 +2,14 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Picture;
 use App\Entity\Product;
+use App\Entity\VehicleDeclination;
 use App\Form\ProductType;
+use App\Repository\ModelVersionRepository;
 use App\Repository\ProductRepository;
+use App\Repository\VehicleMarkRepository;
+use App\Repository\VehicleModelRepository;
+use App\Repository\VehicleRangeRepository;
 use App\Services\ProductServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,17 +32,19 @@ class ProductController extends AbstractController
     }
 
     #[Route('/new', name: 'admin_product_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, ProductServices $productServices, EntityManagerInterface $entityManager, VehicleMarkRepository $markRepository, VehicleRangeRepository $rangeRepository, VehicleModelRepository $modelRepository, ModelVersionRepository $versionRepository): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // On recupere les images transmises
-
+            /**  Traitement des declinaison de vehicule et affiliation au marque, model version... */
+            $declinations = $form->getData()->getVehicleDeclinations();
+            $product = $productServices->addDeclinations($declinations, $product);
             $pictures = $form->get('pictures')->getData();
-            dd($pictures);
+            $files = $form->get('attachment')->getData();
+            $productServices->addFile($files, $pictures, $product);
             $entityManager->persist($product);
             $entityManager->flush();
 
@@ -60,7 +66,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'admin_product_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Product $product, EntityManagerInterface $entityManager, ProductServices $productServices): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -68,39 +74,8 @@ class ProductController extends AbstractController
             // On récupère les images transmises
             $pictures = $form->get('pictures')->getData();
             $files = $form->get('attachment')->getData();
-            foreach ($files as $file) {
-                if ($file->getAttachmentFile()) {
-                    $newFile = $file->getAttachmentFile();
-                    $fichier = md5(uniqid('', true)) . "." . $newFile->guessExtension();
-                    $newFile->move(
-                        $this->getParameter("files_directory"),
-                        $fichier
-                    );
-                    $fichierFinal = $this->getParameter("files_directory") . "/" . $fichier;
-                    $file->setName("../upload/files/" . $fichier);
-                    $file->setDescription($file->getDescription());
-                    $file->setFormat(pathinfo($fichierFinal)["extension"]);
-                    $product->addAttachment($file);
-                }
-            }
-            foreach ($pictures as $picture) {
-                if ($picture->getImageFile()) {
-                    $newPicture = $picture->getImageFile();
-                    $fichier = md5(uniqid('', true)) . "." . $newPicture->guessExtension();
-                    $newPicture->move(
-                        $this->getParameter("pictures_directory"),
-                        $fichier
-                    );
-                    $fichierFinal = $this->getParameter("pictures_directory") . "/" . $fichier;
-                    $width = (getimagesize($this->getParameter("pictures_directory") . "/" . $fichier)[0]);
-                    $height = (getimagesize($this->getParameter("pictures_directory") . "/" . $fichier)[1]);
-                    $picture->setName("../upload/images/" . $fichier);
-                    $picture->setFormat(getimagesize($fichierFinal)["mime"]);
-                    $picture->setWidth($width);
-                    $picture->setHeight($height);
-                    $product->addPicture($picture);
-                }
-            }
+            $product = $productServices->addFile($files, $pictures, $product);
+            $entityManager->persist($product);
             $entityManager->flush();
             $this->addFlash("success", "Le produit a bien été modifié");
             return $this->redirectToRoute('admin_product_index');

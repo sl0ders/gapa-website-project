@@ -5,8 +5,7 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\Provider;
-use App\Entity\VersionFrame;
-use App\Entity\VersionMotorisation;
+use App\Entity\VehicleDeclination;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -196,20 +195,6 @@ class ProductType extends AbstractType
                 ],
                 "multiple" => false
             ])
-            ->add('versionMotorisation', EntityType::class, [
-                "class" => VersionMotorisation::class,
-                "choice_label" => "name",
-                "label" => "Motorisation du véhicule lié au produit",
-                "required" => false,
-                "multiple" => false
-            ])
-            ->add('versionFrame', EntityType::class, [
-                "class" => VersionFrame::class,
-                "choice_label" => "name",
-                "label" => "Chassis du véhicule lié au produit",
-                "required" => false,
-                "multiple" => false
-            ])
             ->add('pictures',CollectionType::class, [
                     "entry_type" => PictureType::class,
                     "entry_options" => [
@@ -237,6 +222,14 @@ class ProductType extends AbstractType
                 'search' => $this->urlGenerator->generate("products"),
                 "label_property" => "name",
                 "value_property" => "id"
+            ])
+            ->add('vehicle_declinations', SearchableEntityType::class, [
+                "class" => VehicleDeclination::class,
+                'search' => $this->urlGenerator->generate("declinations"),
+                "label_property" => "name",
+                "value_property" => "id",
+                "label_attr" => ["class" => "d-none"],
+                "required" => false
             ])
             ->add("submit", SubmitType::class, [
                 "label" => "Sauvegarder"

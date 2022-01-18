@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VehicleDeclinationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VehicleDeclinationRepository::class)]
@@ -13,91 +15,58 @@ class VehicleDeclination
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: VehicleMark::class, inversedBy: 'vehicleDeclinations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $mark;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $name;
 
-    #[ORM\ManyToOne(targetEntity: VehicleModel::class, inversedBy: 'vehicleDeclinations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $model;
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'vehicle_declinations')]
+    private $products;
 
-    #[ORM\ManyToOne(targetEntity: ModelVersion::class, inversedBy: 'vehicleDeclinations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $modelVersion;
-
-    #[ORM\ManyToOne(targetEntity: VersionFrame::class, inversedBy: 'vehicleDeclinations')]
-    private $frame;
-
-    #[ORM\ManyToOne(targetEntity: VersionMotorisation::class, inversedBy: 'vehicleDeclinations')]
-    private $motorisation;
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getMark(): ?VehicleMark
+    public function getName(): ?string
     {
-        return $this->mark;
+        return $this->name;
     }
 
-    public function setMark(?VehicleMark $mark): self
+    public function setName(?string $name): self
     {
-        $this->mark = $mark;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getModel(): ?VehicleModel
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
     {
-        return $this->model;
+        return $this->products;
     }
 
-    public function setModel(?VehicleModel $model): self
+    public function addProduct(Product $product): self
     {
-        $this->model = $model;
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addVehicleDeclination($this);
+        }
 
         return $this;
     }
 
-    public function getFrame(): ?VersionFrame
+    public function removeProduct(Product $product): self
     {
-        return $this->frame;
-    }
-
-    public function setFrame(?VersionFrame $frame): self
-    {
-        $this->frame = $frame;
+        if ($this->products->removeElement($product)) {
+            $product->removeVehicleDeclination($this);
+        }
 
         return $this;
-    }
-
-    public function getModelVersion(): ?ModelVersion
-    {
-        return $this->modelVersion;
-    }
-
-    public function setModelVersion(?ModelVersion $modelVersion): self
-    {
-        $this->modelVersion = $modelVersion;
-
-        return $this;
-    }
-
-    public function getMotorisation(): ?VersionMotorisation
-    {
-        return $this->motorisation;
-    }
-
-    public function setMotorisation(?VersionMotorisation $motorisation): self
-    {
-        $this->motorisation = $motorisation;
-
-        return $this;
-    }
-
-    public function __toString(): string
-    {
-      return $this->mark . " " . $this->model ." ". $this->modelVersion . " ". $this->frame ." " . $this->motorisation;
     }
 }

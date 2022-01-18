@@ -82,7 +82,7 @@ body.public {
   margin: 0;
   padding: 0;
 
-  header {
+  header, .part1 {
     .text {
       display: flex;
       flex-direction: column;
@@ -352,6 +352,8 @@ body.public {
 
     .reinit-btn {
       display: none;
+      margin: 0 auto;
+      max-width: 40px;
     }
 
     .nav-menu {
@@ -591,6 +593,7 @@ body.public {
   transition-duration: 500ms;
   transform: rotate(360deg);
 }
+
 .card {
   .card-img-top {
     max-width: 400px;
@@ -598,17 +601,17 @@ body.public {
     z-index: 8;
   }
 }
+
 .search {
   display: flex;
   justify-content: center;
 
   i {
-    margin-left: 10px;
     font-size: 1.4em;
   }
 
   input, select {
-    max-width: 150px;
+    max-width: 200px;
     height: 30px;
     border: none;
     border-radius: 5px;
@@ -619,7 +622,7 @@ body.public {
     }
 
     &:optional {
-      color: white;
+      color: black;
       padding: 0 5px;
     }
   }
@@ -630,7 +633,14 @@ body.public {
   }
 
   .select {
-    min-width: 130px;
+    min-width: 200px;
+    color: black;
+    &:disabled {
+      background-color: black;
+    }
+    option {
+      color: black;
+    }
 
     &:after {
       position: absolute;

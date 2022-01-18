@@ -18,28 +18,52 @@ class ModelVersion
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'string', nullable: true)]
     private $begin_at;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'string', nullable: true)]
     private $end_at;
 
-    #[ORM\OneToOne(mappedBy: 'modelVersion', targetEntity: VersionMotorisation::class, cascade: ['persist', 'remove'])]
-    private $versionMotorisation;
-
-    #[ORM\OneToOne(mappedBy: 'modelVersion', targetEntity: VersionFrame::class, cascade: ['persist', 'remove'])]
-    private $versionFrame;
 
     #[ORM\ManyToOne(targetEntity: VehicleModel::class, inversedBy: 'modelVersions')]
     #[ORM\JoinColumn(nullable: false)]
     private $model;
 
-    #[ORM\OneToMany(mappedBy: 'modelVersion', targetEntity: VehicleDeclination::class)]
-    private $vehicleDeclinations;
+    #[ORM\Column(type: 'integer')]
+    private $year;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $motorisation;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $cv_f;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $frame;
+
+    #[ORM\ManyToOne(targetEntity: VehicleMark::class, inversedBy: 'modelVersions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $vehicle_mark;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $mark_name;
+
+    #[ORM\ManyToOne(targetEntity: VehicleRange::class, inversedBy: 'modelVersions')]
+    #[ORM\JoinColumn(nullable: true)]
+    private $vehicle_range;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $range_name;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $model_name;
+
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'model_version')]
+    private $products;
 
     public function __construct()
     {
-        $this->vehicleDeclinations = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,45 +107,6 @@ class ModelVersion
         return $this;
     }
 
-    public function getVersionMotorisation(): ?VersionMotorisation
-    {
-        return $this->versionMotorisation;
-    }
-
-    public function setVersionMotorisation(?VersionMotorisation $versionMotorisation): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($versionMotorisation === null && $this->versionMotorisation !== null) {
-            $this->versionMotorisation->setModelVersion(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($versionMotorisation !== null && $versionMotorisation->getModelVersion() !== $this) {
-            $versionMotorisation->setModelVersion($this);
-        }
-
-        $this->versionMotorisation = $versionMotorisation;
-
-        return $this;
-    }
-
-    public function getVersionFrame(): ?VersionFrame
-    {
-        return $this->versionFrame;
-    }
-
-    public function setVersionFrame(VersionFrame $versionFrame): self
-    {
-        // set the owning side of the relation if necessary
-        if ($versionFrame->getModelVersion() !== $this) {
-            $versionFrame->setModelVersion($this);
-        }
-
-        $this->versionFrame = $versionFrame;
-
-        return $this;
-    }
-
     public function getModel(): ?VehicleModel
     {
         return $this->model;
@@ -134,31 +119,136 @@ class ModelVersion
         return $this;
     }
 
-    /**
-     * @return Collection|VehicleDeclination[]
-     */
-    public function getVehicleDeclinations(): Collection
+    public function getYear(): ?int
     {
-        return $this->vehicleDeclinations;
+        return $this->year;
     }
 
-    public function addVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    public function setYear(int $year): self
     {
-        if (!$this->vehicleDeclinations->contains($vehicleDeclination)) {
-            $this->vehicleDeclinations[] = $vehicleDeclination;
-            $vehicleDeclination->setModelVersion($this);
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getMotorisation(): ?string
+    {
+        return $this->motorisation;
+    }
+
+    public function setMotorisation(string $motorisation): self
+    {
+        $this->motorisation = $motorisation;
+
+        return $this;
+    }
+
+    public function getCvF(): ?int
+    {
+        return $this->cv_f;
+    }
+
+    public function setCvF(int $cv_f): self
+    {
+        $this->cv_f = $cv_f;
+
+        return $this;
+    }
+
+    public function getFrame(): ?string
+    {
+        return $this->frame;
+    }
+
+    public function setFrame(string $frame): self
+    {
+        $this->frame = $frame;
+
+        return $this;
+    }
+
+    public function getVehicleMark(): ?VehicleMark
+    {
+        return $this->vehicle_mark;
+    }
+
+    public function setVehicleMark(?VehicleMark $vehicle_mark): self
+    {
+        $this->vehicle_mark = $vehicle_mark;
+
+        return $this;
+    }
+
+    public function getMarkName(): ?string
+    {
+        return $this->mark_name;
+    }
+
+    public function setMarkName(string $mark_name): self
+    {
+        $this->mark_name = $mark_name;
+
+        return $this;
+    }
+
+    public function getVehicleRange(): ?VehicleRange
+    {
+        return $this->vehicle_range;
+    }
+
+    public function setVehicleRange(?VehicleRange $vehicle_range): self
+    {
+        $this->vehicle_range = $vehicle_range;
+
+        return $this;
+    }
+
+    public function getRangeName(): ?string
+    {
+        return $this->range_name;
+    }
+
+    public function setRangeName(string $range_name): self
+    {
+        $this->range_name = $range_name;
+
+        return $this;
+    }
+
+    public function getModelName(): ?string
+    {
+        return $this->model_name;
+    }
+
+    public function setModelName(string $model_name): self
+    {
+        $this->model_name = $model_name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addModelVersion($this);
         }
 
         return $this;
     }
 
-    public function removeVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    public function removeProduct(Product $product): self
     {
-        if ($this->vehicleDeclinations->removeElement($vehicleDeclination)) {
-            // set the owning side to null (unless already changed)
-            if ($vehicleDeclination->getModelVersion() === $this) {
-                $vehicleDeclination->setModelVersion(null);
-            }
+        if ($this->products->removeElement($product)) {
+            $product->removeModelVersion($this);
         }
 
         return $this;
@@ -167,5 +257,6 @@ class ModelVersion
     public function __toString(): string
     {
         return $this->name;
-    }
+        }
+
 }

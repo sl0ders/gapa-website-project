@@ -10,11 +10,16 @@ use App\Entity\Picture;
 use App\Entity\Product;
 use App\Entity\ProductType;
 use App\Entity\Provider;
+use App\Entity\VehicleDeclination;
 use App\Repository\CategoryRepository;
+use App\Repository\ModelVersionRepository;
 use App\Repository\PictureRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductTypeRepository;
 use App\Repository\ProviderRepository;
+use App\Repository\VehicleMarkRepository;
+use App\Repository\VehicleModelRepository;
+use App\Repository\VehicleRangeRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
@@ -28,8 +33,28 @@ class ProductServices
     private PictureRepository $pictureRepository;
     private ProductRepository $productRepository;
     private string $targetDirectory;
+    private $picturesDirectory;
+    private $filesDirectory;
+    private VehicleMarkRepository $markRepository;
+    private VehicleRangeRepository $rangeRepository;
+    private VehicleModelRepository $modelRepository;
+    private ModelVersionRepository $versionRepository;
 
-    public function __construct(string $targetDirectory, ProductRepository $productRepository, PictureRepository $pictureRepository, ProviderRepository $providerRepository, CategoryRepository $categoryRepository, ProductTypeRepository $productTypeRepository, EntityManagerInterface $entityManager)
+    public function __construct(
+        string $targetDirectory,
+        $picturesDirectory,
+        $filesDirectory,
+        ProductRepository $productRepository,
+        PictureRepository $pictureRepository,
+        ProviderRepository $providerRepository,
+        CategoryRepository $categoryRepository,
+        ProductTypeRepository $productTypeRepository,
+        EntityManagerInterface $entityManager,
+        VehicleMarkRepository $markRepository,
+        VehicleRangeRepository $rangeRepository,
+        VehicleModelRepository $modelRepository,
+        ModelVersionRepository $versionRepository
+    )
     {
         $this->providerRepository = $providerRepository;
         $this->entityManager = $entityManager;
@@ -38,6 +63,12 @@ class ProductServices
         $this->pictureRepository = $pictureRepository;
         $this->productRepository = $productRepository;
         $this->targetDirectory = $targetDirectory;
+        $this->picturesDirectory = $picturesDirectory;
+        $this->filesDirectory = $filesDirectory;
+        $this->markRepository = $markRepository;
+        $this->rangeRepository = $rangeRepository;
+        $this->modelRepository = $modelRepository;
+        $this->versionRepository = $versionRepository;
     }
 
     /**
@@ -250,5 +281,57 @@ class ProductServices
         $this->entityManager->persist($file);
         $this->entityManager->flush();
         return $file;
+    }
+
+    public function addFile($files, $pictures, $product) {
+        foreach ($files as $file) {
+            if ($file->getAttachmentFile()) {
+                $newFile = $file->getAttachmentFile();
+                $fichier = md5(uniqid('', true)) . "." . $newFile->guessExtension();
+                $newFile->move(
+                    $this->filesDirectory,
+                    $fichier
+                );
+                $fichierFinal = $this->filesDirectory . "/" . $fichier;
+                $file->setName("../upload/files/" . $fichier);
+                $file->setDescription($file->getDescription());
+                $file->setFormat(pathinfo($fichierFinal)["extension"]);
+                $product->addAttachment($file);
+            }
+        }
+        foreach ($pictures as $picture) {
+            if ($picture->getImageFile()) {
+                $newPicture = $picture->getImageFile();
+                $fichier = md5(uniqid('', true)) . "." . $newPicture->guessExtension();
+                $newPicture->move(
+                    $this->picturesDirectory,
+                    $fichier
+                );
+                $fichierFinal = $this->picturesDirectory . "/" . $fichier;
+                $width = (getimagesize($this->picturesDirectory . "/" . $fichier)[0]);
+                $height = (getimagesize($this->picturesDirectory . "/" . $fichier)[1]);
+                $picture->setName("../upload/images/" . $fichier);
+                $picture->setFormat(getimagesize($fichierFinal)["mime"]);
+                $picture->setWidth($width);
+                $picture->setHeight($height);
+                $product->addPicture($picture);
+            }
+        }
+        return $product;
+    }
+
+    public function addDeclinations($declinations, $product) {
+        /** @var VehicleDeclination $declination */
+        foreach ($declinations as $declination) {
+            $arrayDeclination = explode("-", $declination->getName());
+            $product->addMark($this->markRepository->findOneBy(["name" => $arrayDeclination[0]]));
+            if ($arrayDeclination[1] != "" OR $arrayDeclination[1] != strval("null")) {
+                dd($arrayDeclination[1]);
+                $product->addVehicleRange($this->rangeRepository->findOneBy(["name" => $arrayDeclination[1]]));
+            }
+            $product->addVehicleModel($this->modelRepository->findOneBy(["name" => $arrayDeclination[2]]));
+            $product->addModel_version($this->versionRepository->findOneBy(["year" => $arrayDeclination[3], "name" => $arrayDeclination[4], "motorisation" => $arrayDeclination[5], "frame" => $arrayDeclination[6]]));
+        }
+        return $product;
     }
 }

@@ -193,31 +193,20 @@
     </div>
 </div>
 <div class="product-section col-md-10 offset-1 border p-2 section-inge">
-    <div class="row">
-        <div class="col-md-6">
-            <h5>Fournisseur</h5>
-            <div class="m-2 form-group">
-                {{ form_label(form.provider) }}
-                {{ form_widget(form.provider) }}
-                {{ form_errors(form.provider) }}
-            </div>
+    <div class="col-md-12">
+        <h5>Fournisseur</h5>
+        <div class="m-2 form-group">
+            {{ form_label(form.provider) }}
+            {{ form_widget(form.provider) }}
+            {{ form_errors(form.provider) }}
         </div>
-        <div class="col-md-5">
-            <h5>Moteur et chassis concerné</h5>
-            <div class="input-group mb-3 col-md-6">
-                <div class="row">
-                    <div class="form-group">
-                        {{ form_label(form.versionMotorisation) }}
-                        {{ form_widget(form.versionMotorisation) }}
-                        {{ form_errors(form.versionMotorisation) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.versionFrame) }}
-                        {{ form_widget(form.versionFrame) }}
-                        {{ form_errors(form.versionFrame) }}
-                    </div>
-                </div>
-            </div>
+    </div>
+    <div class="col-md-12">
+        <h5>Piece utilisable sur...</h5>
+        <div class="m-2 form-group">
+            {{ form_label(form.vehicle_declinations) }}
+            {{ form_widget(form.vehicle_declinations) }}
+            {{ form_errors(form.vehicle_declinations) }}
         </div>
     </div>
 </div>
@@ -279,8 +268,8 @@
 </script>
 <script>
     $("#product_price").change(() => {
-        let valWithTax = $("#product_price").val()*1.2
-        let  valWithTaxFormat = Math.round(valWithTax * 100) / 100
+        let valWithTax = $("#product_price").val() * 1.2
+        let valWithTaxFormat = Math.round(valWithTax * 100) / 100
         $("#product_price_ttc").val(valWithTaxFormat)
     })
 </script>

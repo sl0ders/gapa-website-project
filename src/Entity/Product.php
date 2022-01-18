@@ -77,12 +77,6 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private $provider;
 
-    #[ORM\ManyToOne(targetEntity: VersionMotorisation::class, inversedBy: 'products')]
-    private $versionMotorisation;
-
-    #[ORM\ManyToOne(targetEntity: VersionFrame::class, inversedBy: 'products')]
-    private $versionFrame;
-
     #[ORM\ManyToMany(targetEntity: Order::class, mappedBy: 'products')]
     private $orders;
 
@@ -131,6 +125,22 @@ class Product
     #[ORM\Column(type: 'boolean')]
     private $is_on_sale;
 
+    #[ORM\ManyToMany(targetEntity: VehicleDeclination::class, inversedBy: 'products')]
+    private $vehicle_declinations;
+
+    #[ORM\ManyToMany(targetEntity: VehicleMark::class, inversedBy: 'products')]
+    private $mark;
+
+    #[ORM\ManyToMany(targetEntity: VehicleModel::class, inversedBy: 'products')]
+    private $VehicleModel;
+
+    #[ORM\ManyToMany(targetEntity: VehicleRange::class, inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: true)]
+    private $vehicleRange;
+
+    #[ORM\ManyToMany(targetEntity: ModelVersion::class, inversedBy: 'products')]
+    private $model_version;
+
     #[Pure] public function __construct()
     {
         $this->pictures = new ArrayCollection();
@@ -139,6 +149,11 @@ class Product
         $this->cartProducts = new ArrayCollection();
         $this->attachment = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->vehicle_declinations = new ArrayCollection();
+        $this->mark = new ArrayCollection();
+        $this->VehicleModel = new ArrayCollection();
+        $this->vehicleRange = new ArrayCollection();
+        $this->model_version= new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -374,32 +389,8 @@ class Product
         return $this;
     }
 
-    public function getVersionMotorisation(): ?VersionMotorisation
-    {
-        return $this->versionMotorisation;
-    }
-
-    public function setVersionMotorisation(?VersionMotorisation $versionMotorisation): self
-    {
-        $this->versionMotorisation = $versionMotorisation;
-
-        return $this;
-    }
-
-    public function getVersionFrame(): ?VersionFrame
-    {
-        return $this->versionFrame;
-    }
-
-    public function setVersionFrame(?VersionFrame $versionFrame): self
-    {
-        $this->versionFrame = $versionFrame;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Order[]
+     * @return Collection
      */
     public function getOrders(): Collection
     {
@@ -667,6 +658,126 @@ class Product
     public function setIsOnSale(bool $is_on_sale): self
     {
         $this->is_on_sale = $is_on_sale;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VehicleDeclination[]
+     */
+    public function getVehicleDeclinations(): Collection
+    {
+        return $this->vehicle_declinations;
+    }
+
+    public function addVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        if (!$this->vehicle_declinations->contains($vehicleDeclination)) {
+            $this->vehicle_declinations[] = $vehicleDeclination;
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    {
+        $this->vehicle_declinations->removeElement($vehicleDeclination);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VehicleMark[]
+     */
+    public function getMark(): Collection
+    {
+        return $this->mark;
+    }
+
+    public function addMark(VehicleMark $mark): self
+    {
+        if (!$this->mark->contains($mark)) {
+            $this->mark[] = $mark;
+        }
+
+        return $this;
+    }
+
+    public function removeMark(VehicleMark $mark): self
+    {
+        $this->mark->removeElement($mark);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VehicleModel[]
+     */
+    public function getVehicleModel(): Collection
+    {
+        return $this->VehicleModel;
+    }
+
+    public function addVehicleModel(VehicleModel $vehicleModel): self
+    {
+        if (!$this->VehicleModel->contains($vehicleModel)) {
+            $this->VehicleModel[] = $vehicleModel;
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleModel(VehicleModel $vehicleModel): self
+    {
+        $this->VehicleModel->removeElement($vehicleModel);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VehicleRange[]
+     */
+    public function getVehicleRange(): Collection
+    {
+        return $this->vehicleRange;
+    }
+
+    public function addVehicleRange(?VehicleRange $vehicleRange): self
+    {
+        if (!$this->vehicleRange->contains($vehicleRange)) {
+            $this->vehicleRange[] = $vehicleRange;
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleRange(VehicleRange $vehicleRange): self
+    {
+        $this->vehicleRange->removeElement($vehicleRange);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VehicleRange[]
+     */
+    public function getModel_version(): Collection
+    {
+        return $this->model_version;
+    }
+
+    public function addModel_version(ModelVersion $model_version): self
+    {
+        if (!$this->model_version->contains($model_version)) {
+            $this->model_version[] = $model_version;
+        }
+
+        return $this;
+    }
+
+    public function removeModel_version(ModelVersion $model_version): self
+    {
+        $this->model_version->removeElement($model_version);
 
         return $this;
     }

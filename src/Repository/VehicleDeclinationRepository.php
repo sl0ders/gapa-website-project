@@ -47,4 +47,14 @@ class VehicleDeclinationRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function search(string $name): array
+    {
+        return $this->createQueryBuilder("c")
+            ->where("c.name LIKE :name")
+            ->select("c.name","c.id")
+            ->setParameter(':name', "%$name%")
+            ->getQuery()
+            ->getResult();
+    }
 }
