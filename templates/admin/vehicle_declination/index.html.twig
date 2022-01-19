@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VehicleDeclination index{% endblock %}
+{% block body %}
+    <h1>VehicleDeclination index</h1>
+
+    <table class="table" id="datatable">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for vehicle_declination in paginator %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ vehicle_declination.id }}</td>
+                <td>{{ vehicle_declination.name }}</td>
+                <td>
+                    <a href="{{ path('admin_declination_show', {'id': vehicle_declination.id}) }}">show</a>
+                    <a href="{{ path('admin_declination_edit', {'id': vehicle_declination.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation">
+        {{ knp_pagination_render(paginator) }}
+    </div>
+    <a href="{{ path('admin_declination_new') }}">Create new</a>
+{% endblock %}

@@ -149,8 +149,22 @@
                 <th>Fichier rattaché</th>
                 <td>
                     {% for attachment in product.attachment %}
-                        <a class="text-decoration-none text-black" href="{{ asset(attachment.name) }}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+                        <a class="text-decoration-none text-black" href="{{ asset(attachment.name) }}"><i
+                                    class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
                     {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Vehicule associé</th>
+                <td>
+                    {% for model in product.vehicleModel %}
+                        {{ model.name }}
+                    {% endfor %}
+                    -
+                    {% for version in product.model_version %}
+                        {{ version.name }}
+                    {% endfor %}
+                    <br>
                 </td>
             </tr>
             </tbody>

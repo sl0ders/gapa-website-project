@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit VehicleDeclination{% endblock %}
+
+{% block body %}
+    <h1>Edit VehicleDeclination</h1>
+
+    {{ include('admin/vehicle_declination/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('admin_declination_index') }}">back to list</a>
+
+    {{ include('admin/vehicle_declination/_delete_form.html.twig') }}
+{% endblock %}

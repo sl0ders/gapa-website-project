@@ -49,6 +49,11 @@
         </section>
         <section class="part2">
             <h1 class="text-center">Nos produits</h1>
+            <div class="productType row">
+                {% for productType in productTypes %}
+                    <button class="{{ loop.index == 1 ? "actif"}} col buttonType" id="product-{{ productType.id }}">{{ productType.name }}</button>
+                {% endfor %}
+            </div>
             <div class="container js-filter" id="page">
                 <div class="row mt-5">
                     <div class="row">
@@ -80,4 +85,11 @@
 
         </section>
     </div>
+    <script>
+        let selectProductType = $(".buttonType")
+        selectProductType.on("click", (e) => {
+            selectProductType.removeClass("actif")
+            e.target.classList.add("actif")
+        })
+    </script>
 {% endblock %}

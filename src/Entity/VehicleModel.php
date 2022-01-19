@@ -26,15 +26,17 @@ class VehicleModel
     private $vehicleMark;
 
     #[ORM\ManyToOne(targetEntity: VehicleRange::class, inversedBy: 'vehicleModels')]
+    #[ORM\JoinColumn(nullable: true)]
     private $vehicle_range;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\JoinColumn(nullable: true)]
     private $range_name;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $mark_name;
 
-    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'VehicleModel')]
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'vehicleModel')]
     private $products;
 
     public function __construct()

@@ -22,5 +22,6 @@ class VehicleMarkController extends AbstractController
     public function sync(MarkServices $markServices): Response
     {
         $markServices->SyncMark();
+        return $this->redirectToRoute("public_product_index");
     }
 }

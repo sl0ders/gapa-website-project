@@ -16,6 +16,7 @@ use App\Repository\ProductRepository;
 use App\Repository\ProviderRepository;
 use App\Repository\VehicleDeclinationRepository;
 use App\Repository\VehicleModelRepository;
+use App\Repository\VehicleRangeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -90,12 +91,29 @@ class ApiController extends AbstractController
     /**
      * @throws JsonException
      */
+    #[Route("/getRanges", name: "getRanges")]
+    public function getRanges(Request $request, VehicleRangeRepository $rangeRepository): Response
+    {
+        $rangesArray = [];
+        $markId = $request->request->get("mark");
+        $ranges = $rangeRepository->findBy(["vehicleMark" => $markId]);
+        foreach ($ranges as $range) {
+            $rangesArray[$range->getId()] = $range->getName();
+        }
+        $response = new Response(json_encode($rangesArray, JSON_THROW_ON_ERROR));
+        $response->headers->set("Content-Type", "application/json");
+        return $response;
+    }
+
+    /**
+     * @throws JsonException
+     */
     #[Route("/getModels", name: "getModels")]
-    public function getModels(Request $request, VehicleModelRepository $modelRepository): Response
+    public function getModels(Request $request, VehicleModelRepository $modelRepository, VehicleRangeRepository $rangeRepository): Response
     {
         $modelsArray = [];
-        $markId = $request->request->get("mark");
-        $models = $modelRepository->findBy(["vehicleMark" => $markId]);
+        $rangeId = $request->request->get("range");
+        $models = $modelRepository->findBy(["vehicle_range" => $rangeId]);
         foreach ($models as $model) {
             $modelsArray[$model->getId()] = $model->getName();
         }
@@ -142,20 +160,6 @@ class ApiController extends AbstractController
             $versionsArray[$version->getId()] = $version->getName();
         }
         $response = new Response(json_encode($versionsArray, JSON_THROW_ON_ERROR));
-        $response->headers->set("Content-Type", "application/json");
-        return $response;
-    }
-
-    #[Route("/getProducts", name: "getProducts")]
-    public function getProducts(Request $request, ProductRepository $productRepository): Response
-    {
-        $modelsArray = [];
-        $markId = $request->request->get("mark");
-        $models = $productRepository->findBy(["" => $markId]);
-        foreach ($models as $model) {
-            $modelsArray[$model->getId()] = $model->getName();
-        }
-        $response = new Response(json_encode($modelsArray, JSON_THROW_ON_ERROR));
         $response->headers->set("Content-Type", "application/json");
         return $response;
     }

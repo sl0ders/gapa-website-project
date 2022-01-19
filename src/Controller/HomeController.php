@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Data\SearchData;
 use App\Form\Public\SearchType;
 use App\Repository\ProductRepository;
+use App\Repository\ProductTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(Request $request, ProductRepository $productRepository): Response
+    public function index(Request $request, ProductRepository $productRepository, ProductTypeRepository $productTypeRepository): Response
     {
+        $productTypes = $productTypeRepository->findAll();
         $data = new SearchData();
         $data->page = $request->get("page", 1);
         $form = $this->createForm(SearchType::class, $data);
@@ -30,6 +32,7 @@ class HomeController extends AbstractController
             ]);
         }
         return $this->render('index.html.twig', [
+            "productTypes" => $productTypes,
             "products" => $products,
             'form' => $form->createView()
         ]);

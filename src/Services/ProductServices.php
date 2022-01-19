@@ -41,16 +41,16 @@ class ProductServices
     private ModelVersionRepository $versionRepository;
 
     public function __construct(
-        string $targetDirectory,
-        $picturesDirectory,
-        $filesDirectory,
-        ProductRepository $productRepository,
-        PictureRepository $pictureRepository,
-        ProviderRepository $providerRepository,
-        CategoryRepository $categoryRepository,
-        ProductTypeRepository $productTypeRepository,
+        string                 $targetDirectory,
+                               $picturesDirectory,
+                               $filesDirectory,
+        ProductRepository      $productRepository,
+        PictureRepository      $pictureRepository,
+        ProviderRepository     $providerRepository,
+        CategoryRepository     $categoryRepository,
+        ProductTypeRepository  $productTypeRepository,
         EntityManagerInterface $entityManager,
-        VehicleMarkRepository $markRepository,
+        VehicleMarkRepository  $markRepository,
         VehicleRangeRepository $rangeRepository,
         VehicleModelRepository $modelRepository,
         ModelVersionRepository $versionRepository
@@ -283,7 +283,8 @@ class ProductServices
         return $file;
     }
 
-    public function addFile($files, $pictures, $product) {
+    public function addFile($files, $pictures, $product)
+    {
         foreach ($files as $file) {
             if ($file->getAttachmentFile()) {
                 $newFile = $file->getAttachmentFile();
@@ -320,13 +321,13 @@ class ProductServices
         return $product;
     }
 
-    public function addDeclinations($declinations, $product) {
+    public function addDeclinations($declinations, $product)
+    {
         /** @var VehicleDeclination $declination */
         foreach ($declinations as $declination) {
-            $arrayDeclination = explode("-", $declination->getName());
+            $arrayDeclination = explode("/", $declination->getName());
             $product->addMark($this->markRepository->findOneBy(["name" => $arrayDeclination[0]]));
-            if ($arrayDeclination[1] != "" OR $arrayDeclination[1] != strval("null")) {
-                dd($arrayDeclination[1]);
+            if ($arrayDeclination[1] !== "NC") {
                 $product->addVehicleRange($this->rangeRepository->findOneBy(["name" => $arrayDeclination[1]]));
             }
             $product->addVehicleModel($this->modelRepository->findOneBy(["name" => $arrayDeclination[2]]));

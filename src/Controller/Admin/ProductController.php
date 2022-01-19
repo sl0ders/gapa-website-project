@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
-use App\Entity\VehicleDeclination;
 use App\Form\ProductType;
 use App\Repository\ModelVersionRepository;
 use App\Repository\ProductRepository;
@@ -42,6 +41,7 @@ class ProductController extends AbstractController
             /**  Traitement des declinaison de vehicule et affiliation au marque, model version... */
             $declinations = $form->getData()->getVehicleDeclinations();
             $product = $productServices->addDeclinations($declinations, $product);
+            $entityManager->persist($product);
             $pictures = $form->get('pictures')->getData();
             $files = $form->get('attachment')->getData();
             $productServices->addFile($files, $pictures, $product);
@@ -71,6 +71,10 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->getData()->getVehicleDeclinations()) {
+                $declinations = $form->getData()->getVehicleDeclinations();
+                $product = $productServices->addDeclinations($declinations, $product);
+            }
             // On récupère les images transmises
             $pictures = $form->get('pictures')->getData();
             $files = $form->get('attachment')->getData();

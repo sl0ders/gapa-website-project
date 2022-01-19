@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Form\ProductSearchType;
 use App\Repository\AttributeGroupRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
+use App\Repository\ProductTypeRepository;
 use App\Repository\ProviderRepository;
 use App\Repository\VehicleMarkRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class LayoutBundleController extends AbstractController
@@ -29,9 +33,9 @@ class LayoutBundleController extends AbstractController
         ]);
     }
 
-    public function publicLayoutHeader(VehicleMarkRepository $markRepository , ProviderRepository $providerRepository): Response
+    public function publicLayoutHeader(VehicleMarkRepository $markRepository, ProviderRepository $providerRepository, ProductTypeRepository $productTypeRepository): Response
     {
-       $providers = $providerRepository->findAll();
+        $providers = $providerRepository->findAll();
         return $this->render("layout/_header.html.twig", [
             "marks" => $markRepository->findBy([], ["name" => "DESC"]),
             "providers" => $providers

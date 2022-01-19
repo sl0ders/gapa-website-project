@@ -99,47 +99,47 @@ class Product
     private $upc;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $countryOfOrigin;
+    private ?string $countryOfOrigin;
 
     #[ORM\Column(type: 'string', length: 4, nullable: true)]
-    private $currency;
+    private ?string $currency;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private $retail_price;
+    private ?float $retail_price;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $tariffcode;
+    private ?string $tariffcode;
 
     #[ORM\ManyToMany(targetEntity: Picture::class, cascade: ["persist"])]
-    private $pictures;
+    private  $pictures;
 
     #[ORM\ManyToMany(targetEntity: Attachment::class, cascade: ["persist"])]
-    private $attachment;
+    private  $attachment;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
-    private $is_in_stock;
+    private ?int $is_in_stock;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products', cascade: ["persist"])]
-    private $categories;
+    private  $categories;
 
     #[ORM\Column(type: 'boolean')]
-    private $is_on_sale;
+    private ?bool $is_on_sale;
 
     #[ORM\ManyToMany(targetEntity: VehicleDeclination::class, inversedBy: 'products')]
-    private $vehicle_declinations;
+    private  $vehicle_declinations;
 
     #[ORM\ManyToMany(targetEntity: VehicleMark::class, inversedBy: 'products')]
-    private $mark;
+    private  $mark;
 
     #[ORM\ManyToMany(targetEntity: VehicleModel::class, inversedBy: 'products')]
-    private $VehicleModel;
+    private  $vehicleModel;
 
     #[ORM\ManyToMany(targetEntity: VehicleRange::class, inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: true)]
-    private $vehicleRange;
+    private  $vehicleRange;
 
     #[ORM\ManyToMany(targetEntity: ModelVersion::class, inversedBy: 'products')]
-    private $model_version;
+    private  $modelVersion;
 
     #[Pure] public function __construct()
     {
@@ -151,9 +151,9 @@ class Product
         $this->categories = new ArrayCollection();
         $this->vehicle_declinations = new ArrayCollection();
         $this->mark = new ArrayCollection();
-        $this->VehicleModel = new ArrayCollection();
+        $this->vehicleModel = new ArrayCollection();
         $this->vehicleRange = new ArrayCollection();
-        $this->model_version= new ArrayCollection();
+        $this->modelVersion= new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -662,6 +662,18 @@ class Product
         return $this;
     }
 
+    public function getVehicleDeclination(): ?VehicleDeclination
+    {
+        return $this->vehicleDeclination;
+    }
+
+    public function setVehicleDeclination(?VehicleDeclination $vehicleDeclination): self
+    {
+        $this->vehicleDeclination = $vehicleDeclination;
+
+        return $this;
+    }
+
     /**
      * @return Collection|VehicleDeclination[]
      */
@@ -715,13 +727,13 @@ class Product
      */
     public function getVehicleModel(): Collection
     {
-        return $this->VehicleModel;
+        return $this->vehicleModel;
     }
 
     public function addVehicleModel(VehicleModel $vehicleModel): self
     {
-        if (!$this->VehicleModel->contains($vehicleModel)) {
-            $this->VehicleModel[] = $vehicleModel;
+        if (!$this->vehicleModel->contains($vehicleModel)) {
+            $this->vehicleModel[] = $vehicleModel;
         }
 
         return $this;
@@ -729,7 +741,7 @@ class Product
 
     public function removeVehicleModel(VehicleModel $vehicleModel): self
     {
-        $this->VehicleModel->removeElement($vehicleModel);
+        $this->vehicleModel->removeElement($vehicleModel);
 
         return $this;
     }
@@ -763,21 +775,21 @@ class Product
      */
     public function getModel_version(): Collection
     {
-        return $this->model_version;
+        return $this->modelVersion;
     }
 
-    public function addModel_version(ModelVersion $model_version): self
+    public function addModel_version(ModelVersion $modelVersion): self
     {
-        if (!$this->model_version->contains($model_version)) {
-            $this->model_version[] = $model_version;
+        if (!$this->modelVersion->contains($modelVersion)) {
+            $this->modelVersion[] = $modelVersion;
         }
 
         return $this;
     }
 
-    public function removeModel_version(ModelVersion $model_version): self
+    public function removeModel_version(ModelVersion $modelVersion): self
     {
-        $this->model_version->removeElement($model_version);
+        $this->modelVersion->removeElement($modelVersion);
 
         return $this;
     }

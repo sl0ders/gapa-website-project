@@ -24,7 +24,6 @@ class ModelVersion
     #[ORM\Column(type: 'string', nullable: true)]
     private $end_at;
 
-
     #[ORM\ManyToOne(targetEntity: VehicleModel::class, inversedBy: 'modelVersions')]
     #[ORM\JoinColumn(nullable: false)]
     private $model;
@@ -43,7 +42,7 @@ class ModelVersion
 
     #[ORM\ManyToOne(targetEntity: VehicleMark::class, inversedBy: 'modelVersions')]
     #[ORM\JoinColumn(nullable: false)]
-    private $vehicle_mark;
+    private $vehicleMark;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $mark_name;
@@ -58,7 +57,7 @@ class ModelVersion
     #[ORM\Column(type: 'string', length: 255)]
     private $model_name;
 
-    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'model_version')]
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'modelVersion')]
     private $products;
 
     public function __construct()
@@ -169,12 +168,12 @@ class ModelVersion
 
     public function getVehicleMark(): ?VehicleMark
     {
-        return $this->vehicle_mark;
+        return $this->vehicleMark;
     }
 
-    public function setVehicleMark(?VehicleMark $vehicle_mark): self
+    public function setVehicleMark(?VehicleMark $vehicleMark): self
     {
-        $this->vehicle_mark = $vehicle_mark;
+        $this->vehicleMark = $vehicleMark;
 
         return $this;
     }

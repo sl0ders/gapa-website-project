@@ -1,7 +1,7 @@
 <?php
 
 use App\Kernel;
-
+require_once dirname(__DIR__).'/basebuy-auto-sdk-php/BasebuyAutoApi.php';
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
 return function (array $context) {

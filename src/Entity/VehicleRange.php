@@ -23,7 +23,7 @@ class VehicleRange
 
     #[ORM\ManyToOne(targetEntity: VehicleMark::class, inversedBy: 'vehicleRanges')]
     #[ORM\JoinColumn(nullable: false)]
-    private $vehicle_mark;
+    private $vehicleMark;
 
     #[ORM\OneToMany(mappedBy: 'vehicle_range', targetEntity: VehicleModel::class)]
     private $vehicleModels;
@@ -36,7 +36,7 @@ class VehicleRange
 
     public function __construct()
     {
-        $this->vehicle_mark = new ArrayCollection();
+        $this->vehicleMark = new ArrayCollection();
         $this->vehicleModels = new ArrayCollection();
         $this->modelVersions = new ArrayCollection();
         $this->products = new ArrayCollection();
@@ -73,12 +73,12 @@ class VehicleRange
 
     public function getVehicleMark(): ?VehicleMark
     {
-        return $this->vehicle_mark;
+        return $this->vehicleMark;
     }
 
-    public function setVehicleMark(?VehicleMark $vehicle_mark): self
+    public function setVehicleMark(?VehicleMark $vehicleMark): self
     {
-        $this->vehicle_mark = $vehicle_mark;
+        $this->vehicleMark = $vehicleMark;
 
         return $this;
     }

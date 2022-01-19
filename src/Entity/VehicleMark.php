@@ -31,10 +31,10 @@ class VehicleMark
     #[ORM\Column(type: 'boolean', options: ["default" => 1])]
     private $enabled = 1;
 
-    #[ORM\OneToMany(mappedBy: 'vehicle_mark', targetEntity: VehicleRange::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'vehicleMark', targetEntity: VehicleRange::class, orphanRemoval: true)]
     private $vehicleRanges;
 
-    #[ORM\OneToMany(mappedBy: 'vehicle_mark', targetEntity: ModelVersion::class)]
+    #[ORM\OneToMany(mappedBy: 'vehicleMark', targetEntity: ModelVersion::class)]
     private $modelVersions;
 
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'mark')]

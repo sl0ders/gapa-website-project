@@ -24,12 +24,13 @@ class MarkServices
     {
         ini_set('max_execution_time', 0);
         $modelVersions = $this->versionRepository->findAll();
+
         foreach ($modelVersions as $modelVersion) {
             $declinations = new VehicleDeclination();
             if ($modelVersion->getVehicleRange() !== null) {
-                $name = $modelVersion->getMarkName() . "-" . $modelVersion->getModel()->getRangeName() . "-" . $modelVersion->getModelName() . "-". $modelVersion->getYear().  "-" . $modelVersion->getName() . "-" . $modelVersion->getMotorisation() . "-" . $modelVersion->getFrame();
+                $name = $modelVersion->getMarkName() . "/" . $modelVersion->getRangeName() . "/" . $modelVersion->getModelName() . "/". $modelVersion->getYear().  "/" . $modelVersion->getName() . "/" . $modelVersion->getMotorisation() . "/" . $modelVersion->getFrame();
             } else {
-                $name = $modelVersion->getMarkName() . "-". "null" . "-". $modelVersion->getModelName() . "-" . $modelVersion->getYear() . "-" . $modelVersion->getName() . "-" . $modelVersion->getMotorisation() . "-" . $modelVersion->getFrame();
+                $name = $modelVersion->getMarkName() . "/". "NC" . "/". $modelVersion->getModelName() . "/" . $modelVersion->getYear() . "/" . $modelVersion->getName() . "/" . $modelVersion->getMotorisation() . "/" . $modelVersion->getFrame();
             }
             $declinations->setName($name);
             $this->entityManager->persist($declinations);

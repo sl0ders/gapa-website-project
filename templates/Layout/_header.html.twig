@@ -1,5 +1,5 @@
 <header id="header">
-    <div class="Slideshow">
+    <div class="slideshow">
         <div id="texts">
             <div class="text text-catalogue">
                 <h1>Découvrez notre catalogue d'accessoire</h1>
@@ -14,103 +14,110 @@
                 <button class="btn btn-warning btn-xl">En savoir plus</button>
             </div>
         </div>
-        <div class="Slideshow-Content">
+        <div class="slideshow-Content">
             <img src="{{ asset('images/template/header-3.jpg') }}" alt=""/>
             <img src="{{ asset('images/template/header.jpg') }}" alt=""/>
             <img src="{{ asset('images/template/header-2.jpg') }}" alt=""/>
         </div>
-        <div class="row">
-            <div class="navbar">
-                <div class="content-navbar">
-                    <div class="dropdown menu-nav">
-                        {% for provider in providers %}
-                            <a class="{{ provider.name }}-product sub-menu dropdown-toggle text-decoration-none"
-                               id="dropdownMenuButton{{ provider.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img class='sub-menu-logo' src='{{ asset(provider.picture.name) }}'
-                                     alt='logo-{{ provider.name }}'>
-                                <i class="fa fa-sort-down"></i>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ provider.id }}">
-                                {% for category in provider.categories %}
-                                    <a class="text-decoration-none text-dark"
-                                       href="{{ path('public_category_show', {'id': category.id}) }}">
-                                        <div class="dropdown-item d-flex justify-content-between"
-                                             href="#">{{ category.name }} <span class="fa fa-arrow-right"></span></div>
-                                    </a>
-                                {% endfor %}
-                            </div>
-                        {% endfor %}
-                    </div>
+        <div class="navbar">
+            <div class="content-navbar">
+                <div class="dropdown menu-nav">
+                    {% for provider in providers %}
+                        <a class="{{ provider.name }}-product sub-menu dropdown-toggle text-decoration-none"
+                           id="dropdownMenuButton{{ provider.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class='sub-menu-logo' src='{{ asset(provider.picture.name) }}'
+                                 alt='logo-{{ provider.name }}'>
+                            <i class="fa fa-sort-down"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ provider.id }}">
+                            {% for category in provider.categories %}
+                                <a class="text-decoration-none text-dark"
+                                   href="{{ path('public_category_show', {'id': category.id}) }}">
+                                    <div class="dropdown-item d-flex justify-content-between"
+                                         href="#">{{ category.name }} <span class="fa fa-arrow-right"></span></div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="navbar d-flex justify-content-around">
-                    <a class="col-md-2" href="{{ path('home') }}">
-                        <img src="{{ asset('images/template/logo-gapa.png') }}" alt="" height="40">
-                    </a>
-                    <div class="col-md-5  search d-flex justify-content-around">
-                        <div class="selectMark mt-1 select">
-                            <label for="selectMark" class="d-none"></label>
-                            <select id="selectMark" class="form-control">
-                                <option value="0">Marques</option>
-                                {% for mark in marks %}
-                                    <option value="{{ mark.id }}">{{ mark.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="selectModel mt-1 select">
-                            <label for="selectModel" class="d-none"></label>
-                            <select id="selectModel" class="form-control">
-                                <option value="0">Modêles</option>
-                            </select>
-                        </div>
-                        <div class="selectVersion mt-1 select">
-                            <label for="selectVersion" class="d-none"></label>
-                            <select id="selectVersion" class="form-control">
-                                <option value="0">Versions</option>
-                            </select>
-                        </div>
-                        <button class="mr-3 btn btn-danger btn-sm"><i class="fa fa-search"></i></button>
-                        <button type="button" class="reinit-btn btn btn-danger btn-sm text-white"><i
-                                    class="fa fa-refresh"></i></button>
+                <form class="col-md-5  search-by-mark d-flex justify-content-center align-items-center">
+                    <div class="selectMark mt-1 select">
+                        <label for="selectMark" class="d-none"></label>
+                        <select id="selectMark" class="form-control">
+                            <option value="0">Marques</option>
+                            {% for mark in marks %}
+                                <option value="{{ mark.id }}">{{ mark.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <div class="col-md-4 d-flex justify-content-around text-white">
-                        <div class="search">
-                            <i class="fa fa-search mt-1" aria-hidden="true"></i>
+                    <div class="selectRange mt-1 select">
+                        <label for="selectRange" class="d-none"></label>
+                        <select id="selectRange" class="form-control">
+                            <option value="0">Gammes</option>
+                        </select>
+                    </div>
+                    <div class="selectModel mt-1 select">
+                        <label for="selectModel" class="d-none"></label>
+                        <select id="selectModel" class="form-control">
+                            <option value="0">Modêles</option>
+                        </select>
+                    </div>
+                    <div class="selectVersion mt-1 select">
+                        <label for="selectVersion" class="d-none"></label>
+                        <select id="selectVersion" class="form-control">
+                            <option value="0">Versions</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm button-validate"><i class="fa fa-search"></i>
+                    </button>
+                    <button type="button" class="reinit-btn btn btn-danger btn-sm text-white"><i
+                                class="fa fa-refresh"></i></button>
+                </form>
+            </div>
+            <div class="navbar d-flex justify-content-between">
+                <a class="col-md-2" href="{{ path('home') }}">
+                    <img src="{{ asset('images/template/logo-gapa.png') }}" alt="" height="40">
+                </a>
+                <div class="col-md-4 d-flex justify-content-around text-white">
+                    <div class="search">
+                        <i class="fa fa-search mt-1" aria-hidden="true"></i>
+                        <label>
                             <input type="text" placeholder=" Rechercher..." class="bg-black text-white border-dark">
-                        </div>
-                        <div class="pipe">|</div>
-                        <div class="phone mt-1">
-                            <i class="fa fa-phone" aria-hidden="true"></i>
-                            <span> 04.68.54.44.96</span>
-                        </div>
-                        {% if app.user %}
-                            <div class="pipe">|</div>
-                            <div class="notification">
-                                <a href="" class="text-decoration-none text-white">
-                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                </a>
-                                <a href="" class="text-decoration-none text-white mx-2">
-                                    <i class="fa fa-user" aria-hidden="true"></i>
-                                </a>
-                                <a href="" class="text-decoration-none text-white">
-                                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                                </a>
-                                <a href="{{ path('app_logout') }}" class="text-decoration-none text-danger mx-2">
-                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        {% else %}
-                            <div class="pipe">|</div>
-                            <a href="{{ path('app_login') }}" class="text-white text-decoration-none">
-                                <i class="fa fa-sign-in" aria-hidden="true"></i>
-                                <span>Connexion</span>
-                            </a>
-                            <div class="pipe">|</div>
-                            <a href="{{ path('app_signup') }}" class="text-white text-decoration-none">
-                                <i class="fa fa-sign-in" aria-hidden="true"></i>
-                                <span>Inscription</span>
-                            </a>
-                        {% endif %}
+                        </label>
                     </div>
+                    <div class="pipe">|</div>
+                    <div class="phone mt-1">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <span> 04.68.54.44.96</span>
+                    </div>
+                    {% if app.user %}
+                        <div class="pipe">|</div>
+                        <div class="notification">
+                            <a href="" class="text-decoration-none text-white">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            </a>
+                            <a href="" class="text-decoration-none text-white mx-2">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
+                            <a href="" class="text-decoration-none text-white">
+                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            </a>
+                            <a href="{{ path('app_logout') }}" class="text-decoration-none text-danger mx-2">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="pipe">|</div>
+                        <a href="{{ path('app_login') }}" class="text-white text-decoration-none">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                            <span>Connexion</span>
+                        </a>
+                        <div class="pipe">|</div>
+                        <a href="{{ path('app_signup') }}" class="text-white text-decoration-none">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                            <span>Inscription</span>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -119,31 +126,70 @@
 </header>
 <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
 <script>
+    let selectModel = $("#selectModel")
+    let selectMark = $("#selectMark")
+    let selectRange = $("#selectRange")
+    let selectVersion = $("#selectVersion")
+
     /** Search model with mark*/
-    $("#selectMark").on("change", () => {
+    selectMark.on("change", () => {
         $.ajax({
             method: "POST",
-            url: "{{ path('getModels') }}",
+            url: "{{ path('getRanges') }}",
             data: {
                 mark: $("#selectMark option:selected").val()
             },
             success: function (data) {
                 $.each(data, function (i, value) {
-                    let selectFinal = $("#selectModel")
-                    selectFinal.append(new Option(value, i));
+                    selectRange.append(new Option(value, i));
                 })
-                $("#selectMark").attr("disabled", "disabled")
+                selectMark.attr("disabled", "disabled")
+                $(".reinit-btn").show(500)
+            }
+        })
+    })
+    selectRange.on("change", () => {
+        $.ajax({
+            method: "POST",
+            url: "{{ path('getModels') }}",
+            data: {
+                range: $("#selectRange option:selected").val()
+            },
+            success: function (data) {
+                $.each(data, function (i, value) {
+                    selectModel.append(new Option(value, i));
+                })
+                selectRange.attr("disabled", "disabled")
                 $(".reinit-btn").show(500)
             }
         })
     })
     /** Search version with model*/
-    $("#selectModel").on("change", () => {
+    selectModel.on("change", () => {
         $.ajax({
             method: "POST",
             url: "{{ path('getVersions') }}",
             data: {
                 model: $("#selectModel option:selected").val()
+            },
+            success: function (data) {
+                $.each(data, function (i, value) {
+                    selectVersion.append(new Option(value, i));
+                })
+                selectModel.attr("disabled", "disabled")
+            }
+        })
+    })
+
+    $(".button-validate").on("click", () => {
+        $.ajax({
+            method: "POST",
+            url: "{{ path('public_product_index') }}",
+            data: {
+                mark: $("#selectMark option:selected").val(),
+                range: $("#selectRange option:selected").val(),
+                model: $("#selectModel option:selected").val(),
+                version: $("#selectVersion option:selected").val()
             },
             success: function (data) {
                 $.each(data, function (i, value) {
@@ -154,16 +200,15 @@
             }
         })
     })
-
     $(".reinit-btn").on("click", () => {
-        let selectModel = $("#selectModel")
-        let selectMark = $("#selectMark")
-        let selectProduct = $("#selectProduct")
         $("#selectModel option").remove()
-        $("#selectProduct option").remove()
+        $("#selectVersion option").remove()
+        $("#selectRange option").remove()
         selectModel.removeAttr("disabled")
+        selectRange.removeAttr("disabled")
         selectMark.removeAttr("disabled")
         selectModel.append(new Option("Modeles", 0));
-        selectProduct.append(new Option("Produits", 0));
+        selectRange.append(new Option("Gammes", 0));
+        selectVersion.append(new Option("Version", 0));
     })
 </script>
