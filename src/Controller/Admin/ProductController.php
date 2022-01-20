@@ -8,7 +8,6 @@ use App\Repository\ModelVersionRepository;
 use App\Repository\ProductRepository;
 use App\Repository\VehicleMarkRepository;
 use App\Repository\VehicleModelRepository;
-use App\Repository\VehicleRangeRepository;
 use App\Services\ProductServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +30,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/new', name: 'admin_product_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ProductServices $productServices, EntityManagerInterface $entityManager, VehicleMarkRepository $markRepository, VehicleRangeRepository $rangeRepository, VehicleModelRepository $modelRepository, ModelVersionRepository $versionRepository): Response
+    public function new(Request $request, ProductServices $productServices, EntityManagerInterface $entityManager): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
@@ -39,8 +38,8 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /**  Traitement des declinaison de vehicule et affiliation au marque, model version... */
-            $declinations = $form->getData()->getVehicleDeclinations();
-            $product = $productServices->addDeclinations($declinations, $product);
+            $vehicles = $form->getData()->getVehicles();
+            $product = $productServices->addDeclinations($vehicles, $product);
 
             /** integration des images et fichiers documentation des produit */
             $pictures = $form->get('pictures')->getData();
@@ -59,7 +58,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_product_show', methods: ['GET'])]
+    #[Route('/{slug}', name: 'admin_product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
         return $this->render('admin/product/show.html.twig', [
@@ -67,13 +66,12 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'admin_product_edit', methods: ['GET', 'POST'])]
+    #[Route('/{slug}/edit', name: 'admin_product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager, ProductServices $productServices): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
+        if ($form->isSubmitted() && $form->isValid() && $request->getMethod() == "POST") {
             /**  Traitement des declinaison de vehicule et affiliation au marque, model version... */
             $declinations = $form->getData()->getVehicleDeclinations();
             $product = $productServices->addDeclinations($declinations, $product);
@@ -96,7 +94,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_product_delete', methods: ['POST'])]
+    #[Route('/{slug}', name: 'admin_product_delete', methods: ['POST'])]
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {

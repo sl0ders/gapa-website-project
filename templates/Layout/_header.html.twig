@@ -115,14 +115,18 @@
                                  alt='logo-{{ provider.name }}'>
                             <i class="fa fa-sort-down"></i>
                         </a>
-                        <div class="dropdown-menu provider-category-list" aria-labelledby="dropdownMenuButton{{ provider.id }}">
-                            {% for category in provider.categories %}
-                                <a class="text-decoration-none text-dark" href="{{ path('public_category_show', {'id': category.id}) }}">
-                                    <div class="dropdown-item provider-category-item d-flex justify-content-between">{{ category.name }}
-                                        <i class="fa fa-arrow-right"></i>
-                                    </div>
-                                </a>
-                            {% endfor %}
+                        <div class="dropdown-menu provider-category-list-parent" aria-labelledby="dropdownMenuButton{{ provider.id }}">
+                            <div class="row">
+                                {% for category in provider.categories %}
+                                    {% if category.isParentCategory %}
+                                        <a class="text-decoration-none text-dark col" href="{{ path('public_category_show', {'slug': category.slug}) }}">
+                                            <div class="dropdown-item provider-category-item">
+                                                {{ category.name }}
+                                            </div>
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>

@@ -1,0 +1,18 @@
+{{ form_start(form, {attr: {class : 'filter  js-filter-form'}}) }}
+
+<div class="spinner-border js-loading" role="status" aria-hidden="true" style="display: none">
+    <span class="sr-only">Loading...</span>
+</div>
+<div class="search product">
+    {{ form_row(form.q, {attr: {class: "text-black border-dark", placeholder: "Rechercher"}}) }}
+    <i type="submit" class="fa fa-search mt-1" aria-hidden="true"></i>
+</div>
+{% if category is not defined %}
+    {{ form_row(form.categories,{attr: {class : 'd-none'}}) }}
+{% else %}
+    {{ form_row(form.categories,{attr: {class : 'd-none'}}) }}
+{% endif %}
+<h4>Promotion</h4>
+{{ form_row(form.promo) }}
+{{ form_end(form) }}
+

@@ -10,6 +10,7 @@
         "ext-fileinfo": "*",
         "ext-iconv": "*",
         "api-platform/core": "^2.6",
+        "cocur/slugify": "^4.1",
         "composer/package-versions-deprecated": "1.11.99.4",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.5",

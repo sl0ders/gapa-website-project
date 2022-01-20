@@ -23,7 +23,7 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route("/show/{id}", name: "public_category_show")]
+    #[Route("/show/{slug}", name: "public_category_show")]
     public function showProduct(Category $category, Request $request, PaginatorInterface $paginator): Response
     {
         $data = new SearchData();

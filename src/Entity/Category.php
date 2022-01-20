@@ -28,9 +28,27 @@ class Category
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories', cascade: ["persist"])]
     private $products;
 
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'subCategories')]
+    private $subcategory;
+
+    #[ORM\OneToMany(mappedBy: 'subcategory', targetEntity: self::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private $subCategories;
+
+    #[ORM\Column(type: 'boolean', options: ["default = 0"])]
+    private $is_parent_category;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     */
+    #[ORM\Column(type: 'string', length: 255)]
+    private $slug;
+
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->subCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,5 +110,75 @@ class Category
     public function __toString(): string
     {
         return $this->name ?: "";
+    }
+
+    public function getSubcategory(): ?self
+    {
+        return $this->subcategory;
+    }
+
+    public function setSubcategory(?self $subcategory): self
+    {
+        $this->subcategory = $subcategory;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getSubCategories(): Collection
+    {
+        return $this->subCategories;
+    }
+
+    public function addSubCategory(self $subCategory): self
+    {
+        if (!$this->subCategories->contains($subCategory)) {
+            $this->subCategories[] = $subCategory;
+            $subCategory->setSubcategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubCategory(self $subCategory): self
+    {
+        if ($this->subCategories->removeElement($subCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($subCategory->getSubcategory() === $this) {
+                $subCategory->setSubcategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIsParentCategory(): ?bool
+    {
+        return $this->is_parent_category;
+    }
+
+    public function setIsParentCategory(bool $is_parent_category): self
+    {
+        $this->is_parent_category = $is_parent_category;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug): void
+    {
+        $this->slug = $slug;
     }
 }

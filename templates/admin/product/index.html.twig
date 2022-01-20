@@ -37,8 +37,8 @@
                         <td>{{ product.isOnSale ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
                         <td class="container-fluid">
                             <div class="d-flex justify-content-center">
-                                <a href="{{ path('admin_product_show', {'id': product.id}) }}" class="btn btn-primary text-white"><i class="fa fa-eye"></i></a>
-                                <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="mx-1 btn btn-warning text-white"><i class="fa fa-edit"></i></a>
+                                <a href="{{ path('admin_product_show', {'slug': product.slug}) }}" class="btn btn-primary text-white"><i class="fa fa-eye"></i></a>
+                                <a href="{{ path('admin_product_edit', {'slug': product.slug}) }}" class="mx-1 btn btn-warning text-white"><i class="fa fa-edit"></i></a>
                                 {{ include('admin/product/_delete_form.html.twig') }}
                             </div>
                         </td>

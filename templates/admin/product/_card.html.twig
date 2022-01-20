@@ -1,18 +1,10 @@
 <div class="card" id="product-{{ product.id }}">
-    <img src="{{ asset(product.pictures[0].name) }}" class="card-img-top" style="width:250px"
+    <img src="{{ asset(product.pictures[0].name) }}" class="card-img-top"
          alt="{{ product.pictures[0].name }}">
     <div class="card-body">
         <h4 class="card-title">{{ product.name }}</h4>
         <div class="card-title price text-primary">
             {{ product.priceTtc| number_format(2,',', ' ') }} €
-            {% if product.isOnSale %}
-                <div class="text text-warning">Promotion</div>
-            {% endif %}
-        </div>
-        <div class="card-category-list">
-            {% for c in product.categories %}
-                <em class="text-muted text-primary text-italic">#{{ c }}</em>
-            {% endfor %}
         </div>
     </div>
     <div class="card-footer">

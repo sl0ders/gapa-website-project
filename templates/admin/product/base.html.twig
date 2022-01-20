@@ -1,6 +1,6 @@
 {% extends "admin/base.html.twig" %}
 {% block body %}
-    {{ form_start(form) }}
+    {{ form_start(form ) }}
     <div class="row">
         <div class="col-md-3 my-5">
             <div class="border p-2 my-5 rounded">
@@ -44,13 +44,15 @@
             </table>
             <div class="row">
                 <div class="col-md-4">{{ form_row(form.submit) }}</div>
-                <div class="col-md-7 offset-1">
+                <div class="col-md-6 offset-1">
                     <a href="{{ path('admin_product_index') }}" class="btn btn-warning text-white">
                         <i class="fa fa-arrow-left"></i>
                         Retour de la liste
                     </a>
                 </div>
-
+                <div class="col-md-1">
+                    {{ include('admin/product/_delete_form.html.twig') }}
+                </div>
             </div>
         </div>
         <div class="col-md-9">

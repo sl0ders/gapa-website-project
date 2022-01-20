@@ -1,4 +1,22 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+<div class="category-form">
+    {{ form_start(form) }}
+
+    {{ form_widget(form.name) }}
+    {{ form_label(form.name) }}
+    {{ form_errors(form.name) }}
+
+    {{ form_widget(form.isParentCategory, {"attr" : {"class" : "category-parent-check"}}) }}
+    {{ form_label(form.isParentCategory) }}
+    {{ form_errors(form.isParentCategory) }}
+
+    {{ form_widget(form.subCategories, {"attr" : {"class" : "category-subcategory"}}) }}
+
     <button class="btn btn-success">{{ button_label|default('Sauvegarder') }}</button>
-{{ form_end(form) }}
+    {{ form_end(form) }}
+</div>
+
+<script>
+    $(".category-parent-check").on("change", () => {
+        $(".category-subcategory").toggle()
+    })
+</script>

@@ -60,6 +60,13 @@ class ModelVersion
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'modelVersion')]
     private $products;
 
+    #[ORM\ManyToOne(targetEntity: VersionYears::class, inversedBy: 'version')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $versionYears;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $type;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -82,24 +89,24 @@ class ModelVersion
         return $this;
     }
 
-    public function getBeginAt(): ?\DateTimeInterface
+    public function getBeginAt(): ?string
     {
         return $this->begin_at;
     }
 
-    public function setBeginAt(\DateTimeInterface $begin_at): self
+    public function setBeginAt(string $begin_at): self
     {
         $this->begin_at = $begin_at;
 
         return $this;
     }
 
-    public function getEndAt(): ?\DateTimeInterface
+    public function getEndAt(): ?string
     {
         return $this->end_at;
     }
 
-    public function setEndAt(\DateTimeInterface $end_at): self
+    public function setEndAt(string $end_at): self
     {
         $this->end_at = $end_at;
 
@@ -256,6 +263,30 @@ class ModelVersion
     public function __toString(): string
     {
         return $this->name;
-        }
+    }
+
+    public function getVersionYears(): ?VersionYears
+    {
+        return $this->versionYears;
+    }
+
+    public function setVersionYears(?VersionYears $versionYears): self
+    {
+        $this->versionYears = $versionYears;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
 
 }

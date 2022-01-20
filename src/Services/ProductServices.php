@@ -10,6 +10,7 @@ use App\Entity\Picture;
 use App\Entity\Product;
 use App\Entity\ProductType;
 use App\Entity\Provider;
+use App\Entity\Vehicle;
 use App\Entity\VehicleDeclination;
 use App\Repository\CategoryRepository;
 use App\Repository\ModelVersionRepository;
@@ -20,8 +21,11 @@ use App\Repository\ProviderRepository;
 use App\Repository\VehicleMarkRepository;
 use App\Repository\VehicleModelRepository;
 use App\Repository\VehicleRangeRepository;
+use Cocur\Slugify\Slugify;
+use Cocur\Slugify\SlugifyInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Gedmo\Mapping\Annotation\Slug;
 use JsonException;
 
 class ProductServices
@@ -39,6 +43,7 @@ class ProductServices
     private VehicleRangeRepository $rangeRepository;
     private VehicleModelRepository $modelRepository;
     private ModelVersionRepository $versionRepository;
+    private SlugifyInterface $slugify;
 
     public function __construct(
         string                 $targetDirectory,
@@ -53,7 +58,8 @@ class ProductServices
         VehicleMarkRepository  $markRepository,
         VehicleRangeRepository $rangeRepository,
         VehicleModelRepository $modelRepository,
-        ModelVersionRepository $versionRepository
+        ModelVersionRepository $versionRepository,
+        SlugifyInterface $slugify
     )
     {
         $this->providerRepository = $providerRepository;
@@ -69,6 +75,7 @@ class ProductServices
         $this->rangeRepository = $rangeRepository;
         $this->modelRepository = $modelRepository;
         $this->versionRepository = $versionRepository;
+        $this->slugify = $slugify;
     }
 
     /**
@@ -321,9 +328,9 @@ class ProductServices
         return $product;
     }
 
-    public function addDeclinations($declinations, $product)
+    public function addDeclinations($vehicle, $product)
     {
-        /** @var VehicleDeclination $declination */
+        /** @var Vehicle $declination */
         foreach ($declinations as $declination) {
             $arrayDeclination = explode("/", $declination->getName());
             $product->addMark($this->markRepository->findOneBy(["name" => $arrayDeclination[0]]));
@@ -334,5 +341,19 @@ class ProductServices
             $product->addModel_version($this->versionRepository->findOneBy(["year" => $arrayDeclination[3], "name" => $arrayDeclination[4], "motorisation" => $arrayDeclination[5], "frame" => $arrayDeclination[6]]));
         }
         return $product;
+    }
+
+    /**
+     * @return void
+     * Add the productSlug
+     */
+    public function addSlug()
+    {
+        $products = $this->productRepository->findAll();
+        foreach ($products as $product) {
+            $product->setSlug($this->slugify->slugify($product->getName()));
+            $this->entityManager->persist($product);
+        }
+        $this->entityManager->flush();
     }
 }

@@ -175,4 +175,25 @@ class ApiController extends AbstractController
     {
         return $this->json($declinationRepository->search($request->query->get("q")));
     }
+
+    /**
+     * @throws JsonException
+     */
+    #[Route("/api/getProduct", name: "getProducts")]
+    public function getProduct(Request $request, CategoryRepository $categoryRepository)
+    {
+        $categoryId = $request->request->get("categoryId");
+        if ($categoryId) {
+            $productArray = [];
+            $category = $categoryRepository->find($categoryId);
+            $products = $category->getProducts();
+            foreach ($products as $product) {
+                $productArray[$product->getId()] = $product->getName();
+            }
+            dd($productArray);
+            $response = new Response(json_encode($productArray, JSON_THROW_ON_ERROR));
+            $response->headers->set("Content-Type", "application/json");
+            return $response;
+        }
+    }
 }

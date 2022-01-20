@@ -7,7 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
+use Proxies\__CG__\App\Entity\VehicleRange;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[UniqueEntity("reference")]
@@ -111,35 +113,37 @@ class Product
     private ?string $tariffcode;
 
     #[ORM\ManyToMany(targetEntity: Picture::class, cascade: ["persist"])]
-    private  $pictures;
+    private $pictures;
 
     #[ORM\ManyToMany(targetEntity: Attachment::class, cascade: ["persist"])]
-    private  $attachment;
+    private $attachment;
 
     #[ORM\Column(type: 'smallint', nullable: true)]
     private ?int $is_in_stock;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products', cascade: ["persist"])]
-    private  $categories;
+    private $categories;
 
     #[ORM\Column(type: 'boolean')]
     private ?bool $is_on_sale;
 
-    #[ORM\ManyToMany(targetEntity: VehicleDeclination::class, inversedBy: 'products')]
-    private  $vehicle_declinations;
+    #[ORM\ManyToMany(targetEntity: Vehicles::class, inversedBy: 'products')]
+    private $vehicle;
 
     #[ORM\ManyToMany(targetEntity: VehicleMark::class, inversedBy: 'products')]
-    private  $mark;
+    private $mark;
 
     #[ORM\ManyToMany(targetEntity: VehicleModel::class, inversedBy: 'products')]
-    private  $vehicleModel;
-
-    #[ORM\ManyToMany(targetEntity: VehicleRange::class, inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: true)]
-    private  $vehicleRange;
+    private $vehicleModel;
 
     #[ORM\ManyToMany(targetEntity: ModelVersion::class, inversedBy: 'products')]
-    private  $modelVersion;
+    private $modelVersion;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     */
+    #[ORM\Column(type: 'string', length: 255)]
+    private $slug;
 
     #[Pure] public function __construct()
     {
@@ -149,11 +153,10 @@ class Product
         $this->cartProducts = new ArrayCollection();
         $this->attachment = new ArrayCollection();
         $this->categories = new ArrayCollection();
-        $this->vehicle_declinations = new ArrayCollection();
+        $this->vehicles = new ArrayCollection();
         $this->mark = new ArrayCollection();
         $this->vehicleModel = new ArrayCollection();
-        $this->vehicleRange = new ArrayCollection();
-        $this->modelVersion= new ArrayCollection();
+        $this->modelVersion = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -627,7 +630,7 @@ class Product
     }
 
     /**
-     * @return Collection|Category[]
+     * @return Collection
      */
     public function getCategories(): Collection
     {
@@ -662,44 +665,44 @@ class Product
         return $this;
     }
 
-    public function getVehicleDeclination(): ?VehicleDeclination
+    public function getVehicle(): ?Vehicle
     {
-        return $this->vehicleDeclination;
+        return $this->vehicles;
     }
 
-    public function setVehicleDeclination(?VehicleDeclination $vehicleDeclination): self
+    public function setVehicle(?Vehicle $vehicle): self
     {
-        $this->vehicleDeclination = $vehicleDeclination;
+        $this->vehicles = $vehicle;
 
         return $this;
     }
 
     /**
-     * @return Collection|VehicleDeclination[]
+     * @return Collection
      */
-    public function getVehicleDeclinations(): Collection
+    public function getVehicles(): Collection
     {
-        return $this->vehicle_declinations;
+        return $this->vehicles;
     }
 
-    public function addVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    public function addVehicle(Vehicle $vehicle): self
     {
-        if (!$this->vehicle_declinations->contains($vehicleDeclination)) {
-            $this->vehicle_declinations[] = $vehicleDeclination;
+        if (!$this->vehicles->contains($vehicle)) {
+            $this->vehicles[] = $vehicle;
         }
 
         return $this;
     }
 
-    public function removeVehicleDeclination(VehicleDeclination $vehicleDeclination): self
+    public function removeVehicle(Vehicle $vehicle): self
     {
-        $this->vehicle_declinations->removeElement($vehicleDeclination);
+        $this->vehicles->removeElement($vehicle);
 
         return $this;
     }
 
     /**
-     * @return Collection|VehicleMark[]
+     * @return Collection
      */
     public function getMark(): Collection
     {
@@ -723,7 +726,7 @@ class Product
     }
 
     /**
-     * @return Collection|VehicleModel[]
+     * @return Collection
      */
     public function getVehicleModel(): Collection
     {
@@ -746,32 +749,9 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|VehicleRange[]
-     */
-    public function getVehicleRange(): Collection
-    {
-        return $this->vehicleRange;
-    }
-
-    public function addVehicleRange(?VehicleRange $vehicleRange): self
-    {
-        if (!$this->vehicleRange->contains($vehicleRange)) {
-            $this->vehicleRange[] = $vehicleRange;
-        }
-
-        return $this;
-    }
-
-    public function removeVehicleRange(VehicleRange $vehicleRange): self
-    {
-        $this->vehicleRange->removeElement($vehicleRange);
-
-        return $this;
-    }
 
     /**
-     * @return Collection|VehicleRange[]
+     * @return Collection
      */
     public function getModel_version(): Collection
     {
@@ -792,5 +772,21 @@ class Product
         $this->modelVersion->removeElement($modelVersion);
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug): void
+    {
+        $this->slug = $slug;
     }
 }

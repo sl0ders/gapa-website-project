@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\VehicleRange;
+use App\Entity\VersionYears;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method VehicleRange|null find($id, $lockMode = null, $lockVersion = null)
- * @method VehicleRange|null findOneBy(array $criteria, array $orderBy = null)
- * @method VehicleRange[]    findAll()
- * @method VehicleRange[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method VersionYears|null find($id, $lockMode = null, $lockVersion = null)
+ * @method VersionYears|null findOneBy(array $criteria, array $orderBy = null)
+ * @method VersionYears[]    findAll()
+ * @method VersionYears[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VehicleRangeRepository extends ServiceEntityRepository
+class VersionYearsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, VehicleRange::class);
+        parent::__construct($registry, VersionYears::class);
     }
 
     // /**
-    //  * @return VehicleRange[] Returns an array of VehicleRange objects
+    //  * @return VersionYears[] Returns an array of VersionYears objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class VehicleRangeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?VehicleRange
+    public function findOneBySomeField($value): ?VersionYears
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.exampleField = :val')
