@@ -3,16 +3,15 @@
 {% block title %}Product{% endblock %}
 
 {% block body %}
+    <div class="container product-show">
     <h1>Produit : {{ product.name }}</h1>
-    <div class="container">
-
         <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-warning text-white"><i
                     class="fa fa-edit"></i></a>
-        <table class="table" id="datatable">
+        <table class="table">
             <tbody>
             <tr>
                 <th>Images</th>
-                <td>
+                <td class="product-picture">
                     <div class="slideshow-container">
                         {% for picture in product.pictures %}
                             <div class="mySlides">

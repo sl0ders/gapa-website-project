@@ -3,8 +3,8 @@
 <div class="spinner-border js-loading" role="status" aria-hidden="true" style="display: none">
     <span class="sr-only">Loading...</span>
 </div>
-<div class="search">
-    {{ form_row(form.q, {attr: {class: "bg-black text-white border-dark", placeholder: "Rechercher"}}) }}
+<div class="search product">
+    {{ form_row(form.q, {attr: {class: "text-black border-dark", placeholder: "Rechercher"}}) }}
     <i type="submit" class="fa fa-search mt-1" aria-hidden="true"></i>
 </div>
 {% if category is not defined %}

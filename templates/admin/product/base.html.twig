@@ -1,14 +1,15 @@
 {% extends "admin/base.html.twig" %}
 {% block body %}
+    {{ form_start(form) }}
     <div class="row">
-        <div class="col-md-3">
-            <div class="border p-2 my-2">
+        <div class="col-md-3 my-5">
+            <div class="border p-2 my-5 rounded">
                 <h3 class="text-center">Fiche produit</h3>
                 Type du produit : {{ product.type }}<span class="product_product_type"></span><br>
                 Réference d'origine : {{ product.OriginalReference }}<span class="product_OriginalReference"></span><br>
                 Réference : {{ product.reference }}<span class="product_reference"></span><br>
                 Nom : {{ product.name }}<span class="product_name"></span><br>
-                Prix : {{ product.price > 0 ? product.price :  "<span class='product_price'></span>"}}€<br>
+                Prix : {{ product.price > 0 ? product.price :  "<span class='product_price'></span>" }}€<br>
                 Prix TTC : {{ product.price > 0 ? product.price : "<span class='product_price_ttc'></span>" }}€<br>
                 Dimention : <br>
                 &nbsp;&nbsp;&nbsp;Largeur : {{ product.width| round(1) }} mm<span class="product_width"></span><br>
@@ -41,11 +42,21 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="row">
+                <div class="col-md-4">{{ form_row(form.submit) }}</div>
+                <div class="col-md-7 offset-1">
+                    <a href="{{ path('admin_product_index') }}" class="btn btn-warning text-white">
+                        <i class="fa fa-arrow-left"></i>
+                        Retour de la liste
+                    </a>
+                </div>
+
+            </div>
         </div>
         <div class="col-md-9">
-            {% block content %}
+            {% block content %}{% endblock %}
 
-            {% endblock %}
         </div>
     </div>
+    {{ form_end(form) }}
 {% endblock %}

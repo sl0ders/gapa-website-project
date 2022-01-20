@@ -41,13 +41,15 @@ class ProductController extends AbstractController
             /**  Traitement des declinaison de vehicule et affiliation au marque, model version... */
             $declinations = $form->getData()->getVehicleDeclinations();
             $product = $productServices->addDeclinations($declinations, $product);
-            $entityManager->persist($product);
+
+            /** integration des images et fichiers documentation des produit */
             $pictures = $form->get('pictures')->getData();
             $files = $form->get('attachment')->getData();
             $productServices->addFile($files, $pictures, $product);
+
             $entityManager->persist($product);
             $entityManager->flush();
-
+            $this->addFlash("success", "Le produit a bien été créé");
             return $this->redirectToRoute('admin_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -71,18 +73,21 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->getData()->getVehicleDeclinations()) {
-                $declinations = $form->getData()->getVehicleDeclinations();
-                $product = $productServices->addDeclinations($declinations, $product);
-            }
-            // On récupère les images transmises
+
+            /**  Traitement des declinaison de vehicule et affiliation au marque, model version... */
+            $declinations = $form->getData()->getVehicleDeclinations();
+            $product = $productServices->addDeclinations($declinations, $product);
+
+            /** integration des images et fichiers documentation des produit */
             $pictures = $form->get('pictures')->getData();
             $files = $form->get('attachment')->getData();
-            $product = $productServices->addFile($files, $pictures, $product);
+            $productServices->addFile($files, $pictures, $product);
+
             $entityManager->persist($product);
             $entityManager->flush();
             $this->addFlash("success", "Le produit a bien été modifié");
-            return $this->redirectToRoute('admin_product_index');
+
+            return $this->redirectToRoute('admin_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('admin/product/edit.html.twig', [

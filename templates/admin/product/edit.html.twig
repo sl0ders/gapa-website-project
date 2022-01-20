@@ -1,7 +1,7 @@
 {% extends 'admin/product/base.html.twig' %}
 
 {% block content %}
-    <h2>Édition du produit <em>{{ product.name }}</em> </h2>
+    <h2 class="my-4">Édition du produit <em>{{ product.name }}</em> </h2>
     {{ include('admin/product/_form.html.twig', {'button_label': 'Mettre a jour'}) }}
     <a href="{{ path('admin_product_index') }}"  class="btn btn-warning text-white btn-xl"><i class="fa fa-arrow-left"></i> Retour a la liste</a>
     {{ include('admin/product/_delete_form.html.twig') }}
