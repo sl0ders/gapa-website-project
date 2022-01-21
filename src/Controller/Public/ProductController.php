@@ -8,7 +8,6 @@ use App\Repository\ModelVersionRepository;
 use App\Repository\ProductRepository;
 use App\Repository\VehicleMarkRepository;
 use App\Repository\VehicleModelRepository;
-use App\Repository\VehicleRangeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     #[Route("/", name: "public_product_index")]
-    public function index(ProductRepository $productRepository, Request $request, VehicleMarkRepository $markRepository, VehicleRangeRepository $rangeRepository, VehicleModelRepository $modelRepository, ModelVersionRepository $versionRepository): Response
+    public function index(ProductRepository $productRepository, Request $request, VehicleMarkRepository $markRepository, VehicleModelRepository $modelRepository, ModelVersionRepository $versionRepository): Response
     {
         $data = new SearchData();
         $data->page = $request->get("page", 1);
@@ -33,14 +32,6 @@ class ProductController extends AbstractController
                 'pagination' => $this->renderView("public/product/_pagination.html.twig", ["products" => $products]),
                 "pages" => ceil($products->getTotalItemCount() / $products->getItemNumberPerPage())
             ]);
-        }
-        if ($request->request->get("mark") && $request->request->get("range") && $request->request->get("model") && $request->request->get("version")) {
-            $mark = $markRepository->find($request->request->get("mark"));
-            $range = $rangeRepository->find($request->request->get("range"));
-            $model = $modelRepository->find($request->request->get("model"));
-            $version = $versionRepository->find($request->request->get("version"));
-            $products = $version->getProducts();
-            dd($products);
         }
         return $this->render("public/product/index.html.twig", [
             "products" => $products,

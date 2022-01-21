@@ -47,4 +47,14 @@ class VehicleModelRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getModelsByVersionYear($versionYear)
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin("m.modelVersions", "versions")
+            ->andWhere('versions.versionYears = :versionYear')
+            ->setParameter(':versionYear', $versionYear)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

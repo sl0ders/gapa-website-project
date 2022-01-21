@@ -177,26 +177,26 @@ $(".add-declination").click(() => {
     $('.formDeclination').toggle()
 })
 
-function appear(element) {
-    return element.slideToggle()
-}
-
-const testimonials = $('#texts')
-    .children()
-    .filter('div.text');
-
-const showTestimonial = index => {
-    testimonials.hide();
-    $(testimonials[index]).fadeIn();
-
-    return index === testimonials.length
-        ? showTestimonial(0)
-        : setTimeout(() => {
-            showTestimonial(index + 1);
-        }, 5000);
-}
-
-showTestimonial(0); // id of the first element you want to show.
+// function appear(element) {
+//     return element.slideToggle()
+// }
+//
+// const testimonials = $('#texts')
+//     .children()
+//     .filter('div.text');
+//
+// const showTestimonial = index => {
+//     testimonials.hide();
+//     $(testimonials[index]).fadeIn();
+//
+//     return index === testimonials.length
+//         ? showTestimonial(0)
+//         : setTimeout(() => {
+//             showTestimonial(index + 1);
+//         }, 5000);
+// }
+//
+// showTestimonial(0); // id of the first element you want to show.
 
 $(".btn-hidden").hover(() => {
     $(".menu-nav").toggleClass("visible")

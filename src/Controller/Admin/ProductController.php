@@ -4,10 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Product;
 use App\Form\ProductType;
-use App\Repository\ModelVersionRepository;
 use App\Repository\ProductRepository;
-use App\Repository\VehicleMarkRepository;
-use App\Repository\VehicleModelRepository;
 use App\Services\ProductServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

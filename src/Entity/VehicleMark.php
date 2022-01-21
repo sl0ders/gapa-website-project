@@ -31,9 +31,6 @@ class VehicleMark
     #[ORM\Column(type: 'boolean', options: ["default" => 1])]
     private $enabled = 1;
 
-    #[ORM\OneToMany(mappedBy: 'vehicleMark', targetEntity: VehicleRange::class, orphanRemoval: true)]
-    private $vehicleRanges;
-
     #[ORM\OneToMany(mappedBy: 'vehicleMark', targetEntity: ModelVersion::class)]
     private $modelVersions;
 
@@ -45,7 +42,6 @@ class VehicleMark
     {
         $this->vehicleModels = new ArrayCollection();
         $this->provider = new ArrayCollection();
-        $this->vehicleRanges = new ArrayCollection();
         $this->modelVersions = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
@@ -154,36 +150,6 @@ class VehicleMark
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|VehicleRange[]
-     */
-    public function getVehicleRanges(): Collection
-    {
-        return $this->vehicleRanges;
-    }
-
-    public function addVehicleRange(VehicleRange $vehicleRange): self
-    {
-        if (!$this->vehicleRanges->contains($vehicleRange)) {
-            $this->vehicleRanges[] = $vehicleRange;
-            $vehicleRange->setVehicleMark($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVehicleRange(VehicleRange $vehicleRange): self
-    {
-        if ($this->vehicleRanges->removeElement($vehicleRange)) {
-            // set the owning side to null (unless already changed)
-            if ($vehicleRange->getVehicleMark() === $this) {
-                $vehicleRange->setVehicleMark(null);
-            }
-        }
 
         return $this;
     }

@@ -6,7 +6,6 @@ use App\Entity\ModelVersion;
 use App\Entity\Product;
 use App\Entity\VehicleMark;
 use App\Entity\VehicleModel;
-use App\Entity\VehicleRange;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,13 +20,6 @@ class ProductSearchType extends AbstractType
                 "class" => VehicleMark::class,
                 "label_attr" => ["class" => "d-none"],
                 "attr" => ["placeholder" => "Marques"],
-                "choice_label" => "name",
-                "mapped" => false
-            ])
-            ->add('vehicleRange', EntityType::class, [
-                "class" => VehicleRange::class,
-                "label_attr" => ["class" => "d-none"],
-                "attr" => ["placeholder" => "Gammes"],
                 "choice_label" => "name",
                 "mapped" => false
             ])

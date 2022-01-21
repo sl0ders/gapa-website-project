@@ -11,10 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class VehicleMarkController extends AbstractController
 {
     #[Route('/', name: 'admin_vehicle_mark_index')]
-    public function index(MarkServices $markServices): Response
+    public function index(): Response
     {
-        $markServices->addNewMark();
-        dd("ok");
         return $this->render('admin/vehicle_mark/index.html.twig', [
             'controller_name' => 'VehicleMarkController',
         ]);

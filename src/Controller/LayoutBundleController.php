@@ -33,7 +33,7 @@ class LayoutBundleController extends AbstractController
         ]);
     }
 
-    public function publicLayoutHeader(VehicleMarkRepository $markRepository, ProviderRepository $providerRepository, ProductTypeRepository $productTypeRepository): Response
+    public function publicLayoutHeader(VehicleMarkRepository $markRepository, ProviderRepository $providerRepository): Response
     {
         $providers = $providerRepository->findAll();
         return $this->render("layout/_header.html.twig", [

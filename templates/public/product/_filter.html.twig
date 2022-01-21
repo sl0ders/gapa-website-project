@@ -3,15 +3,13 @@
 <div class="spinner-border js-loading" role="status" aria-hidden="true" style="display: none">
     <span class="sr-only">Loading...</span>
 </div>
-<div class="search product">
+<div class="search product d-flex">
     {{ form_row(form.q, {attr: {class: "text-black border-dark", placeholder: "Rechercher"}}) }}
-    <i type="submit" class="fa fa-search mt-1" aria-hidden="true"></i>
+    <i type="submit" class="fa fa-search mt-2 mx-2" aria-hidden="true" style="font-size: 1.5em"></i>
 </div>
-{% if category is not defined %}
-    {{ form_row(form.categories,{attr: {class : 'd-none'}}) }}
-{% else %}
-    {{ form_row(form.categories,{attr: {class : 'd-none'}}) }}
-{% endif %}
+<h4>Les categories</h4>
+{{ form_widget(form.categories) }}
+
 <h4>Promotion</h4>
 {{ form_row(form.promo) }}
 {{ form_end(form) }}

@@ -18,44 +18,16 @@ class ModelVersion
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private $begin_at;
-
-    #[ORM\Column(type: 'string', nullable: true)]
-    private $end_at;
-
     #[ORM\ManyToOne(targetEntity: VehicleModel::class, inversedBy: 'modelVersions')]
     #[ORM\JoinColumn(nullable: false)]
     private $model;
 
-    #[ORM\Column(type: 'integer')]
-    private $year;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $motorisation;
-
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $cv_f;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $frame;
 
     #[ORM\ManyToOne(targetEntity: VehicleMark::class, inversedBy: 'modelVersions')]
     #[ORM\JoinColumn(nullable: false)]
     private $vehicleMark;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $mark_name;
-
-    #[ORM\ManyToOne(targetEntity: VehicleRange::class, inversedBy: 'modelVersions')]
-    #[ORM\JoinColumn(nullable: true)]
-    private $vehicle_range;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $range_name;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $model_name;
 
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'modelVersion')]
     private $products;
@@ -197,29 +169,7 @@ class ModelVersion
         return $this;
     }
 
-    public function getVehicleRange(): ?VehicleRange
-    {
-        return $this->vehicle_range;
-    }
 
-    public function setVehicleRange(?VehicleRange $vehicle_range): self
-    {
-        $this->vehicle_range = $vehicle_range;
-
-        return $this;
-    }
-
-    public function getRangeName(): ?string
-    {
-        return $this->range_name;
-    }
-
-    public function setRangeName(string $range_name): self
-    {
-        $this->range_name = $range_name;
-
-        return $this;
-    }
 
     public function getModelName(): ?string
     {

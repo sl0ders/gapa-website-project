@@ -20,12 +20,9 @@ use App\Repository\ProductTypeRepository;
 use App\Repository\ProviderRepository;
 use App\Repository\VehicleMarkRepository;
 use App\Repository\VehicleModelRepository;
-use App\Repository\VehicleRangeRepository;
-use Cocur\Slugify\Slugify;
 use Cocur\Slugify\SlugifyInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Gedmo\Mapping\Annotation\Slug;
 use JsonException;
 
 class ProductServices
@@ -40,7 +37,6 @@ class ProductServices
     private $picturesDirectory;
     private $filesDirectory;
     private VehicleMarkRepository $markRepository;
-    private VehicleRangeRepository $rangeRepository;
     private VehicleModelRepository $modelRepository;
     private ModelVersionRepository $versionRepository;
     private SlugifyInterface $slugify;
@@ -56,10 +52,9 @@ class ProductServices
         ProductTypeRepository  $productTypeRepository,
         EntityManagerInterface $entityManager,
         VehicleMarkRepository  $markRepository,
-        VehicleRangeRepository $rangeRepository,
         VehicleModelRepository $modelRepository,
         ModelVersionRepository $versionRepository,
-        SlugifyInterface $slugify
+        SlugifyInterface       $slugify
     )
     {
         $this->providerRepository = $providerRepository;
@@ -72,7 +67,6 @@ class ProductServices
         $this->picturesDirectory = $picturesDirectory;
         $this->filesDirectory = $filesDirectory;
         $this->markRepository = $markRepository;
-        $this->rangeRepository = $rangeRepository;
         $this->modelRepository = $modelRepository;
         $this->versionRepository = $versionRepository;
         $this->slugify = $slugify;
@@ -324,21 +318,6 @@ class ProductServices
                 $picture->setHeight($height);
                 $product->addPicture($picture);
             }
-        }
-        return $product;
-    }
-
-    public function addDeclinations($vehicle, $product)
-    {
-        /** @var Vehicle $declination */
-        foreach ($declinations as $declination) {
-            $arrayDeclination = explode("/", $declination->getName());
-            $product->addMark($this->markRepository->findOneBy(["name" => $arrayDeclination[0]]));
-            if ($arrayDeclination[1] !== "NC") {
-                $product->addVehicleRange($this->rangeRepository->findOneBy(["name" => $arrayDeclination[1]]));
-            }
-            $product->addVehicleModel($this->modelRepository->findOneBy(["name" => $arrayDeclination[2]]));
-            $product->addModel_version($this->versionRepository->findOneBy(["year" => $arrayDeclination[3], "name" => $arrayDeclination[4], "motorisation" => $arrayDeclination[5], "frame" => $arrayDeclination[6]]));
         }
         return $product;
     }

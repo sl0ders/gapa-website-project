@@ -3,27 +3,23 @@
 {% block title %}Tous les produits{% endblock %}
 
 {% block body %}
-    <div class="container-fluid js-filter" id="page">
-        <div class="row mt-5">
-            <div class="col-md-3">
-                {% include 'public/product/_filter.html.twig' %}
-            </div>
-            <div class="col-md-9">
-                <div class="d-flex justify-content-end mb-2 js-filter-sorting">
-                    {% include 'public/product/_sorting.html.twig' %}
+        <div class="container-fluid js-filter" id="page">
+            <div class="row mt-5">
+                <div class="col-md-2">
+                    {% include 'public/product/_filter.html.twig' %}
                 </div>
-                <div class="grid js-filter-content">
-                    {% include 'public/product/_products.html.twig' %}
-                </div>
-                <div class="mt-4 js-filter-pagination">
-                    {% include 'public/product/_pagination.html.twig' %}
+                <div class="col-md-8">
+                    <div class="d-flex justify-content-end mb-2 js-filter-sorting">
+                        {% include 'public/product/_sorting.html.twig' %}
+                    </div>
+                    <div class="grid js-filter-content">
+                        {% include 'public/product/_products.html.twig' %}
+                    </div>
+                    <div class="mt-4 js-filter-pagination">
+                        {% include 'public/product/_pagination.html.twig' %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script>
-        window.location.hash = '#page';
-    </script>
 {% endblock %}
 

@@ -80,10 +80,10 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="selectRange mt-1 mx-3 select">
-                        <label for="selectRange" class="d-none"></label>
-                        <select id="selectRange" class="form-control">
-                            <option value="0">Gammes</option>
+                    <div class="selectVersionYear mt-1 select">
+                        <label for="selectVersionYear" class="d-none"></label>
+                        <select id="selectVersionYear" class="form-control">
+                            <option value="0">Années</option>
                         </select>
                     </div>
                     <div class="selectModel mt-1 select">
@@ -107,69 +107,80 @@
                 </form>
             </div>
             <div class="third-navbar">
-                <div class="dropdown provider-navbar">
+                <div class="provider-navbar">
                     {% for provider in providers %}
-                        <a class="{{ provider.name }}-product provider-list dropdown-toggle text-decoration-none"
-                           id="dropdownMenuButton{{ provider.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img class='sub-menu-logo' src='{{ asset(provider.picture.name) }}'
-                                 alt='logo-{{ provider.name }}'>
+                        <div class="provider-item">
+                            <img src="{{ asset(provider.picture.name) }}" alt="{{ provider.name }}"
+                                 class="provider-items" id="{{ provider.id }}">
                             <i class="fa fa-sort-down"></i>
-                        </a>
-                        <div class="dropdown-menu provider-category-list-parent" aria-labelledby="dropdownMenuButton{{ provider.id }}">
-                            <div class="row">
-                                {% for category in provider.categories %}
-                                    {% if category.isParentCategory %}
-                                        <a class="text-decoration-none text-dark col" href="{{ path('public_category_show', {'slug': category.slug}) }}">
-                                            <div class="dropdown-item provider-category-item">
-                                                {{ category.name }}
-                                            </div>
-                                        </a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
                         </div>
                     {% endfor %}
                 </div>
+                <ul class="category-parent">
+
+                </ul>
             </div>
         </div>
     </div>
 </header>
 <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
 <script>
+    let providerItem = $(".provider-items")
+    let categoryParentList = $(".category-parent")
+    providerItem.click((e) => {
+        $.ajax({
+            method: 'POST',
+            url: "{{ path('getCategoriesParents') }}",
+            data: {
+                provider: e.target.id
+            },
+            success: function (data) {
+                $.each(data, function (i, value) {
+                    categoryParentList.append("<li id='" + i + "' class='category-parent-item p-6 mt-2'>" + value + "</li>")
+                    categoryParentList.css("visibility", "visible")
+                })
+            }
+        })
+    })
+    $("body").click(function(){
+        $(".category-parent-item").remove()
+    });
+</script>
+<script>
     let selectModel = $("#selectModel")
     let selectMark = $("#selectMark")
-    let selectRange = $("#selectRange")
+    let selectVersionYear = $("#selectVersionYear")
     let selectVersion = $("#selectVersion")
 
     /** Search model with mark*/
     selectMark.on("change", () => {
         $.ajax({
             method: "POST",
-            url: "{{ path('getRanges') }}",
+            url: "{{ path('getVersionYear') }}",
             data: {
                 mark: $("#selectMark option:selected").val()
             },
             success: function (data) {
                 $.each(data, function (i, value) {
-                    selectRange.append(new Option(value, i));
+                    selectVersionYear.append(new Option(value, i));
                 })
                 selectMark.attr("disabled", "disabled")
                 $(".reinit-btn").show(500)
             }
         })
     })
-    selectRange.on("change", () => {
+    selectVersionYear.on("change", () => {
         $.ajax({
             method: "POST",
             url: "{{ path('getModels') }}",
             data: {
-                range: $("#selectRange option:selected").val()
+                versionYears: $("#selectVersionYear option:selected").val()
             },
             success: function (data) {
                 $.each(data, function (i, value) {
                     selectModel.append(new Option(value, i));
                 })
-                selectRange.attr("disabled", "disabled")
+                selectVersionYear.attr("disabled", "disabled")
                 $(".reinit-btn").show(500)
             }
         })

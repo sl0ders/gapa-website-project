@@ -5,6 +5,8 @@ namespace App\Controller\Public;
 use App\Data\SearchData;
 use App\Entity\Category;
 use App\Form\Public\SearchType;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,18 +26,13 @@ class CategoryController extends AbstractController
     }
 
     #[Route("/show/{slug}", name: "public_category_show")]
-    public function showProduct(Category $category, Request $request, PaginatorInterface $paginator): Response
+    public function showProduct(Category $category, Request $request, ProductRepository $productRepository): Response
     {
         $data = new SearchData();
         $data->page = $request->get("page", 1);
         $form = $this->createForm(SearchType::class, $data);
         $form->handleRequest($request);
-        $query = $category->getProducts();
-        $products = $paginator->paginate(
-            $query,
-            1,
-            15
-        );
+        $products = $productRepository->findSearch($data);
         if ($request->get("ajax")) {
             return new JsonResponse([
                 'content' => $this->renderView("public/product/_products.html.twig", ["products" => $products]),

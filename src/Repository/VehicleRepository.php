@@ -19,6 +19,15 @@ class VehicleRepository extends ServiceEntityRepository
         parent::__construct($registry, Vehicle::class);
     }
 
+    public function search(string $declination): array
+    {
+        return $this->createQueryBuilder("vehicle")
+            ->where("vehicle.declination LIKE :declination")
+            ->select("vehicle.declination", "vehicle.id")
+            ->setParameter(':declination', "%$declination%")
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Vehicle[] Returns an array of Vehicle objects
     //  */

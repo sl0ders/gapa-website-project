@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: VehicleRepository::class)]
 class Vehicle
@@ -30,6 +31,10 @@ class Vehicle
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $type;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $declination;
+
 
     public function getId(): ?int
     {
@@ -104,6 +109,23 @@ class Vehicle
     public function setType(?string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    #[Pure] public function __toString(): string
+    {
+        return $this->getMarque() . " / " . $this->getModele() . " / " . $this->getVersion() . " / " . $this->getAnnees();
+    }
+
+    public function getDeclination(): ?string
+    {
+        return $this->declination;
+    }
+
+    public function setDeclination(string $declination): self
+    {
+        $this->declination = $declination;
 
         return $this;
     }

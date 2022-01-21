@@ -19,22 +19,20 @@ class VersionYearsRepository extends ServiceEntityRepository
         parent::__construct($registry, VersionYears::class);
     }
 
-    // /**
-    //  * @return VersionYears[] Returns an array of VersionYears objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return VersionYears[] Returns an array of VersionYears objects
+     */
+    public function getVersionYearsByMark($mark): array
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('vy')
+            ->leftJoin("vy.version", "version")
+            ->leftJoin("version.model", "model")
+            ->andWhere("model.vehicleMark = :mark")
+            ->setParameter(":mark", $mark)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?VersionYears

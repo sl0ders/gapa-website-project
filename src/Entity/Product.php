@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
-use Proxies\__CG__\App\Entity\VehicleRange;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -127,8 +126,8 @@ class Product
     #[ORM\Column(type: 'boolean')]
     private ?bool $is_on_sale;
 
-    #[ORM\ManyToMany(targetEntity: Vehicles::class, inversedBy: 'products')]
-    private $vehicle;
+    #[ORM\ManyToMany(targetEntity: Vehicle::class, inversedBy: 'products')]
+    private $vehicles;
 
     #[ORM\ManyToMany(targetEntity: VehicleMark::class, inversedBy: 'products')]
     private $mark;
@@ -661,18 +660,6 @@ class Product
     public function setIsOnSale(bool $is_on_sale): self
     {
         $this->is_on_sale = $is_on_sale;
-
-        return $this;
-    }
-
-    public function getVehicle(): ?Vehicle
-    {
-        return $this->vehicles;
-    }
-
-    public function setVehicle(?Vehicle $vehicle): self
-    {
-        $this->vehicles = $vehicle;
 
         return $this;
     }

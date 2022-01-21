@@ -3,12 +3,11 @@
 namespace App\Services;
 
 use App\Entity\ModelVersion;
-use App\Entity\VehicleDeclination;
+use App\Entity\Vehicle;
 use App\Entity\VehicleMark;
 use App\Entity\VehicleModel;
 use App\Entity\VersionYears;
 use App\Repository\ModelVersionRepository;
-use App\Repository\VehicleDeclinationRepository;
 use App\Repository\VehicleMarkRepository;
 use App\Repository\VehicleModelRepository;
 use App\Repository\VehicleRepository;
@@ -47,14 +46,14 @@ class MarkServices
         ini_set('max_execution_time', 0);
         $vehicles = $this->vehicleRepository->findAll();
         foreach ($vehicles as $vehicle) {
-            $mark = $this->markRepository->findBy(["name" => $vehicle->getMarque()]);
+            $mark = $this->markRepository->findOneBy(["name" => $vehicle->getMarque()]);
             if (!isset($mark)) {
                 $mark = new VehicleMark();
                 $mark->setName($vehicle->getMarque());
                 $this->entityManager->persist($mark);
                 $this->entityManager->flush();
             }
-            $model = $this->modelRepository->findBy(["name" => $vehicle->getModele(), "vehicleMark" => $mark]);
+            $model = $this->modelRepository->findOneBy(["name" => $vehicle->getModele(), "vehicleMark" => $mark]);
             if (!isset($model)) {
                 $model = new VehicleModel();
                 $model->setName($vehicle->getModele());
@@ -62,14 +61,14 @@ class MarkServices
                 $this->entityManager->persist($model);
                 $this->entityManager->flush();
             }
-            $versionYears = $this->versionYearsRepository->findBy(["name" => $vehicle->getAnnees()]);
+            $versionYears = $this->versionYearsRepository->findOneBy(["name" => $vehicle->getAnnees()]);
             if (!isset($versionYears)) {
                 $versionYears = new VersionYears();
                 $versionYears->setName($vehicle->getAnnees());
                 $this->entityManager->persist($versionYears);
                 $this->entityManager->flush();
             }
-            $version = $this->versionRepository->findBy(["name" => $vehicle->getVersion(), "model" => $model, "versionYears" => $versionYears, "vehicleMark" => $mark]);
+            $version = $this->versionRepository->findOneBy(["name" => $vehicle->getVersion(), "model" => $model, "versionYears" => $versionYears, "vehicleMark" => $mark]);
             if (!isset($version)) {
                 $version = new ModelVersion();
                 $version->setName($vehicle->getVersion());
@@ -87,17 +86,11 @@ class MarkServices
     public function SyncMark()
     {
         ini_set('max_execution_time', 0);
-        $modelVersions = $this->versionRepository->findAll();
-
-        foreach ($modelVersions as $modelVersion) {
-            $declinations = new VehicleDeclination();
-            if ($modelVersion->getVehicleRange() !== null) {
-                $name = $modelVersion->getMarkName() . "/" . $modelVersion->getRangeName() . "/" . $modelVersion->getModelName() . "/" . $modelVersion->getYear() . "/" . $modelVersion->getName() . "/" . $modelVersion->getMotorisation() . "/" . $modelVersion->getFrame();
-            } else {
-                $name = $modelVersion->getMarkName() . "/" . "NC" . "/" . $modelVersion->getModelName() . "/" . $modelVersion->getYear() . "/" . $modelVersion->getName() . "/" . $modelVersion->getMotorisation() . "/" . $modelVersion->getFrame();
-            }
-            $declinations->setName($name);
-            $this->entityManager->persist($declinations);
+        $vehicles = $this->vehicleRepository->findAll();
+        foreach ($vehicles as $vehicle) {
+            $vehicle->setDeclination(
+                $vehicle->getMarque() . " / " . $vehicle->getModele() . " / " . $vehicle->getVersion() . " / " . $vehicle->getAnnees() . " / " . $vehicle->getMoteur() . " / " . $vehicle->getType());
+            $this->entityManager->persist($vehicle);
         }
         $this->entityManager->flush();
     }
