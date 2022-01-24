@@ -80,7 +80,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="selectVersionYear mt-1 select">
+                    <div class="selectVersionYear mt-1 mx-3 select">
                         <label for="selectVersionYear" class="d-none"></label>
                         <select id="selectVersionYear" class="form-control">
                             <option value="0">Années</option>
@@ -106,20 +106,6 @@
                     </button>
                 </form>
             </div>
-            <div class="third-navbar">
-                <div class="provider-navbar">
-                    {% for provider in providers %}
-                        <div class="provider-item">
-                            <img src="{{ asset(provider.picture.name) }}" alt="{{ provider.name }}"
-                                 class="provider-items" id="{{ provider.id }}">
-                            <i class="fa fa-sort-down"></i>
-                        </div>
-                    {% endfor %}
-                </div>
-                <ul class="category-parent">
-
-                </ul>
-            </div>
         </div>
     </div>
 </header>
@@ -127,6 +113,7 @@
 <script>
     let providerItem = $(".provider-items")
     let categoryParentList = $(".category-parent")
+    categoryParentItem = $(".category-parent-item")
     providerItem.click((e) => {
         $.ajax({
             method: 'POST',
@@ -136,15 +123,12 @@
             },
             success: function (data) {
                 $.each(data, function (i, value) {
-                    categoryParentList.append("<li id='" + i + "' class='category-parent-item p-6 mt-2'>" + value + "</li>")
+                    categoryParentItem.append("<li id='" + i + "' class='category-parent-item p-6 mt-2'>" + value + "</li>")
                     categoryParentList.css("visibility", "visible")
                 })
             }
         })
     })
-    $("body").click(function(){
-        $(".category-parent-item").remove()
-    });
 </script>
 <script>
     let selectModel = $("#selectModel")

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -47,7 +47,7 @@ class SearchableEntityType extends AbstractType
             function ($value): array {
                 return $value->map(fn($d) => (string)$d->getId())->toArray();
             },
-            function (array $ids) use ($options): Collection {
+            function ($ids) use ($options): Collection {
                 if (empty($ids)) {
                     return new ArrayCollection([]);
                 }

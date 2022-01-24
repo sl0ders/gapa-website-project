@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
-use App\Form\CategoryType;
+use App\Form\Admin\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Services\CategoryServices;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,8 +18,9 @@ class CategoryController extends AbstractController
     #[Route('/', name: 'admin_category_index', methods: ['GET'])]
     public function index(CategoryRepository $categoryRepository, CategoryServices $categoryServices): Response
     {
+        $categories = $categoryRepository->findAll();
         return $this->render('admin/category/index.html.twig', [
-            'categories' => $categoryRepository->findAll(),
+            'categories' => $categories,
         ]);
     }
 

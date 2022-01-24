@@ -1,30 +1,32 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Admin;
 
-use App\Entity\Customer;
+use App\Entity\Address;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CustomerType extends AbstractType
+class AddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('is_add_newsletter')
-            ->add('newsletter_sub_at')
-            ->add('last_visit')
-            ->add('note')
-            ->add('birthday')
-            ->add('user')
+            ->add('address1')
+            ->add('address2')
+            ->add('post_code')
+            ->add('phone')
+            ->add('phone_mobile')
+            ->add('isEnabled')
+            ->add('created_at')
+            ->add('updated_at')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Customer::class,
+            'data_class' => Address::class,
         ]);
     }
 }

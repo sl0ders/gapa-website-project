@@ -2,18 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
-use App\Form\ProductSearchType;
-use App\Repository\AttributeGroupRepository;
-use App\Repository\CategoryRepository;
-use App\Repository\ProductRepository;
-use App\Repository\ProductTypeRepository;
 use App\Repository\ProviderRepository;
 use App\Repository\VehicleMarkRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class LayoutBundleController extends AbstractController

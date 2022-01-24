@@ -1,9 +1,9 @@
 /*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
+* Welcome to your app's main JavaScript file!
+*
+* We recommend including the built version of this JavaScript file
+* (and its CSS file) in your base layout (base.html.twig).
+*/
 
 // any CSS you import will output into a single css file (app.scss in this case)
 import './styles/app.scss';
@@ -60,12 +60,43 @@ function bindSelect(select) {
 
 Array.from(document.querySelectorAll('select[multiple]')).map(bindSelect)
 
+let plus = $(".category")
+plus.on("click", (e) => {
+    let listSubcategory = $(".subcategory-" + e.target.id)
+    listSubcategory.toggle()
+})
 $("#datatable").DataTable({
     language: {
         url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/French.json'
     },
     pageLength: 50,
     autoWidth: false
+})
+$(function () {
+
+    let subCategory = $(".subcategory")
+    subCategory.on("click", (e) => {
+        let listProduct = $(".cat" + e.target.id)
+        let table = listProduct.children()
+        listProduct.toggle()
+        if (table.attr("id")) {
+            table.removeAttr("id", "datatable")
+        } else {
+            table.attr("id", "datatable")
+        }
+    })
+
+    let category = $(".category")
+    category.on("click", (e) => {
+        let listProduct = $(".cat" + e.target.id)
+        let table = listProduct.children()
+        listProduct.toggle()
+        if (table.attr("id")) {
+            table.removeAttr("id", "datatable")
+        } else {
+            table.attr("id", "datatable")
+        }
+    })
 })
 $(function () {
     $("#sortable").sortable({

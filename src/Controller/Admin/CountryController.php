@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Country;
-use App\Form\CountryType;
+use App\Form\Admin\CountryType;
 use App\Repository\CountryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

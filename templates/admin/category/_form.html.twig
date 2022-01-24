@@ -1,8 +1,8 @@
 <div class="category-form">
     {{ form_start(form) }}
 
-    {{ form_widget(form.name) }}
     {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
     {{ form_errors(form.name) }}
 
     {{ form_widget(form.isParentCategory, {"attr" : {"class" : "category-parent-check"}}) }}

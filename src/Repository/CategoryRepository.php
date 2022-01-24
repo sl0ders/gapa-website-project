@@ -27,36 +27,6 @@ class CategoryRepository extends ServiceEntityRepository
         $this->paginator = $paginator;
     }
 
-
-
-    // /**
-    //  * @return Category[] Returns an array of Category objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Category
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
     public function getFiveFirstCategory(): QueryBuilder
     {
         return $this->createQueryBuilder('c')
@@ -67,7 +37,7 @@ class CategoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder("c")
             ->where("c.name LIKE :name")
-            ->select("c.name","c.id")
+            ->select("c.name", "c.id")
             ->setParameter(':name', "%$name%")
             ->getQuery()
             ->getResult();
@@ -80,13 +50,14 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function findSearch(SearchData $search): PaginationInterface
     {
-        $query =$this->getSearchQuery($search)->getQuery();
+        $query = $this->getSearchQuery($search)->getQuery();
         return $this->paginator->paginate(
             $query,
             $search->page,
             8
         );
     }
+
     private function getSearchQuery(SearchData $search): QueryBuilder
     {
         $query = $this

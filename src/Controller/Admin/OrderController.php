@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Order;
-use App\Form\OrderType;
+use App\Form\Admin\OrderType;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

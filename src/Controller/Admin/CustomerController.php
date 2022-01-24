@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Customer;
-use App\Form\CustomerType;
+use App\Form\Admin\CustomerType;
 use App\Repository\CustomerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

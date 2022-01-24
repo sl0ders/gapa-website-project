@@ -1,9 +1,9 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}Liste des categories{% endblock %}
 
 {% block body %}
-    <h1>Category index    </h1>
+    <h1>Liste des categories</h1>
     <a href="{{ path('admin_category_new') }}" class="btn btn-success float-right"><i class="fa fa-plus"></i></a>     <div class="container-fluid">
     <table class="table" id="datatable">
         <thead>
@@ -12,18 +12,18 @@
                 <th>Sous categorie</th>
                 <th>Categorie parente</th>
                 <th>Nb de produits</th>
-                <th>Position</th>
+                <th>Profondeur</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for category in categories %}
             <tr>
-                <td>{{ category.name }}</td>
+                <td>{% if category.depth == 0 %}<i class="fa fa-diamond" aria-hidden="true"></i>{% endif %} {{ category.name }}</td>
                 <td>{{ category.subCategories|length }}</td>
-                <td>{{ category.isParentCategory ? '1 <i class="text-success fa fa-check"></i>' : '0 <i class="text-danger fa fa-times"></i>' }}</td>
+                <td>{{ category.isParentCategory ? '<i class="text-success fa fa-check">1 </i>' : ' <i class="text-danger fa fa-times">0</i>' }}</td>
                 <td>{{ category.products|length }}</td>
-                <td><{{ category.position }}></td>
+                <td><{{ category.depth }}></td>
                 <td class="d-flex col-action justify-content-center">
                     <a href="{{ path('admin_category_show', {'slug': category.slug}) }}" class="btn btn-primary text-white"><i class="fa fa-eye"></i></a>
                     <a href="{{ path('admin_category_edit', {'slug': category.slug}) }}" class="mx-2 btn btn-warning text-white"><i class="fa fa-edit"></i></a>

@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Address;
-use App\Form\AddressType;
+use App\Form\Admin\AddressType;
 use App\Repository\AddressRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

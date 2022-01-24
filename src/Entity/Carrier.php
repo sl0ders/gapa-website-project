@@ -36,6 +36,9 @@ class Carrier
     #[ORM\OneToMany(mappedBy: 'carrier', targetEntity: Cart::class)]
     private $carts;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $delay;
+
     public function __construct()
     {
         $this->carts = new ArrayCollection();
@@ -144,6 +147,18 @@ class Carrier
                 $cart->setCarrier(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDelay(): ?string
+    {
+        return $this->delay;
+    }
+
+    public function setDelay(string $delay): self
+    {
+        $this->delay = $delay;
 
         return $this;
     }

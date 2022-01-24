@@ -32,9 +32,13 @@ class Vehicle
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $type;
 
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'vehicles', cascade: ["persist"])]
+    private $products;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $declination;
 
+    #[ORM\OneToMany()]
 
     public function getId(): ?int
     {

@@ -44,6 +44,9 @@ class Category
     #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
+    #[ORM\Column(type: 'smallint')]
+    private $depth;
+
 
     public function __construct()
     {
@@ -180,5 +183,17 @@ class Category
     public function setSlug($slug): void
     {
         $this->slug = $slug;
+    }
+
+    public function getDepth(): ?int
+    {
+        return $this->depth;
+    }
+
+    public function setDepth(int $depth): self
+    {
+        $this->depth = $depth;
+
+        return $this;
     }
 }

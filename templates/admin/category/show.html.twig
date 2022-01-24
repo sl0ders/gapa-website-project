@@ -1,9 +1,12 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Category{% endblock %}
+{% block title %}Categorie
+    {{ category.name }}
+{% endblock %}
 
 {% block body %}
-    <h1>Category </h1>
+    <h1>Categorie
+        {{ category.name }}</h1>
     <div class="container-fluid">
         <table class="table">
             <tbody>
@@ -17,42 +20,110 @@
             </tr>
             </tbody>
         </table>
-        <h2>Sous catégorie</h2>
-        <div class="sub-category-list rounded">
-            {% for subCategory in category.subCategories %}
-                <div class="row">
-                    <div class="col-md-3 d-flex justify-content-between subcategory border border-black p-3 m-2 h-25"
-                         id="{{ subCategory.id }}">
-                        <h5>{{ subCategory.name }}</h5>
-                        <i class="fa fa-arrow-right text-dark"></i>
-                    </div>
-                    <div class="products-list col-md-8">
-                        {% for product in subCategory.products %}
-                            <div class="product-item" data-cat="{{ subCategory.id }}">
-                                {{ product.name }}
+        {% if category.subCategories|length > 0 %}
+            <h2>Sous catégorie</h2>
+            <div class="sub-category-list rounded">
+                {% for categories in category.subCategories %}
+                    <div class="row">
+                        <div class="d-flex flex-column">
+                            <div class="btn btn-primary category d-flex justify-content-between border border-black col-md-4"
+                                 id="{{ categories.id }}">
+                                <h5>{{ categories.name }}</h5>
+                                {% if categories.subCategories|length > 0 %}
+                                    <i class="fa fa-minus text-white mt-2"></i>
+                                {% else %}
+                                    <i class="fa fa-arrow-right text-white mt-2"></i>
+                                {% endif %}
                             </div>
-                        {% endfor %}
+                            {% if categories.subCategories|length > 0 %}
+                                {% for subCategory in categories.subCategories %}
+                                    <div class="row ">
+                                        <div class="subcategory-{{ categories.id }} subcategory col-md-3">
+                                            <div class="btn-sm btn btn-primary justify-content-between d-flex border border-black"
+                                                 id="{{ subCategory.id }}"
+                                                 style="margin-left: {{ subCategory.depth }}em">
+                                                <h6>{{ subCategory.name }}</h6>
+                                                <i class="fa fa-arrow-right text-white mt-2"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 products-list cat{{ subCategory.id }}">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <td>Référence</td>
+                                                    <td>Nom du produit</td>
+                                                    <td>Prix</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for product in categories.products %}
+                                                    <tr>
+                                                        <td>{{ product.reference }}</td>
+                                                        <td>{{ product.name }}</td>
+                                                        <td>{{ product.price|number_format(2, ',', '.') }}€</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="col-md-7 products-list cat{{ categories.id }}">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <td>Référence</td>
+                                            <td>Nom du produit</td>
+                                            <td>Prix</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for product in categories.products %}
+                                            <tr>
+                                                <td>{{ product.reference }}</td>
+                                                <td>{{ product.name }}</td>
+                                                <td>{{ product.price|number_format(2, ',', '.') }}€</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="col-md-8">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td>Référence</td>
+                        <td>Nom du produit</td>
+                        <td>Prix</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in category.products %}
+                        <tr>
+                            <td>{{ product.reference }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.price|number_format(2, ',', '.') }}€</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     </div>
-    <div class="d-flex">
-        <a href="{{ path('admin_category_index') }}" class="btn btn-primary text-white"><i class="fa fa-arrow-left"></i></a>
-        <a href="{{ path('admin_category_edit', {'slug': category.slug}) }}" class="btn btn-warning text-white mx-2"><i
-                    class="fa fa-edit"></i></a>
+    <div class="d-flex mt-5">
+        <a href="{{ path('admin_category_index') }}" class="btn btn-primary text-white">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+        <a href="{{ path('admin_category_edit', {'slug': category.slug}) }}" class="btn btn-warning text-white mx-2">
+            <i class="fa fa-edit"></i>
+        </a>
         {{ include('admin/category/_delete_form.html.twig') }}
     </div>
-    <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
-    <script>
-        let subCategory = $(".subcategory")
-        let productItem = $(".product-item")
-        subCategory.on("click", (e) => {
-            productItem.each((event, value) => {
-                if (value.target.data("cat") === e.target.id) {
-                    value.target.show()
-                }
-            })
-        })
-    </script>
 {% endblock %}

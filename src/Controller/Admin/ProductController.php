@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
-use App\Form\ProductType;
+use App\Form\Admin\ProductType;
 use App\Repository\ProductRepository;
 use App\Services\ProductServices;
 use Doctrine\ORM\EntityManagerInterface;

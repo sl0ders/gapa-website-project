@@ -43,6 +43,27 @@ class Customer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Cart::class)]
     private $carts;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $siret;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $company;
+
+    #[ORM\Column(type: 'boolean')]
+    private $is_enabled;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $secure_key;
+
+    #[ORM\Column(type: 'datetime')]
+    private $created_at;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updated_at;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $gender;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -213,6 +234,90 @@ class Customer
                 $cart->setCustomer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(string $siret): self
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    public function getCompany(): ?string
+    {
+        return $this->company;
+    }
+
+    public function setCompany(string $company): self
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    public function getIsEnabled(): ?bool
+    {
+        return $this->is_enabled;
+    }
+
+    public function setIsEnabled(bool $is_enabled): self
+    {
+        $this->is_enabled = $is_enabled;
+
+        return $this;
+    }
+
+    public function getSecureKey(): ?string
+    {
+        return $this->secure_key;
+    }
+
+    public function setSecureKey(string $secure_key): self
+    {
+        $this->secure_key = $secure_key;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Public;
 
 use App\Entity\ModelVersion;
 use App\Entity\Product;
