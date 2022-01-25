@@ -24,7 +24,7 @@ class Cart
     #[ORM\Column(type: 'text')]
     private $invoice_address;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $secure_key;
 
     #[ORM\Column(type: 'datetime')]
@@ -37,11 +37,11 @@ class Cart
     private $updated_at;
 
     #[ORM\ManyToOne(targetEntity: Carrier::class, inversedBy: 'carts')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $carrier;
 
     #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'carts')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $customer;
 
     #[ORM\OneToMany(mappedBy: 'cart', targetEntity: Order::class)]

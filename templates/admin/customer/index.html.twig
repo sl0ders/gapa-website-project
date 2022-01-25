@@ -1,28 +1,26 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Customer index{% endblock %}
+{% block title %}Liste des clients{% endblock %}
 
 {% block body %}
-    <h1>Customer index    </h1>
+    <h1>Liste des clients </h1>
     <a href="{{ path('admin_product_new') }}" class="btn btn-success float-right"><i class="fa fa-plus"></i></a>     <div class="container-fluid">
     <table class="table" id="datatable">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Is_add_newsletter</th>
-                <th>Newsletter_sub_at</th>
-                <th>Last_visit</th>
+                <th>Nom complet</th>
+                <th>abonné newsletter</th>
+                <th>Dernière visite</th>
                 <th>Note</th>
-                <th>Birthday</th>
-                <th>actions</th>
+                <th>Anniversaire</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for customer in customers %}
             <tr>
-                <td>{{ customer.id }}</td>
+                <td>{{ customer.fullname }}</td>
                 <td>{{ customer.isAddNewsletter ? '<i class="text-success fa fa-check"></i>' : '<i class="text-danger fa fa-times"></i>' }}</td>
-                <td>{{ customer.newsletterSubAt ? customer.newsletterSubAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ customer.lastVisit ? customer.lastVisit|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ customer.note }}</td>
                 <td>{{ customer.birthday ? customer.birthday|date('d/m/Y H:i:s') : '' }}</td>
@@ -41,3 +39,4 @@
 </div>
     <a href="{{ path('admin_customer_new') }}" class="btn btn-success"><i class="fa fa-plus"></i></a>
 {% endblock %}
+

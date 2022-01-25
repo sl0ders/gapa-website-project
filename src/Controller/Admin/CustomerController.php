@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Customer;
 use App\Form\Admin\CustomerType;
 use App\Repository\CustomerRepository;
+use App\Services\CustomerServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CustomerController extends AbstractController
 {
     #[Route('/', name: 'admin_customer_index', methods: ['GET'])]
-    public function index(CustomerRepository $customerRepository): Response
+    public function index(CustomerRepository $customerRepository, CustomerServices $services): Response
     {
         return $this->render('admin/customer/index.html.twig', [
             'customers' => $customerRepository->findAll(),

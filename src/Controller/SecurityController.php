@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Public\UserType;
+use App\Services\UserServices;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
@@ -46,8 +47,8 @@ class SecurityController extends AbstractController
             $user->setPassword($passwordHasher->hashPassword($user, $form->getData()->getPassword()));
             $user->setCreatedAt(new DateTime());
             $user->setRoles(["ROLE_USER"]);
-            $user->getAddress()->setIsEnabled(true);
-            $user->getAddress()->setCreatedAt(new DateTime());
+            $user->setIsEnabled(true);
+            $user->setGender(1);
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash("success", "Votre compte a bien été créer");
@@ -69,7 +70,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute("home");
         }
         return $this->render("security/profile.html.twig", [
-            "form"=> $form->createView()
+            "form" => $form->createView()
         ]);
     }
 
@@ -81,4 +82,10 @@ class SecurityController extends AbstractController
     {
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+//    #[Route("/addroles")]
+//    public function addRoles(UserServices $services)
+//    {
+//        $services->addRoles();
+//    }
 }

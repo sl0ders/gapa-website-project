@@ -21,7 +21,7 @@
             <tr>
                 <td>{% if category.depth == 0 %}<i class="fa fa-diamond" aria-hidden="true"></i>{% endif %} {{ category.name }}</td>
                 <td>{{ category.subCategories|length }}</td>
-                <td>{{ category.isParentCategory ? '<i class="text-success fa fa-check">1 </i>' : ' <i class="text-danger fa fa-times">0</i>' }}</td>
+                <td>{{ category.isParentCategory ? '<i class="text-success fa fa-check"><div class="invisible">1</div></i>' : ' <i class="text-danger fa fa-times"><div class="invisible">0</div></i>' }}</td>
                 <td>{{ category.products|length }}</td>
                 <td><{{ category.depth }}></td>
                 <td class="d-flex col-action justify-content-center">

@@ -8,8 +8,6 @@
 // any CSS you import will output into a single css file (app.scss in this case)
 import './styles/app.scss';
 import "bootstrap"
-import 'datatables.net'
-import 'datatables.net-bs5'
 
 require('jquery-ui/ui/widgets/droppable');
 require('jquery-ui/ui/widgets/sortable');
@@ -19,9 +17,74 @@ import "nouislider/dist/nouislider.css"
 import TomSelect from "tom-select";
 import 'tom-select/dist/css/tom-select.bootstrap5.min.css'
 import Filter from './modules/Filter'
-
+import "datatables.net-bs5"
+import "../public/js/datatablesfixedHeader.min"
 
 new Filter(document.querySelector('.js-filter'))
+
+$(document).ready(function () {
+    $('#datatable thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#datatable thead');
+
+    let table = $('#datatable').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/French.json'
+        },
+        pageLength: 50,
+        autoWidth: true,
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+            let api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    let cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    let title = $(cell).text();
+                    $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                    // On every keypress in this input
+                    $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+                        .off('keyup change')
+                        .on('keyup change', function (e) {
+                            e.stopPropagation();
+
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            let regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            let cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value !== ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value !== '',
+                                    this.value === ''
+                                )
+                                .draw();
+
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+    });
+    $('#container').css( 'display', 'block' );
+    table.columns.adjust().draw();
+});
+
 
 async function jsonFetch(url) {
     const response = await fetch(url, {
@@ -65,15 +128,8 @@ plus.on("click", (e) => {
     let listSubcategory = $(".subcategory-" + e.target.id)
     listSubcategory.toggle()
 })
-$("#datatable").DataTable({
-    language: {
-        url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/French.json'
-    },
-    pageLength: 50,
-    autoWidth: false
-})
-$(function () {
 
+$(function () {
     let subCategory = $(".subcategory")
     subCategory.on("click", (e) => {
         let listProduct = $(".cat" + e.target.id)
@@ -81,8 +137,10 @@ $(function () {
         listProduct.toggle()
         if (table.attr("id")) {
             table.removeAttr("id", "datatable")
+            table.removeAttr("class", "dataTable")
         } else {
             table.attr("id", "datatable")
+            table.attr("class", "dataTable")
         }
     })
 
@@ -98,6 +156,7 @@ $(function () {
         }
     })
 })
+
 $(function () {
     $("#sortable").sortable({
         placeholder: "fantom",
@@ -120,17 +179,17 @@ $(function () {
 //     automatic_uploads: true,
 //     file_picker_types: 'image',
 //     file_picker_callback: function (cb, value, meta) {
-//         var input = document.createElement('input');
+//         let input = document.createElement('input');
 //         input.setAttribute('type', 'file');
 //         input.setAttribute('accept', 'image/*');
 //         input.onchange = function () {
-//             var file = this.files[0];
-//             var reader = new FileReader();
+//             let file = this.files[0];
+//             let reader = new FileReader();
 //             reader.onload = function () {
-//                 var id = 'blobid' + (new Date()).getTime();
-//                 var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-//                 var base64 = reader.result.split(',')[1];
-//                 var blobInfo = blobCache.create(id, file, base64);
+//                 let id = 'blobid' + (new Date()).getTime();
+//                 let blobCache = tinymce.activeEditor.editorUpload.blobCache;
+//                 let base64 = reader.result.split(',')[1];
+//                 let blobInfo = blobCache.create(id, file, base64);
 //                 blobCache.add(blobInfo);
 //                 cb(blobInfo.blobUri(), {title: file.name});
 //             };

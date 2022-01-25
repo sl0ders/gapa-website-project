@@ -27,7 +27,7 @@ class UserType extends AbstractType
             ->add('confirmPassword', PasswordType::class, [
                 "label" => "Confirmation du mot de passe"
             ])
-            ->add('title', ChoiceType::class, [
+            ->add('gender', ChoiceType::class, [
                 "label" => "Titre",
                 "choices" => [
                     "Mr." => "Mr.",
@@ -43,11 +43,7 @@ class UserType extends AbstractType
             ])
             ->add("submit", SubmitType::class, [
                 "label" => "S'inscrire"
-            ])
-        ->add("address", AddressType::class, [
-            "label" => "",
-            "label_attr" => ["class" => "d-none"]
-        ]);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

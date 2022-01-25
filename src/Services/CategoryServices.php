@@ -22,18 +22,4 @@ class CategoryServices
         $this->categoryRepository = $categoryRepository;
         $this->entityManager = $entityManager;
     }
-
-    /**
-     * @return void
-     * Add the productSlug
-     */
-    public function addSlug()
-    {
-        $categories = $this->categoryRepository->findAll();
-        foreach ($categories as $category) {
-            $category->setSlug($this->slugify->slugify($category->getName()));
-            $this->entityManager->persist($category);
-        }
-        $this->entityManager->flush();
-    }
 }

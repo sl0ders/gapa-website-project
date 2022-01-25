@@ -10,6 +10,10 @@
         des categories
         {{ path('admin_category_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
     </a>
+    <a {{ path('admin_user_index') == uri ? 'class="blue-hover"' }} href="{{ path('admin_user_index') }}">Gestion
+        des utilisateurs
+        {{ path('admin_user_index') == uri ? '<em class="float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></em>' }}
+    </a>
     <div class="dropdown">
         <a {{ path('admin_country_index') == uri or path('admin_address_index') == uri ? 'class="blue-hover' }}
                 class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown"

@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -40,9 +41,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\EqualTo(propertyPath: "password", message: "Les mots de passe ne correspondent pas")]
     private $confirmPassword;
 
-    #[ORM\Column(type: 'string', length: 3)]
-    private $title;
-
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: "Prenom obligatoire")]
     #[Assert\Length(min: "2", minMessage: "Prenom trop court")]
@@ -60,10 +58,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updated_at;
 
-    #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private $address;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: OrderHistory::class)]
     private $orderHistories;
 
@@ -73,11 +67,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Customer::class)]
     private $customers;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $website;
+
+    #[ORM\Column(type: 'boolean')]
+    private $is_enabled;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $gender;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class)]
+    private $addresses;
+
+    /**
+     * @Gedmo\Slug(fields={"lastname"})
+     */
+    #[ORM\Column(type: 'string', length: 255)]
+    private $slug;
+
     public function __construct()
     {
         $this->orderHistories = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->customers = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
 
@@ -151,18 +164,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
     public function getFirstname(): ?string
     {
         return $this->firstname;
@@ -223,18 +224,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
-
-        return $this;
-    }
-
-    public function getAddress(): ?Address
-    {
-        return $this->address;
-    }
-
-    public function setAddress(Address $address): self
-    {
-        $this->address = $address;
 
         return $this;
     }
@@ -327,5 +316,87 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): self
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    public function getIsEnabled(): ?bool
+    {
+        return $this->is_enabled;
+    }
+
+    public function setIsEnabled(bool $is_enabled): self
+    {
+        $this->is_enabled = $is_enabled;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Address[]
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses[] = $address;
+            $address->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): self
+    {
+        if ($this->addresses->removeElement($address)) {
+            // set the owning side to null (unless already changed)
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getFullname()  {
+        return $this->lastname . " " . $this->firstname;
     }
 }

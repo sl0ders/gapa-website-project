@@ -44,6 +44,15 @@ class Address
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updated_at;
 
+    #[ORM\ManyToOne(targetEntity: Country::class, inversedBy: 'addresses')]
+    private $country;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addresses')]
+    private $user;
+
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy:"addresses")]
+    private $customer;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -143,5 +152,45 @@ class Address
         $this->updated_at = $updated_at;
 
         return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getUser(): ?user
+    {
+        return $this->user;
+    }
+
+    public function setUser(?user $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param mixed $customer
+     */
+    public function setCustomer($customer): void
+    {
+        $this->customer = $customer;
     }
 }

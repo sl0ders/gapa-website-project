@@ -6,15 +6,12 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
     <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}">
     <script src="https://cdn.tiny.cloud/1/t8wsrw0o08y3nbn52u7y9sj2h0ec3r664cralpe9txjj4yhc/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    {{ encore_entry_script_tags('app') }}
     {{ render(controller('App\\Controller\\LayoutBundleController::adminLayoutHeader')) }}
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
-    <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
-    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-    {% endblock %}
+    {% block javascripts %}{% endblock %}
 </head>
 <body class="admin">
 <div class="container-fluid">
